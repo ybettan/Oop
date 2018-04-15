@@ -1,231 +1,241 @@
 m := Monom new.
-Transcript show: (m coef) ; cr.
-driv := m derivative.
 Transcript show: (m exp) ; cr.
+m coef: (3).
+[m coef: (5.720487423039378)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m exp: (6).
+[m exp: (-0.6802587585182884)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: (-1).
+[m coef: (-0.5221652394285989)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: (1).
+[m coef: (-4.645413435505484)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: (-2).
+[m coef: (-4.229427960470614)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (-5)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (0.8501885486140246)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: (0).
+[m coef: (-3.1117945142199988)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: (-3).
+[m coef: (-5.301850919691557)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
 Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
+m coef: (-4).
+[m coef: (5.185667603801301)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: (2).
+[m coef: (-0.9823192509692165)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
 driv := m derivative.
 Transcript show: (m exp) ; cr.
 Transcript show: (m coef) ; cr.
 [m exp: (-5)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-4.175129883149761)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-6)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (3.653040454154162)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m exp) ; cr.
-Transcript show: (m exp) ; cr.
-m coef: (1).
-[m coef: (-1.1910766422788868)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m coef) ; cr.
+[m exp: (-1.3586298789066689)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
 driv := m derivative.
 Transcript show: (m exp) ; cr.
 Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-[m exp: (-1)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (3.7138560086024874)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m coef) ; cr.
+m exp: (4).
+[m exp: (-2.4735446234305853)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
 driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-m coef: (-2).
-[m coef: (-1.6501340527716675)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (-5).
-[m coef: (1.22834430179386)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m coef) ; cr.
-m coef: (1).
-[m coef: (-0.14751293693733558)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-m := Monom new.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-Transcript show: (m exp) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-m coef: (3).
-[m coef: (5.249439565624174)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (5).
-[m coef: (5.471845817897311)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m exp: (2).
-[m exp: (-3.912808313965021)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m exp) ; cr.
-Transcript show: (m exp) ; cr.
-m coef: (-3).
-[m coef: (-4.912080635738482)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (-2).
-[m coef: (1.3883655524514653)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m exp) ; cr.
 Transcript show: (m exp) ; cr.
 Transcript show: (m coef) ; cr.
 m exp: (3).
-[m exp: (-3.1559890329380056)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (6).
-[m coef: (-5.24657614522826)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-m coef: (-3).
-[m coef: (1.2102976092254778)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m exp: (3).
-[m exp: (-1.2067054979029717)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m exp: (4).
-[m exp: (-0.5057488607012193)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-m exp: (0).
-[m exp: (-4.68428659166264)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (-1).
-[m coef: (-1.7396064825908297)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m := Monom new.
-m coef: (-3).
-[m coef: (-3.038399184237032)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-m coef: (-6).
-[m coef: (-0.5606607806743966)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m coef) ; cr.
-Transcript show: (m coef) ; cr.
-[m exp: (-6)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-2.148728642940165)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m exp) ; cr.
-[m exp: (-6)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-2.705106989694784)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (6).
-[m coef: (2.2549670512335567)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m exp: (4).
-[m exp: (-1.9132001510386942)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-[m exp: (-4)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (1.3442752325420475)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (6).
-[m coef: (-5.537939909944718)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m coef) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-m coef: (2).
-[m coef: (0.447965116204049)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-1)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (5.814985801181438)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m coef) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-m := Monom new.
+[m exp: (2.581307376243247)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
 Transcript show: (m exp) ; cr.
 Transcript show: (m exp) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-m coef: (1).
-[m coef: (5.0369240549393695)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m exp: (5).
-[m exp: (1.2303000534643154)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-Transcript show: (m exp) ; cr.
-Transcript show: (m exp) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m coef) ; cr.
-m exp: (2).
-[m exp: (-3.118551431661227)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (-5).
-[m coef: (-3.1799034274878744)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m exp) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-[m exp: (-1)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (1.3371570677535507)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-m coef: (2).
-[m coef: (-3.3737666585174186)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (-1).
-[m coef: (-5.717415836977626)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (4).
-[m coef: (0.7516287456780901)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-m := Monom new.
-Transcript show: (m exp) ; cr.
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-m exp: (0).
-[m exp: (-4.787356437054584)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-3)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (0.5346591417537168)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (-1).
-[m coef: (3.585204827497174)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-2)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-4.115332053059863)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (3).
-[m coef: (-3.7127317253250705)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m exp) ; cr.
-Transcript show: (m exp) ; cr.
-Transcript show: (m exp) ; cr.
-m coef: (5).
-[m coef: (0.21084493553304107)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-m coef: (0).
-[m coef: (-2.0221805505372314)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-[m exp: (-4)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (4.246985507192814)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-driv := m derivative.
-Transcript show: (m exp) ; cr.
-Transcript show: (m coef) ; cr.
-Transcript show: (m exp) ; cr.
-m coef: (0).
-[m coef: (-0.07915935157619369)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-Transcript show: (m coef) ; cr.
 m coef: (-4).
-[m coef: (-0.9223517996903334)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (-2)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
-[m exp: (3.6715875864037066)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m coef: (-5.659540643249648)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m coef) ; cr.
 driv := m derivative.
 Transcript show: (m exp) ; cr.
 Transcript show: (m coef) ; cr.
-m coef: (6).
-[m coef: (-0.2723547393602912)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m := Monom new.
+m coef: (-1).
+[m coef: (-4.460394894492119)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
 Transcript show: (m exp) ; cr.
 driv := m derivative.
 Transcript show: (m exp) ; cr.
 Transcript show: (m coef) ; cr.
+m exp: (4).
+[m exp: (-2.845218091543427)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: (-3).
+[m coef: (3.868279911110079)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m exp: (6).
+[m exp: (1.1099397446410366)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m exp: (3).
+[m exp: (1.2281630516657795)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m exp: (4).
+[m exp: (2.5482101756894444)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m exp) ; cr.
+m coef: (-3).
+[m coef: (-5.484406759279594)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m := Monom new.
+[m exp: (-4)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (0.12211664382808696)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m coef: (-2).
+[m coef: (-0.37207484159277193)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m coef: (-3).
+[m coef: (4.6253799792947365)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+m coef: (1).
+[m coef: (5.743807552604881)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m coef) ; cr.
+m coef: (5).
+[m coef: (0.03636965014028881)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m exp: (5).
+[m exp: (4.6253187928159765)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m := Monom new.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m exp: (0).
+[m exp: (5.95681458073804)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (-1)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (-0.8319925605832275)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m coef: (4).
+[m coef: (-4.167308709183157)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m exp: (4).
+[m exp: (-0.4734757118308073)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (-4)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (5.539138111779174)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+[m exp: (-3)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (-3.642293031467035)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m coef: (-2).
+[m coef: (-1.7492091247504131)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m := Monom new.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+Transcript show: (m exp) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m exp: (5).
+[m exp: (5.455734993966182)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+[m exp: (-3)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[m exp: (0.8224912360126542)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m exp: (4).
+[m exp: (5.34584610826159)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m exp) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m exp) ; cr.
+Transcript show: (m exp) ; cr.
+m exp: (1).
+[m exp: (-0.11934345107582267)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m exp) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m coef: (5).
+[m coef: (-0.3642359418074621)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: (-1).
+[m coef: (-1.8418857980568868)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+m exp: (0).
+[m exp: (0.44136588467969773)] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (m exp) ; cr.
+Transcript show: (m exp) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
+Transcript show: (m coef) ; cr.
+driv := m derivative.
+Transcript show: (m exp) ; cr.
 Transcript show: (m coef) ; cr.
