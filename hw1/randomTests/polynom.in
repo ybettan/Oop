@@ -1,0 +1,809 @@
+p := Polynom new.
+m := Monom new.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 5 ; exp: 3.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -5 ; exp: 1.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -3 ; exp: 0.
+q addMonom: m2.
+m2 coef: -5 ; exp: 1.
+q addMonom: m2.
+m2 coef: -1 ; exp: 0.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -3 ; exp: 2.
+q addMonom: m2.
+m2 coef: -3 ; exp: 0.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -2 ; exp: 1.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 0 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p eval: 5.610169703529955] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 0) ; cr.
+Transcript show: (p asDictionary) ; cr.
+[p eval: 3.1678839161601484] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 3) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 5 ; exp: 4.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 5 ; exp: 0.
+q addMonom: m2.
+m2 coef: -3 ; exp: 2.
+q addMonom: m2.
+m2 coef: 4 ; exp: 4.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 3 ; exp: 0.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -6 ; exp: 1.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 4 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 1 ; exp: 2.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -6 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 2 ; exp: 2.
+q addMonom: m2.
+m2 coef: -6 ; exp: 0.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p eval: 5.59954013095871] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -2) ; cr.
+Transcript show: (p asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 1 ; exp: 2.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 4 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -1 ; exp: 0.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -4 ; exp: 1.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -4 ; exp: 4.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+Transcript show: (res asDictionary) ; cr.
+[p eval: 5.938407647096813] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -1) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -2 ; exp: 4.
+q addMonom: m2.
+m2 coef: 0 ; exp: 3.
+q addMonom: m2.
+m2 coef: -3 ; exp: 2.
+q addMonom: m2.
+m2 coef: 4 ; exp: 2.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 0 ; exp: 1.
+q addMonom: m2.
+m2 coef: -2 ; exp: 4.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 1 ; exp: 2.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 3 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 4 ; exp: 0.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -3 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 1 ; exp: 2.
+q addMonom: m2.
+m2 coef: -4 ; exp: 0.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 6 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -2 ; exp: 3.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+Transcript show: (p asDictionary) ; cr.
+p := Polynom new.
+m := Monom new.
+[p eval: 4.512098271390514] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -6) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 0 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 5 ; exp: 3.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 6 ; exp: 2.
+q addMonom: m2.
+m2 coef: -3 ; exp: 2.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 4 ; exp: 4.
+q addMonom: m2.
+m2 coef: 0 ; exp: 3.
+q addMonom: m2.
+m2 coef: -4 ; exp: 0.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 4 ; exp: 0.
+q addMonom: m2.
+m2 coef: -5 ; exp: 3.
+q addMonom: m2.
+m2 coef: -5 ; exp: 2.
+q addMonom: m2.
+m2 coef: 1 ; exp: 3.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+Transcript show: (res asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -2 ; exp: 4.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 6 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -5 ; exp: 3.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 5 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 3 ; exp: 3.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 5 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 1 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -4 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p eval: 1.8005191363769608] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 4) ; cr.
+[p eval: -1.1735382723017747] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -4) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 6 ; exp: 0.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -1 ; exp: 3.
+Transcript show: (p asDictionary) ; cr.
+[p eval: 4.5256421571492105] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 6) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 4 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 5 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 1 ; exp: 0.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 6 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 0 ; exp: 3.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 0 ; exp: 4.
+q addMonom: m2.
+m2 coef: 0 ; exp: 0.
+q addMonom: m2.
+m2 coef: 6 ; exp: 0.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -4 ; exp: 1.
+q addMonom: m2.
+m2 coef: -3 ; exp: 3.
+q addMonom: m2.
+m2 coef: 2 ; exp: 3.
+q addMonom: m2.
+m2 coef: -2 ; exp: 1.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -1 ; exp: 0.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 6 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 3 ; exp: 3.
+q addMonom: m2.
+m2 coef: -3 ; exp: 1.
+q addMonom: m2.
+m2 coef: 1 ; exp: 1.
+q addMonom: m2.
+m2 coef: -4 ; exp: 4.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 0 ; exp: 4.
+q addMonom: m2.
+m2 coef: 4 ; exp: 1.
+q addMonom: m2.
+m2 coef: 4 ; exp: 0.
+q addMonom: m2.
+m2 coef: 6 ; exp: 2.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -2 ; exp: 0.
+q addMonom: m2.
+m2 coef: -1 ; exp: 1.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 5 ; exp: 1.
+q addMonom: m2.
+m2 coef: -5 ; exp: 3.
+q addMonom: m2.
+m2 coef: 6 ; exp: 3.
+q addMonom: m2.
+m2 coef: 0 ; exp: 3.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -2 ; exp: 0.
+q addMonom: m2.
+m2 coef: 1 ; exp: 4.
+q addMonom: m2.
+m2 coef: 6 ; exp: 2.
+q addMonom: m2.
+m2 coef: 6 ; exp: 3.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 1 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 6 ; exp: 1.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -6 ; exp: 4.
+q addMonom: m2.
+m2 coef: -5 ; exp: 1.
+q addMonom: m2.
+m2 coef: 5 ; exp: 4.
+q addMonom: m2.
+m2 coef: 0 ; exp: 0.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+Transcript show: (res asDictionary) ; cr.
+p := Polynom new.
+m := Monom new.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -6 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 6 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -3 ; exp: 3.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 5 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -1 ; exp: 4.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -1 ; exp: 0.
+q addMonom: m2.
+m2 coef: 5 ; exp: 0.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p eval: -5.760328840986731] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 6) ; cr.
+[p eval: -3.74278842611905] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 6) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -5 ; exp: 4.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 0 ; exp: 3.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -2 ; exp: 2.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 6 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p eval: 2.5522041780589184] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 6) ; cr.
+[p eval: 4.521950796793249] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -1) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -1 ; exp: 4.
+q addMonom: m2.
+m2 coef: -5 ; exp: 0.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 0 ; exp: 0.
+q addMonom: m2.
+m2 coef: -4 ; exp: 2.
+q addMonom: m2.
+m2 coef: -2 ; exp: 0.
+q addMonom: m2.
+m2 coef: 5 ; exp: 3.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 0 ; exp: 0.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 2 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 6 ; exp: 3.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 6 ; exp: 1.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 3 ; exp: 4.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -2 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -1 ; exp: 1.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -6 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p eval: -4.868070025152349] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -3) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 3 ; exp: 1.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -1 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 5 ; exp: 1.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 5 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p eval: 2.716028901133365] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 3) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 2 ; exp: 3.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -6 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -2 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+p := Polynom new.
+m := Monom new.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 3 ; exp: 3.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 2 ; exp: 4.
+q addMonom: m2.
+m2 coef: 0 ; exp: 4.
+q addMonom: m2.
+m2 coef: 1 ; exp: 4.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -3 ; exp: 2.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -3 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 2 ; exp: 2.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 6 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 2 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 5 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -5 ; exp: 4.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 2 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -3 ; exp: 3.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -1 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 2 ; exp: 1.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 0 ; exp: 2.
+q addMonom: m2.
+m2 coef: -3 ; exp: 1.
+q addMonom: m2.
+m2 coef: -4 ; exp: 4.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 2 ; exp: 3.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -1 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 2 ; exp: 2.
+q addMonom: m2.
+m2 coef: 6 ; exp: 4.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -4 ; exp: 4.
+q addMonom: m2.
+m2 coef: -3 ; exp: 1.
+q addMonom: m2.
+m2 coef: 3 ; exp: 1.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 3 ; exp: 2.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 3 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -6 ; exp: 1.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -3 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 4 ; exp: 2.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 3 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 6 ; exp: 2.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 4 ; exp: 1.
+Transcript show: (p asDictionary) ; cr.
+[p eval: -3.8253584891404673] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -5) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 6 ; exp: 2.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -5 ; exp: 3.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -4 ; exp: 3.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -6 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -5 ; exp: 1.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -6 ; exp: 1.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p asDictionary) ; cr.
+[p eval: -1.1190669559965691] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -3) ; cr.
+p := Polynom new.
+m := Monom new.
+Transcript show: (p derivative asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 0 ; exp: 2.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 3 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p asDictionary) ; cr.
+[p eval: 2.7080118673679827] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 6) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 2 ; exp: 2.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -1 ; exp: 4.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 5 ; exp: 2.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 1 ; exp: 3.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -3 ; exp: 0.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -2 ; exp: 3.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 4 ; exp: 1.
+q addMonom: m2.
+m2 coef: 2 ; exp: 4.
+q addMonom: m2.
+m2 coef: -3 ; exp: 1.
+q addMonom: m2.
+m2 coef: 0 ; exp: 2.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -2 ; exp: 2.
+q addMonom: m2.
+m2 coef: 5 ; exp: 2.
+q addMonom: m2.
+m2 coef: 6 ; exp: 3.
+q addMonom: m2.
+m2 coef: 2 ; exp: 4.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 2 ; exp: 1.
+q addMonom: m2.
+m2 coef: -1 ; exp: 3.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+Transcript show: (res asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: 3 ; exp: 0.
+q addMonom: m2.
+m2 coef: 4 ; exp: 4.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -2 ; exp: 0.
+q addMonom: m2.
+m2 coef: -2 ; exp: 4.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p eval: 4.883803137336352] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 4) ; cr.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -5 ; exp: 1.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -4 ; exp: 2.
+Transcript show: (p asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -5 ; exp: 1.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 5 ; exp: 1.
+Transcript show: (p asDictionary) ; cr.
+Transcript show: (p derivative asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: -6 ; exp: 2.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 0 ; exp: 3.
+Transcript show: (p asDictionary) ; cr.
+[p add: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -6 ; exp: 2.
+q addMonom: m2.
+m2 coef: 4 ; exp: 1.
+q addMonom: m2.
+m2 coef: 6 ; exp: 2.
+q addMonom: m2.
+m2 coef: -1 ; exp: 0.
+q addMonom: m2.
+res := p add: q.
+Transcript show: (res asDictionary) ; cr.
+q := Polynom new.
+m2 := Monom new.
+m2 coef: -3 ; exp: 3.
+q addMonom: m2.
+m2 coef: 0 ; exp: 3.
+q addMonom: m2.
+m2 coef: 0 ; exp: 3.
+q addMonom: m2.
+m2 coef: 2 ; exp: 0.
+q addMonom: m2.
+Transcript show: (res asDictionary) ; cr.
+[p multiplyByMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 6 ; exp: 2.
+p multiplyByMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 4 ; exp: 3.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 1 ; exp: 3.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: -2 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
+[p addMonom: $h] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+m coef: 6 ; exp: 1.
+p addMonom: m.
+Transcript show: (p asDictionary) ; cr.
+m coef: 2 ; exp: 0.
+Transcript show: (p asDictionary) ; cr.
