@@ -19,11 +19,11 @@ def exception(cmd):
 
 
 # Monom test
-f = open('monom.in', 'w')
+f = open('monom2.in', 'w')
 
 for i in range(5):
     command('m := Monom new')
-    for i in range(25):
+    for i in range(50):
         cmd = random.choice(monomCmds)
         if (cmd == 'exp' or cmd == 'coef'):
             printer('m ' + cmd)
@@ -44,12 +44,12 @@ f.close()
 
 
 # Polynom test
-f = open('polynom.in', 'w')
+f = open('polynom2.in', 'w')
 
 for i in range(5):
     command('p := Polynom new')
     command('m := Monom new')
-    for i in range(25):
+    for i in range(50):
         cmd = random.choice(polynomCmds)
         if (cmd == 'addMonom:' or cmd == 'multiplyByMonom:'):
             # check exception
@@ -105,11 +105,11 @@ f.close()
 
 
 # PolyStream test
-f = open('polystream.in', 'w')
+f = open('polystream2.in', 'w')
 
 for i in range(5):
     command('p := PolyStream new')
-    for i in range(25):
+    for i in range(50):
         cmd = random.choice(polyStreamCmds)
         if (cmd == 'addCoefWithExp:'):
             # check exception
