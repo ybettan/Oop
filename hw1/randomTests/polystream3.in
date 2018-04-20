@@ -1,0 +1,433 @@
+p := PolyStream new.
+[p add: 'hello'] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := PolyStream new.
+q addCoef: -5 withExp: 0.
+[p addCoef: 6 withExp: 0.25594041023482283] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 0.25594041023482283  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 1 withExp: -3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p eval: -5.5361837501135795] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -1) ; cr.
+[p eval: -2.6198171240285464] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 1) ; cr.
+[p addCoef: 6 withExp: -3.7163686658397626] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -3.7163686658397626  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 2 withExp: -1] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p eval: 0.16661547280907296] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -2) ; cr.
+[p eval: -1.3101110389810415] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -6) ; cr.
+[p substitute: 4.3003580409455004] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p substitute: 0] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+s := Set new.
+s add: 5.
+s add: 0.
+Transcript show: ((p filter: s) eval: -1) ; cr.
+s := Set new.
+s add: 4.
+s add: 2.
+s add: 3.
+s add: 2.
+Transcript show: (p eval: -2) ; cr.
+[p eval: 5.954798032277822] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -4) ; cr.
+[p eval: 0.7394123087338009] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -1) ; cr.
+[p substitute: -0.3875422008424865] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: 2) eval: 2) ; cr.
+[p eval: -5.154405106626801] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -4) ; cr.
+s := Set new.
+s add: 1.
+Transcript show: ((p filter: s) eval: 4) ; cr.
+s := Set new.
+s add: -1.
+s add: 4.
+Transcript show: (p eval: 2) ; cr.
+[p add: 'hello'] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := PolyStream new.
+q addCoef: 6 withExp: 0.
+[p eval: 2.7285588236647733] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -3) ; cr.
+[p multiplyBy: -1.2918676819474921] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: -6) eval: 3) ; cr.
+[p eval: 4.2196818753893695] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 1) ; cr.
+[p multiplyBy: -5.247922235082066] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: -1) eval: 2) ; cr.
+[p multiplyBy: -3.1333077792153685] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 2) eval: -6) ; cr.
+[p substitute: -3.9069585990564932] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: -1) eval: -3) ; cr.
+[p eval: 0.408788163890601] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -3) ; cr.
+s := Set new.
+s add: -1.
+s add: -1.
+Transcript show: ((p filter: s) eval: -6) ; cr.
+s := Set new.
+Transcript show: (p eval: -6) ; cr.
+[p eval: 5.89662858994196] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.
+[p substitute: -1.9457105993681747] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: 3) eval: 5) ; cr.
+p := PolyStream new.
+[p multiplyBy: 0.883270399327877] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 4) eval: 2) ; cr.
+[p eval: -0.7094381690742138] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -4) ; cr.
+s := Set new.
+s add: 1.
+s add: 5.
+Transcript show: ((p filter: s) eval: -2) ; cr.
+s := Set new.
+s add: 3.
+s add: 1.
+Transcript show: (p eval: -5) ; cr.
+s := Set new.
+s add: 0.
+s add: 1.
+Transcript show: ((p filter: s) eval: 5) ; cr.
+s := Set new.
+s add: 1.
+s add: 2.
+Transcript show: (p eval: 4) ; cr.
+[p eval: -4.426231593814677] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -4) ; cr.
+[p addCoef: 6 withExp: 0.5341665618763125] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 0.5341665618763125  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: 2 withExp: 3.
+Transcript show: (p eval: -2) ; cr.
+[p eval: 0.7856450745620993] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -4) ; cr.
+[p multiplyBy: -1.5450124891538817] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 1) eval: 4) ; cr.
+[p eval: 2.0160243632022556] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 3) ; cr.
+s := Set new.
+s add: 2.
+s add: -1.
+s add: 4.
+Transcript show: ((p filter: s) eval: -3) ; cr.
+s := Set new.
+s add: 2.
+s add: 2.
+Transcript show: (p eval: -2) ; cr.
+[p eval: -4.9039312527990635] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -3) ; cr.
+[p eval: 4.488245545371425] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.
+[p eval: 5.021468931790581] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -1) ; cr.
+s := Set new.
+s add: 3.
+s add: 3.
+s add: 4.
+s add: 2.
+Transcript show: ((p filter: s) eval: -4) ; cr.
+s := Set new.
+Transcript show: (p eval: -3) ; cr.
+[p addCoef: 6 withExp: 4.6635397465132975] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 4.6635397465132975  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: 3 withExp: 3.
+Transcript show: (p eval: -2) ; cr.
+[p substitute: 4.419138153057702] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: 2) eval: 2) ; cr.
+s := Set new.
+s add: 0.
+s add: 1.
+s add: 5.
+Transcript show: ((p filter: s) eval: -5) ; cr.
+s := Set new.
+s add: 0.
+s add: 1.
+s add: 0.
+Transcript show: (p eval: 0) ; cr.
+[p eval: -4.372202247465367] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.
+[p eval: 3.091132228828533] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -5) ; cr.
+s := Set new.
+s add: 5.
+s add: 2.
+Transcript show: ((p filter: s) eval: 1) ; cr.
+s := Set new.
+Transcript show: (p eval: -2) ; cr.
+[p addCoef: 6 withExp: 2.0484172673546137] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 2.0484172673546137  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: 1 withExp: 4.
+Transcript show: (p eval: 1) ; cr.
+s := Set new.
+s add: -1.
+Transcript show: ((p filter: s) eval: -3) ; cr.
+s := Set new.
+Transcript show: (p eval: 4) ; cr.
+[p multiplyBy: 3.307250787557887] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 1) eval: -3) ; cr.
+[p eval: -1.7013834189868344] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -1) ; cr.
+[p eval: -2.01280513595106] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.
+p := PolyStream new.
+[p multiplyBy: -2.510008155655922] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: -5) eval: 5) ; cr.
+[p multiplyBy: -5.8624637369034795] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 2) eval: -6) ; cr.
+s := Set new.
+s add: 3.
+s add: 0.
+s add: 5.
+s add: 3.
+Transcript show: ((p filter: s) eval: 5) ; cr.
+s := Set new.
+s add: 4.
+Transcript show: (p eval: 6) ; cr.
+[p multiplyBy: 0.052147444321703595] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 6) eval: 4) ; cr.
+[p multiplyBy: 4.0376639313810685] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: -5) eval: -2) ; cr.
+[p multiplyBy: 4.0357204756309315] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 5) eval: 1) ; cr.
+[p add: 'hello'] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := PolyStream new.
+q addCoef: -1 withExp: 3.
+q addCoef: -5 withExp: 3.
+s := Set new.
+s add: 1.
+s add: 3.
+Transcript show: ((p filter: s) eval: -4) ; cr.
+s := Set new.
+s add: 4.
+s add: 5.
+s add: 4.
+s add: 4.
+Transcript show: (p eval: 3) ; cr.
+s := Set new.
+s add: 0.
+s add: 5.
+s add: 5.
+s add: 4.
+Transcript show: ((p filter: s) eval: 5) ; cr.
+s := Set new.
+s add: -1.
+s add: -1.
+Transcript show: (p eval: 4) ; cr.
+[p substitute: -0.334598951628978] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: 6) eval: 6) ; cr.
+[p substitute: -4.769804327511109] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: -2) eval: 6) ; cr.
+[p substitute: 1.2842678295968781] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: -5) eval: -3) ; cr.
+[p eval: -4.064731649575973] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -2) ; cr.
+[p eval: -5.978251954983604] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 1) ; cr.
+[p eval: -5.722081882711399] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -3) ; cr.
+[p addCoef: 6 withExp: 4.528608757887083] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 4.528608757887083  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -3 withExp: -2] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 6 withExp: 2.751923578081147] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 2.751923578081147  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 3 withExp: -3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p eval: -3.89152962367086] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -2) ; cr.
+[p addCoef: 6 withExp: 4.435258510371458] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 4.435258510371458  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 0 withExp: -4] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p eval: 3.0941159741799176] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 2) ; cr.
+[p addCoef: 6 withExp: 4.148366852343697] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 4.148366852343697  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: 0 withExp: 2.
+Transcript show: (p eval: 0) ; cr.
+[p eval: 3.44497968001253] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.
+[p addCoef: 6 withExp: 1.0861998136402207] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 1.0861998136402207  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -3 withExp: -4] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p eval: -1.463742825382269] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 4) ; cr.
+[p eval: 1.5272974184686596] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 0) ; cr.
+p := PolyStream new.
+s := Set new.
+s add: 5.
+s add: 2.
+s add: 1.
+Transcript show: ((p filter: s) eval: 1) ; cr.
+s := Set new.
+s add: 0.
+s add: 1.
+Transcript show: (p eval: 5) ; cr.
+[p multiplyBy: 2.472111457932897] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: -6) eval: 5) ; cr.
+[p eval: 3.701829720195896] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 6) ; cr.
+[p multiplyBy: 2.845948215455728] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: -1) eval: 4) ; cr.
+[p eval: -4.048056783810132] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 1) ; cr.
+[p addCoef: 6 withExp: -4.576580507405915] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -4.576580507405915  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -6 withExp: -3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+s := Set new.
+s add: -1.
+s add: 1.
+s add: 0.
+s add: 5.
+Transcript show: ((p filter: s) eval: 2) ; cr.
+s := Set new.
+s add: 5.
+s add: -1.
+s add: 0.
+s add: 4.
+Transcript show: (p eval: -2) ; cr.
+s := Set new.
+s add: 1.
+s add: 3.
+Transcript show: ((p filter: s) eval: 3) ; cr.
+s := Set new.
+s add: -1.
+s add: 1.
+Transcript show: (p eval: -1) ; cr.
+[p multiplyBy: -5.977725691423197] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 4) eval: 5) ; cr.
+[p eval: 3.7116971379624317] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.
+[p eval: -0.723188887928595] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.
+[p eval: -5.096894479148498] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -5) ; cr.
+[p multiplyBy: 3.5989237906798373] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 6) eval: -3) ; cr.
+[p eval: -5.905592693233157] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 1) ; cr.
+[p addCoef: 6 withExp: -3.920276893646217] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -3.920276893646217  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: 3 withExp: 1.
+Transcript show: (p eval: 1) ; cr.
+[p eval: 4.075072117549805] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 6) ; cr.
+[p substitute: 5.631391806489047] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: 5) eval: -4) ; cr.
+[p add: 'hello'] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := PolyStream new.
+q addCoef: -6 withExp: 2.
+[p eval: 5.244014336260202] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 0) ; cr.
+[p eval: 5.964322918466404] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -2) ; cr.
+[p addCoef: 6 withExp: -4.761708400793318] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -4.761708400793318  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -2 withExp: -1] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 6 withExp: 4.626997689919243] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 4.626997689919243  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: -3 withExp: 3.
+Transcript show: (p eval: -5) ; cr.
+[p eval: -2.0260712741985665] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -1) ; cr.
+[p eval: -0.6726277461275147] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.
+[p eval: 1.37822500935044] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -5) ; cr.
+p := PolyStream new.
+[p add: 'hello'] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := PolyStream new.
+q addCoef: -2 withExp: 3.
+q addCoef: -1 withExp: 0.
+q addCoef: 0 withExp: 3.
+q addCoef: 0 withExp: 4.
+[p eval: 4.528091687530498] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 2) ; cr.
+[p addCoef: 6 withExp: 5.101393836615777] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 5.101393836615777  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: -5 withExp: 0.
+Transcript show: (p eval: 0) ; cr.
+s := Set new.
+s add: 5.
+s add: 4.
+s add: 1.
+Transcript show: ((p filter: s) eval: 4) ; cr.
+s := Set new.
+s add: 3.
+s add: 3.
+s add: 5.
+Transcript show: (p eval: -5) ; cr.
+s := Set new.
+s add: 2.
+s add: 2.
+s add: 4.
+s add: 5.
+Transcript show: ((p filter: s) eval: -5) ; cr.
+s := Set new.
+s add: 1.
+s add: 2.
+s add: 1.
+s add: 1.
+Transcript show: (p eval: 4) ; cr.
+[p multiplyBy: -1.0492822235748793] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: -6) eval: -6) ; cr.
+[p multiplyBy: -0.9950996323557231] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 4) eval: 6) ; cr.
+[p addCoef: 6 withExp: 4.979858872738589] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 4.979858872738589  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -6 withExp: -3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+s := Set new.
+s add: 3.
+Transcript show: ((p filter: s) eval: 2) ; cr.
+s := Set new.
+Transcript show: (p eval: 3) ; cr.
+[p multiplyBy: -0.9886156906556751] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: 3) eval: -6) ; cr.
+[p add: 'hello'] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := PolyStream new.
+q addCoef: -3 withExp: 4.
+q addCoef: -4 withExp: 0.
+q addCoef: -6 withExp: 0.
+[p substitute: 1.322259956619626] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: -4) eval: -6) ; cr.
+[p eval: -3.4571405706950844] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -3) ; cr.
+s := Set new.
+s add: -1.
+s add: 1.
+s add: 3.
+Transcript show: ((p filter: s) eval: 4) ; cr.
+s := Set new.
+Transcript show: (p eval: 2) ; cr.
+[p substitute: 3.3187492388853315] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: -6) eval: -1) ; cr.
+[p addCoef: 6 withExp: 4.7589178932487055] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 4.7589178932487055  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: 1 withExp: 2.
+Transcript show: (p eval: 5) ; cr.
+[p add: 'hello'] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+q := PolyStream new.
+q addCoef: 0 withExp: 0.
+q addCoef: 1 withExp: 4.
+q addCoef: 3 withExp: 2.
+[p eval: -5.901578395501099] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: -4) ; cr.
+[p eval: -2.561784927741319] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 1) ; cr.
+[p addCoef: 6 withExp: -5.0189190405109105] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: -5.0189190405109105  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 1 withExp: -4] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p substitute: 5.1520661591789185] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p substitute: -4) eval: -3) ; cr.
+s := Set new.
+s add: 2.
+s add: -1.
+s add: -1.
+s add: -1.
+Transcript show: ((p filter: s) eval: -2) ; cr.
+s := Set new.
+Transcript show: (p eval: 0) ; cr.
+[p multiplyBy: 2.4966030320567114] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: ((p multiplyBy: -6) eval: -6) ; cr.
+[p addCoef: 6 withExp: 0.14568478019836206] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+[p addCoef: 0.14568478019836206  withExp: 3] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+p addCoef: 1 withExp: 3.
+Transcript show: (p eval: 3) ; cr.
+[p eval: -4.234271279466302] on: Error do: [:e | Transcript show: (e messageText) ; cr.].
+Transcript show: (p eval: 5) ; cr.

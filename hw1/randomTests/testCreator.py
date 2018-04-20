@@ -19,7 +19,7 @@ def exception(cmd):
 
 
 # Monom test
-f = open('monom2.in', 'w')
+f = open('monom4.in', 'w')
 
 for i in range(5):
     command('m := Monom new')
@@ -44,7 +44,7 @@ f.close()
 
 
 # Polynom test
-f = open('polynom2.in', 'w')
+f = open('polynom4.in', 'w')
 
 for i in range(5):
     command('p := Polynom new')
@@ -105,7 +105,7 @@ f.close()
 
 
 # PolyStream test
-f = open('polystream2.in', 'w')
+f = open('polystream4.in', 'w')
 
 for i in range(5):
     command('p := PolyStream new')
@@ -133,7 +133,7 @@ for i in range(5):
                 coef = random.randint(-6, 6)
                 exp = random.randint(0, 4)
                 command('q addCoef: {} withExp: {}'.format(coef, exp))
-        elif (cmd == 'substitute:' or cmd == 'multiplyBy'):
+        elif (cmd == 'substitute:' or cmd == 'multiplyBy:'):
             # check exception
             exception('p ' + cmd + ' {}'.format(random.uniform(-6, 6)))
             # check result
