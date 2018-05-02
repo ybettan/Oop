@@ -65,11 +65,12 @@ public class SongImpl implements Song {
     public Collection<User> getRaters() {
 
         /* we start from the last sort to keep a stable sort */
-        return usersRate.keySet().stream()
-                             .sorted()     
-                             .sorted((u1,u2) -> u2.getAge() - u1.getAge())     
-                             .sorted((u1,u2) -> usersRate.get(u2) - usersRate.get(u1))
-                             .collect(Collectors.toCollection(LinkedList::new));
+        return usersRate.entrySet().stream()
+                        .sorted((e1,e2) -> e2.getKey().getID() - e1.getKey().getID())
+                        .sorted((e1,e2) -> e1.getKey().getAge() - e2.getKey().getAge())
+                        .sorted((e1,e2) -> e2.getValue() - e1.getValue())
+                        .map(e -> e.getKey())
+                        .collect(Collectors.toCollection(LinkedList::new));
     }
 
     public Map<Integer,Set<User>> getRatings() {
@@ -101,7 +102,7 @@ public class SongImpl implements Song {
     public double getAverageRating() {
         int numRaters = usersRate.size();
         double sumRates = usersRate.values().stream().reduce(0, Integer::sum);
-        return sumRates/numRaters;
+        return (sumRates == 0) ? 0 : sumRates/numRaters;
     }
 
     /* implement Comparable<Song>.compareTo() */
