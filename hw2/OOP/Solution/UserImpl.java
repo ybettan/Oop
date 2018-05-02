@@ -21,6 +21,7 @@ public class UserImpl implements User {
     /* all the user's friends are stored in a HashSet */
     private HashSet<User> friends;
 
+    //FIXME: chack why removing public don't compiles
     public UserImpl(int userID, String userName, int userAge) {
         this.userID = userID;
         /* as mentioned in FAQ userName don't need to be cloned */
@@ -74,7 +75,7 @@ public class UserImpl implements User {
 
         /* we start from the last sort to keep a stable sort */
         return songs.keySet().stream()
-                             .sorted((s1,s2) -> s1.getID() - s2.getID())     
+                             .sorted()
                              .sorted((s1,s2) -> s2.getLength() - s1.getLength())     
                              .sorted((s1,s2) -> songs.get(s2) - songs.get(s1))
                              .collect(Collectors.toCollection(LinkedList::new));
