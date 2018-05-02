@@ -6,9 +6,9 @@ import OOP.Provided.Song;
 import java.util.stream.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.LinkedList;
-import java.util.HashMap;
 
 public class UserImpl implements User {
 
@@ -21,7 +21,9 @@ public class UserImpl implements User {
     /* all the user's friends are stored in a HashSet */
     private HashSet<User> friends;
 
-    //FIXME: chack why removing public don't compiles
+
+
+
     public UserImpl(int userID, String userName, int userAge) {
         this.userID = userID;
         /* as mentioned in FAQ userName don't need to be cloned */
@@ -54,7 +56,8 @@ public class UserImpl implements User {
             if (songs.containsKey(song))
                 throw new SongAlreadyRated();
 
-            /* rate the sont */
+            /* rate the sont.
+             * as described in the FAQ we can save song as is (no clone()) */
             songs.put(song, rate);
 
             return this;
@@ -63,7 +66,7 @@ public class UserImpl implements User {
     public double getAverageRating() {
         double sum = songs.values().stream().reduce(0, Integer::sum);
         int counter = songs.values().size();
-        return sum/counter;
+        return (counter == 0) ? 0 : sum/counter;
     }
 
     public int getPlaylistLength() {
@@ -75,8 +78,8 @@ public class UserImpl implements User {
 
         /* we start from the last sort to keep a stable sort */
         return songs.keySet().stream()
-                             .sorted()
-                             .sorted((s1,s2) -> s2.getLength() - s1.getLength())     
+                             .sorted((s1,s2) -> s2.getID() - s1.getID())
+                             .sorted((s1,s2) -> s1.getLength() - s2.getLength())
                              .sorted((s1,s2) -> songs.get(s2) - songs.get(s1))
                              .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -84,8 +87,11 @@ public class UserImpl implements User {
     public Collection<Song> getFavoriteSongs() {
 
         /* sort by the natural order (according to compareTo() ) */
-        return songs.keySet().stream().filter(x -> x.getLength() >= 8)
-            .sorted().collect(Collectors.toCollection(LinkedList::new));
+        return songs.entrySet().stream()
+            .filter(x -> x.getValue() >= 8)
+            .map(x -> x.getKey())
+            .sorted()
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     public User AddFriend(User friend) throws AlreadyFriends , SamePerson {
@@ -119,7 +125,7 @@ public class UserImpl implements User {
         return res;
     }
 
-    /* implement Comparable<User>.compareTo() */
+    /* implement Comparable<User>.compareTo() - sort in increasing order */
     public int compareTo(User other) {
         return getID() - other.getID();
     }
@@ -133,13 +139,6 @@ public class UserImpl implements User {
         return compareTo(other) == 0;
     }
 }
-
-
-
-
-
-
-
 
 
 

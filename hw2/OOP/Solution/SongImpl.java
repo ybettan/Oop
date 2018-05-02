@@ -21,7 +21,6 @@ public class SongImpl implements Song {
      * User -> rate */
     private HashMap<User,Integer> usersRate;
 
-    //FIXME: chack why removing public don't compiles
     public SongImpl(int songID, String songName, int length, String singerName) {
         this.songID = songID;
         /* as mentioned in FAQ songName don't need to be cloned */
