@@ -271,9 +271,13 @@ public class TechnionTunesImpl implements TechnionTunes {
         }
 
         public Song next() {
-            return (Song) songs.keySet().toArray()[nextIndex++];
+            ArrayList<Song> res = songs.values()
+                .stream()
+                .sorted((s1,s2) -> s1.getID() - s2.getID())
+                .sorted((s1,s2) -> s1.getLength() - s2.getLength())
+                .collect(Collectors.toCollection(ArrayList::new));
+            return (Song) res.toArray()[nextIndex++];
         }
-
     }
 
 

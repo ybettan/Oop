@@ -24,6 +24,7 @@ public class TechnionTunesTest {
         testRateStuf();
         testGetTopLikers();
         testFriendStuf();
+        testIterator();
     }
 
     /* addUser(), getUser(), addSong(), setSong(), sortSong() */
@@ -401,6 +402,41 @@ public class TechnionTunesTest {
 
         Checker.check(!tt.canGetAlong(14, 19));
         Checker.check(!tt.canGetAlong(12, 19));
+    }
+
+    /* iterator() */
+    private static void testIterator() throws Exception {
+
+        TechnionTunes tt = new TechnionTunesImpl();
+
+        tt.addUser(12, "yoni", 27);
+        tt.addUser(16, "avi", 25);
+        tt.addUser(11, "moti", 33);
+        tt.addUser(19, "roy", 34);
+        tt.addUser(18, "shir", 34);
+        tt.addUser(14, "itzik", 90);
+
+        tt.addSong(23, "shape of you", 180, "edd shiren");
+        tt.addSong(20, "listen", 100, "byonce");
+        tt.addSong(24, "hello", 220, "byonce");
+        tt.addSong(26, "despacito", 140, "fonsi");
+        tt.addSong(29, "heart", 140, "cristina aguilera");
+        tt.addSong(21, "maluma baby", 230, "maluma");
+        tt.addSong(28, "i'm bad", 80, "michel jakson");
+        tt.addSong(22, "2 crazies", 190, "omer adam");
+
+        int counter = 1;
+        for (Song s : tt) {
+            if (counter == 1) Checker.check(s.getID() == 28);
+            if (counter == 2) Checker.check(s.getID() == 20);
+            if (counter == 3) Checker.check(s.getID() == 26);
+            if (counter == 4) Checker.check(s.getID() == 29);
+            if (counter == 5) Checker.check(s.getID() == 23);
+            if (counter == 6) Checker.check(s.getID() == 22);
+            if (counter == 7) Checker.check(s.getID() == 24);
+            if (counter == 8) Checker.check(s.getID() == 21);
+            counter++;
+        }
     }
 }
 
