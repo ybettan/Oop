@@ -147,32 +147,32 @@ public class TechnionTunesImpl implements TechnionTunes {
     public Collection<Song> getHighestRatedSongs(int num) {
         
         /* get all rated songs IDs */
-        int[] userIDs = songs.keySet().stream().mapToInt(Number::intValue).toArray();
+        int[] userIDs = users.keySet().stream().mapToInt(Number::intValue).toArray();
         Set<Song> allRatedSongs = null;
-        try {
-                allRatedSongs = getIntersection(userIDs);
-            } catch (UserDoesntExist e) {
-                /* we should not arrive here */
-            }
+        try {allRatedSongs = getIntersection(userIDs);}
+        catch (UserDoesntExist e) {/* we should not arrive here */}
 
         /* sort and sub result */
-        return allRatedSongs
+        ArrayList<Song> res = allRatedSongs
                 .stream()
                 .sorted() /* by id in increasing order */
-                .sorted((s1,s2) -> s1.getLength() - s2.getLength())
+                .sorted((s1,s2) -> s2.getLength() - s1.getLength())
                 .sorted((s1,s2) -> {
-                            double tmp = s1.getAverageRating() - s2.getAverageRating();
+                            double tmp = s2.getAverageRating() - s1.getAverageRating();
                             return tmp > 0 ? 1 : (tmp < 0 ? -1 : 0);
                             })
-                .collect(Collectors.toCollection(ArrayList::new))
-                .subList(0, num);
+                .collect(Collectors.toCollection(ArrayList::new));
+        if (num < res.size())
+            return res.subList(0, num);
+        else
+            return res;
     }
 
 
     public Collection<Song> getMostRatedSongs(int num) {
 
         /* get all rated songs IDs */
-        int[] userIDs = songs.keySet().stream().mapToInt(Number::intValue).toArray();
+        int[] userIDs = users.keySet().stream().mapToInt(Number::intValue).toArray();
         Set<Song> allRatedSongs = null;
         try {
                 allRatedSongs = getIntersection(userIDs);
@@ -181,13 +181,16 @@ public class TechnionTunesImpl implements TechnionTunes {
             }
 
         /* sort and sub result */
-        return allRatedSongs
+        ArrayList<Song> res = allRatedSongs
                 .stream()
-                .sorted((s1,s2) -> s1.getID() - s2.getID())
-                .sorted((s1,s2) -> s2.getLength() - s1.getLength())
+                .sorted((s1,s2) -> s2.getID() - s1.getID())
+                .sorted((s1,s2) -> s1.getLength() - s2.getLength())
                 .sorted((s1,s2) -> s2.getRaters().size() - s1.getRaters().size())
-                .collect(Collectors.toCollection(ArrayList::new))
-                .subList(0, num);
+                .collect(Collectors.toCollection(ArrayList::new));
+        if (num > res.size())
+            return res;
+        else
+            return res.subList(0, num);
     }
     
 
@@ -209,6 +212,9 @@ public class TechnionTunesImpl implements TechnionTunes {
     /* work as expected from canGetAlong() but with a visited set */
     private boolean canGetAlongAux(int userId1, int userId2, Set<Integer> visited)
             throws UserDoesntExist {
+
+        /* mark the current node as visited */
+        visited.add(userId1);
 
         /* make sure both users are registered */
         if (!(users.containsKey(userId1) && users.containsKey(userId2)))
@@ -232,9 +238,10 @@ public class TechnionTunesImpl implements TechnionTunes {
                 continue;
 
             /* marke new node as visited and call recursively */
-            visited.add(friend.getID());
-            if (canGetAlongAux(friend.getID(), userId2, visited))
+            if (canGetAlong(userId1, friend.getID()) &&
+                canGetAlongAux(friend.getID(), userId2, visited)) {
                 return true;
+            }
         }
         return false;
     }
@@ -244,7 +251,6 @@ public class TechnionTunesImpl implements TechnionTunes {
         /* we will make sure no infinity recusive is done by managing a
          * visited set */
         Set<Integer> visited = new HashSet<Integer>();
-        visited.add(userId1);
         return canGetAlongAux(userId1, userId2, visited);
     }
 

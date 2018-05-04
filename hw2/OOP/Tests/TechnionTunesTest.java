@@ -22,7 +22,8 @@ public class TechnionTunesTest {
 
         testAddersGetters();
         testRateStuf();
-        //testInheriting();
+        testGetTopLikers();
+        testFriendStuf();
     }
 
     /* addUser(), getUser(), addSong(), setSong(), sortSong() */
@@ -93,7 +94,7 @@ public class TechnionTunesTest {
     }
 
     /* rateSong(), getIntersection(), getHighestRatedSongs(), getMostRatedSongs(),
-     * getTopLinkers()  */
+     * getTopLikers()  */
     private static void testRateStuf() throws Exception {
         
         TechnionTunes tt = new TechnionTunesImpl();
@@ -151,9 +152,10 @@ public class TechnionTunesTest {
         try {tt.getIntersection(new int[]{12, 15, 16});}
             catch (TechnionTunes.UserDoesntExist e) {counter++;}
         Checker.check(counter == 1);
-        tt.getIntersection(new int[0]);
+        Set<Song> tmp = tt.getIntersection(new int[0]);
+        Checker.check(tmp.size() == 0);
 
-        Set<Song> tmp = tt.getIntersection(new int[]{12});
+        tmp = tt.getIntersection(new int[]{12});
         Checker.check(tmp.size() == 4);
         for (Song s : tmp)
             Checker.check(s.getID() == 23 ||
@@ -172,30 +174,233 @@ public class TechnionTunesTest {
                           s.getID() == 21 ||
                           s.getID() == 20);
 
+        tmp = tt.getIntersection(new int[]{11, 12, 14, 16, 18, 19});
+        Checker.check(tmp.size() == 7);
+        for (Song s : tmp)
+            Checker.check(s.getID() == 23 ||
+                          s.getID() == 26 ||
+                          s.getID() == 29 ||
+                          s.getID() == 24 ||
+                          s.getID() == 22 ||
+                          s.getID() == 21 ||
+                          s.getID() == 20);
+
         /* check getHighestRatedSongs(), getMostRatedSongs() */
-        //FIXME: bug - derefrencing null
         Collection<Song> tmp2 = tt.getHighestRatedSongs(0);
-        Checker.check(tmp.size() == 0);
+        Checker.check(tmp2.size() == 0);
 
         tmp2 = tt.getHighestRatedSongs(1);
-        Checker.check(tmp.size() == 1);
-        Checker.check(((Song)tmp.toArray()[0]).getID() == 22);
+        Checker.check(tmp2.size() == 1);
+        Checker.check(((Song)tmp2.toArray()[0]).getID() == 22);
 
         tmp2 = tt.getHighestRatedSongs(7);
-        Checker.check(tmp.size() == 7);
-        Checker.check(((Song)tmp.toArray()[0]).getID() == 22);
-        Checker.check(((Song)tmp.toArray()[1]).getID() == 21);
-        Checker.check(((Song)tmp.toArray()[2]).getID() == 20);
-        Checker.check(((Song)tmp.toArray()[3]).getID() == 23);
-        Checker.check(((Song)tmp.toArray()[4]).getID() == 24);
-        Checker.check(((Song)tmp.toArray()[5]).getID() == 26);
-        Checker.check(((Song)tmp.toArray()[6]).getID() == 29);
+        Checker.check(tmp2.size() == 7);
+        Checker.check(((Song)tmp2.toArray()[0]).getID() == 22);
+        Checker.check(((Song)tmp2.toArray()[1]).getID() == 21);
+        Checker.check(((Song)tmp2.toArray()[2]).getID() == 20);
+        Checker.check(((Song)tmp2.toArray()[3]).getID() == 23);
+        Checker.check(((Song)tmp2.toArray()[4]).getID() == 24);
+        Checker.check(((Song)tmp2.toArray()[5]).getID() == 26);
+        Checker.check(((Song)tmp2.toArray()[6]).getID() == 29);
 
-        //FIXME: what happens if if num is greater than all the elements ? 
-        //tmp2 = tt.getHighestRatedSongs(10);
-        //Checker.check(tmp.size() == 1);
-        //Checker.check(((Song)tmp.toArray()[0]).getID() == 22);
+        tmp2 = tt.getHighestRatedSongs(10);
+        Checker.check(tmp2.size() == 7);
+        Checker.check(((Song)tmp2.toArray()[0]).getID() == 22);
+        Checker.check(((Song)tmp2.toArray()[1]).getID() == 21);
+        Checker.check(((Song)tmp2.toArray()[2]).getID() == 20);
+        Checker.check(((Song)tmp2.toArray()[3]).getID() == 23);
+        Checker.check(((Song)tmp2.toArray()[4]).getID() == 24);
+        Checker.check(((Song)tmp2.toArray()[5]).getID() == 26);
+        Checker.check(((Song)tmp2.toArray()[6]).getID() == 29);
 
+        Collection<Song> tmp3 = tt.getMostRatedSongs(0);
+        Checker.check(tmp3.size() == 0);
+
+        tmp3 = tt.getMostRatedSongs(1);
+        Checker.check(tmp3.size() == 1);
+        Checker.check(((Song)tmp3.toArray()[0]).getID() == 24);
+
+        tmp3 = tt.getMostRatedSongs(7);
+        Checker.check(tmp3.size() == 7);
+        Checker.check(((Song)tmp3.toArray()[0]).getID() == 24);
+        Checker.check(((Song)tmp3.toArray()[1]).getID() == 29);
+        Checker.check(((Song)tmp3.toArray()[2]).getID() == 26);
+        Checker.check(((Song)tmp3.toArray()[3]).getID() == 23);
+        Checker.check(((Song)tmp3.toArray()[4]).getID() == 21);
+        Checker.check(((Song)tmp3.toArray()[5]).getID() == 20);
+        Checker.check(((Song)tmp3.toArray()[6]).getID() == 22);
+
+        tmp3 = tt.getMostRatedSongs(10);
+        Checker.check(tmp3.size() == 7);
+        Checker.check(((Song)tmp3.toArray()[0]).getID() == 24);
+        Checker.check(((Song)tmp3.toArray()[1]).getID() == 29);
+        Checker.check(((Song)tmp3.toArray()[2]).getID() == 26);
+        Checker.check(((Song)tmp3.toArray()[3]).getID() == 23);
+        Checker.check(((Song)tmp3.toArray()[4]).getID() == 21);
+        Checker.check(((Song)tmp3.toArray()[5]).getID() == 20);
+        Checker.check(((Song)tmp3.toArray()[6]).getID() == 22);
+    }
+
+    /* getTopLikers() */
+    private static void testGetTopLikers() throws Exception {
+
+        TechnionTunes tt = new TechnionTunesImpl();
+
+        tt.addUser(12, "yoni", 27);
+        tt.addUser(16, "avi", 25);
+        tt.addUser(11, "moti", 33);
+        tt.addUser(19, "roy", 34);
+        tt.addUser(18, "shir", 34);
+        tt.addUser(14, "itzik", 90);
+
+        tt.addSong(23, "shape of you", 180, "edd shiren");
+        tt.addSong(20, "listen", 100, "byonce");
+        tt.addSong(24, "hello", 220, "byonce");
+        tt.addSong(26, "despacito", 140, "fonsi");
+        tt.addSong(29, "heart", 140, "cristina aguilera");
+        tt.addSong(21, "maluma baby", 230, "maluma");
+        tt.addSong(28, "i'm bad", 80, "michel jakson");
+        tt.addSong(22, "2 crazies", 190, "omer adam");
+
+        /* test all the rest */
+        tt.rateSong(12, 23, 2);
+        tt.rateSong(12, 26, 2);
+        tt.rateSong(12, 29, 2);
+        tt.rateSong(12, 24, 2);
+
+        tt.rateSong(16, 24, 6);
+        tt.rateSong(16, 26, 6);
+        tt.rateSong(16, 29, 6);
+
+        tt.rateSong(19, 23, 9);
+        tt.rateSong(19, 22, 9);
+        tt.rateSong(19, 21, 9);
+
+        tt.rateSong(18, 20, 9);
+        tt.rateSong(18, 21, 9);
+
+        tt.rateSong(14, 24, 9);
+
+
+        Collection<User> tmp3 = tt.getTopLikers(0);
+        Checker.check(tmp3.size() == 0);
+
+        tmp3 = tt.getTopLikers(1);
+        Checker.check(tmp3.size() == 1);
+        Checker.check(((User)tmp3.toArray()[0]).getID() == 14);
+
+        tmp3 = tt.getTopLikers(6);
+        Checker.check(tmp3.size() == 6);
+        Checker.check(((User)tmp3.toArray()[0]).getID() == 14);
+        Checker.check(((User)tmp3.toArray()[1]).getID() == 18);
+        Checker.check(((User)tmp3.toArray()[2]).getID() == 19);
+        Checker.check(((User)tmp3.toArray()[3]).getID() == 16);
+        Checker.check(((User)tmp3.toArray()[4]).getID() == 12);
+        Checker.check(((User)tmp3.toArray()[5]).getID() == 11);
+
+        tmp3 = tt.getTopLikers(6);
+        Checker.check(tmp3.size() == 6);
+        Checker.check(((User)tmp3.toArray()[0]).getID() == 14);
+        Checker.check(((User)tmp3.toArray()[1]).getID() == 18);
+        Checker.check(((User)tmp3.toArray()[2]).getID() == 19);
+        Checker.check(((User)tmp3.toArray()[3]).getID() == 16);
+        Checker.check(((User)tmp3.toArray()[4]).getID() == 12);
+        Checker.check(((User)tmp3.toArray()[5]).getID() == 11);
+
+    }
+
+    /* makeFriends(), canGetAlong() */
+    private static void testFriendStuf() throws Exception {
+
+        TechnionTunes tt = new TechnionTunesImpl();
+
+        tt.addUser(12, "yoni", 27);
+        tt.addUser(16, "avi", 25);
+        tt.addUser(11, "moti", 33);
+        tt.addUser(19, "roy", 34);
+        tt.addUser(18, "shir", 34);
+        tt.addUser(14, "itzik", 90);
+
+        tt.addSong(23, "shape of you", 180, "edd shiren");
+        tt.addSong(20, "listen", 100, "byonce");
+        tt.addSong(24, "hello", 220, "byonce");
+        tt.addSong(26, "despacito", 140, "fonsi");
+        tt.addSong(29, "heart", 140, "cristina aguilera");
+        tt.addSong(21, "maluma baby", 230, "maluma");
+        tt.addSong(28, "i'm bad", 80, "michel jakson");
+        tt.addSong(22, "2 crazies", 190, "omer adam");
+
+        tt.rateSong(12, 23, 2);
+        tt.rateSong(12, 26, 2);
+        tt.rateSong(12, 29, 2);
+        tt.rateSong(12, 24, 2);
+        tt.rateSong(16, 24, 6);
+        tt.rateSong(16, 26, 6);
+        tt.rateSong(16, 29, 6);
+        tt.rateSong(19, 23, 9);
+        tt.rateSong(19, 22, 9);
+        tt.rateSong(19, 21, 9);
+        tt.rateSong(18, 20, 9);
+        tt.rateSong(18, 21, 9);
+        tt.rateSong(14, 24, 9);
+        tt.rateSong(11, 20, 9);
+
+        /* test makeFriends */
+        int counter = 0;
+        try {tt.makeFriends(123, 12);} catch (TechnionTunes.UserDoesntExist e) {counter++;}
+        tt.makeFriends(12, 18);
+        try {tt.makeFriends(18, 12);} catch (User.AlreadyFriends e) {counter++;}
+        try {tt.makeFriends(11, 11);} catch (User.SamePerson e) {counter++;}
+        try {tt.makeFriends(6, 6);} catch (TechnionTunes.UserDoesntExist e) {counter++;}
+        Checker.check(counter == 4);
+
+        //tt.makeFriends(12, 18);
+        tt.makeFriends(12, 14);
+        tt.makeFriends(18, 14);
+        tt.makeFriends(18, 11);
+        tt.makeFriends(18, 19);
+
+        User u1 = tt.getUser(12);
+        User u2 = tt.getUser(16);
+        User u3 = tt.getUser(11);
+        User u4 = tt.getUser(19);
+        User u5 = tt.getUser(18);
+        User u6 = tt.getUser(14);
+
+        Checker.check(u2.getFriends().size() == 0);
+        Checker.check(u4.getFriends().size() == 1);
+        Checker.check(u4.getFriends().containsKey(u5));
+        Checker.check(u1.getFriends().size() == 2);
+        Checker.check(u1.getFriends().containsKey(u5));
+        Checker.check(u1.getFriends().containsKey(u6));
+        Checker.check(u5.getFriends().size() == 4);
+        Checker.check(u5.getFriends().containsKey(u1));
+        Checker.check(u5.getFriends().containsKey(u3));
+        Checker.check(u5.getFriends().containsKey(u6));
+        Checker.check(u5.getFriends().containsKey(u4));
+        Checker.check(u3.getFriends().size() == 1);
+        Checker.check(u3.getFriends().containsKey(u5));
+        Checker.check(u6.getFriends().size() == 2);
+        Checker.check(u6.getFriends().containsKey(u5));
+        Checker.check(u6.getFriends().containsKey(u1));
+
+        /* test canGetAlong */
+        counter = 0;
+        try {tt.canGetAlong(123, 12);} catch (TechnionTunes.UserDoesntExist e) {counter++;}
+        Checker.check(counter == 1);
+
+        Checker.check(tt.canGetAlong(12, 12));
+        Checker.check(tt.canGetAlong(16, 16));
+        Checker.check(tt.canGetAlong(11, 11));
+        Checker.check(tt.canGetAlong(19, 19));
+        Checker.check(tt.canGetAlong(18, 18));
+        Checker.check(tt.canGetAlong(14, 14));
+
+        Checker.check(tt.canGetAlong(18, 19));
+        Checker.check(tt.canGetAlong(11, 19));
+
+        Checker.check(!tt.canGetAlong(14, 19));
+        Checker.check(!tt.canGetAlong(12, 19));
     }
 }
 
