@@ -51,7 +51,7 @@ public class ExampleTest {
         }
 
         // Should be successful
-        @OOPTest
+        @OOPTest(order = 3)
         public void testThrows() throws Exception {
             expected.expect(Exception.class)
                     .expectMessage("rror messag");
