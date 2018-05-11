@@ -10,5 +10,4 @@ import java.lang.annotation.Target;
 public @interface OOPTest {
     int oreder();
     String tag() default "";
-    //Class<? extends Exception> exception() default null; //FIXME: do I need it?
 }
