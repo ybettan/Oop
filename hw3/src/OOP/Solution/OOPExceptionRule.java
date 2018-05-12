@@ -1,4 +1,4 @@
-package Solution;
+package OOP.Solution;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
