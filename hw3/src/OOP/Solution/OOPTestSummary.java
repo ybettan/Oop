@@ -13,6 +13,11 @@ public class OOPTestSummary {
     private Map<String, OOPResult> map;
 
     private int getNumRes(OOPTestResult result) {
+        
+        /* in case we got null as argument in c'tor - not supposed to happend */
+        if (map == null)
+            return 0;
+
         return (int) map.values()
                         .stream()
                         .filter(oopRes -> oopRes.getResultType() == result)

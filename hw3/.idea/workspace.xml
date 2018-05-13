@@ -24,13 +24,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OOPResultTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="OOPResultTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/OOP/Tests/OOPResultTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
               <caret line="25" column="35" lean-forward="true" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OOPTestSummaryTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/OOP/Tests/OOPTestSummaryTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="396">
+              <caret line="37" column="16" lean-forward="false" selection-start-line="37" selection-start-column="16" selection-end-line="37" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1168#1187#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -79,6 +92,7 @@
         <option value="/usr/lib/jvm/java-1.8.0/jre/lib/rt.jar!/java/util/function/Function.class" />
         <option value="$PROJECT_DIR$/src/OOP/Solution/OOPUnitCore.java" />
         <option value="$PROJECT_DIR$/src/OOP/Tests/OOPResultTest.java" />
+        <option value="$PROJECT_DIR$/src/OOP/Tests/OOPTestSummaryTest.java" />
       </list>
     </option>
   </component>
@@ -294,12 +308,12 @@
       <workItem from="1525952499386" duration="7144000" />
       <workItem from="1526019817576" duration="2049000" />
       <workItem from="1526047680259" duration="13365000" />
-      <workItem from="1526196808333" duration="1924000" />
+      <workItem from="1526196808333" duration="2838000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24482000" />
+    <option name="totallyTimeSpent" value="25396000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="225" y="46" width="1920" height="1173" extended-state="6" />
@@ -574,6 +588,17 @@
           <caret line="25" column="35" lean-forward="true" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OOP/Tests/OOPTestSummaryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="37" column="16" lean-forward="false" selection-start-line="37" selection-start-column="16" selection-end-line="37" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1168#1187#0" expanded="true" />
           </folding>
         </state>
       </provider>
