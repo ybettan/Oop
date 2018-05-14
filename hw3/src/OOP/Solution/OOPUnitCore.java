@@ -1,6 +1,10 @@
 package OOP.Solution;
 
 import OOP.Provided.OOPAssertionFailure;
+import OOP.Provided.OOPResult;
+import static OOP.Provided.OOPResult.OOPTestResult.*;
+import OOP.Solution.OOPResultImpl;
+import OOP.Provided.OOPExpectedException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
@@ -9,41 +13,129 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.stream.*;
 
 
 public class OOPUnitCore {
 
 
-    private static OOPTestSummary invokeInternal(Class<?> testClass, 
-            Object testClassInstance, Method method)
+    private static void runSetupMethods(Class<?> testClass, Object testClassInst)
             throws IllegalAccessException, InvocationTargetException {
 
-        /* run all the @OOPBefore methods */
-        ArrayList<Method> beforeMethods = Arrays
+        /* stoping condition - Object.getClass().getSuperClass() return null */
+        if (testClass == null)
+            return;
+
+        /* activate first the base class methods */
+        runSetupMethods(testClass.getSuperclass(), testClassInst);
+
+        /* get all the Class methods annotated with @OOPSetup */
+        ArrayList<Method> setupMethods = Arrays
+              .stream(testClass.getMethods())
+              .filter(m -> m.isAnnotationPresent(OOPSetup.class))
+              .collect(Collectors.toCollection(ArrayList::new));
+
+        for (Method m : setupMethods)
+            m.invoke(testClassInst);
+    }
+
+    private static void runBeforeMethods(Class<?> testClass, String methodName,
+            Object testClassInst)
+            throws IllegalAccessException, InvocationTargetException {
+
+        /* stoping condition - Object.getClass().getSuperClass() return null */
+        if (testClass == null)
+            return;
+
+        /* activate first the base class methods */
+        runBeforeMethods(testClass.getSuperclass(), methodName, testClassInst);
+
+        /* get all the Class methods annotated with @OOPBefore */
+        ArrayList<Method> setupMethods = Arrays
               .stream(testClass.getMethods())
               .filter(m -> m.isAnnotationPresent(OOPBefore.class))
-              .filter(m -> Arrays.asList(m.getAnnotation(OOPBefore.class)
-                                          .value())
-                                          .contains(method.getName()))
               .collect(Collectors.toCollection(ArrayList::new));
-        for (Method m : beforeMethods)
-            m.invoke(testClassInstance);
 
-        /* run the current method */
-        method.invoke(testClassInstance);
+        for (Method m : setupMethods)
+            m.invoke(testClassInst);
+    }
 
-        /* run all the @OOPAfter methods */
-        ArrayList<Method> afterMethods = Arrays
+    private static void runAfterMethods(Class<?> testClass, String methodName,
+            Object testClassInst)
+            throws IllegalAccessException, InvocationTargetException {
+
+        /* stoping condition - Object.getClass().getSuperClass() return null */
+        if (testClass == null)
+            return;
+
+        /* get all the Class methods annotated with @OOPAfter */
+        ArrayList<Method> setupMethods = Arrays
               .stream(testClass.getMethods())
               .filter(m -> m.isAnnotationPresent(OOPAfter.class))
-              .filter(m -> Arrays.asList(m.getAnnotation(OOPAfter.class)
-                                          .value())
-                                          .contains(method.getName()))
               .collect(Collectors.toCollection(ArrayList::new));
-        for (Method m : afterMethods)
-            m.invoke(testClassInstance);
+
+        for (Method m : setupMethods)
+            m.invoke(testClassInst);
+
+        /* secondley, activate the base class methods */
+        runAfterMethods(testClass.getSuperclass(), methodName, testClassInst);
     }
+
+    private static OOPResult runSingleTestMethod(Method method,
+            Class<?> testClass, Object testClassInst) throws IllegalAccessException {
+
+        //FIXME: can we assume there is only a single OOPExpectedException
+        //field in the test class ?
+
+        /* get OOPExpectedException field.
+         * it may be private so we can't just access it - we need to locate it
+         * according to @OOPExceptionRule annotation */
+        OOPExpectedException expectedException = (OOPExpectedException)
+            Arrays.stream(testClass.getDeclaredFields())
+                  .filter(f -> f.isAnnotationPresent(OOPExceptionRule.class))
+                  .collect(Collectors.toCollection(ArrayList::new))
+                  .get(0)
+                  .get(testClassInst);
+
+
+        try {
+            method.invoke(testClassInst);
+        }
+
+        /* Exception --> Throwable --> Object */
+        catch (Exception e) {
+
+            /* SUCCESS */
+            if (expectedException.assertExpected(e))
+                return new OOPResultImpl(SUCCESS, null);
+
+            /* EXPECTED_EXCEPTION_MISMATCH */
+            else
+                return new OOPResultImpl(EXPECTED_EXCEPTION_MISMATCH, e.getMessage());
+        }
+
+        /* OOPAssertionFailure --> AssertionError --> Error --> Throwable --> Object */
+        catch (OOPAssertionFailure oaf) {
+
+            /* FAILURE */
+            return new OOPResultImpl(FAILURE, oaf.getMessage());
+        }
+
+        catch (Throwable t) {
+
+            /* ERROR */
+            return new OOPResultImpl(ERROR, t.getClass().getName());
+        }
+
+        /* SUCCESS */
+        return new OOPResultImpl(SUCCESS, null);
+}
+
+
+
+
 
     public static void assertEquals(Object expected, Object actual)
             throws OOPAssertionFailure {
@@ -53,7 +145,7 @@ public class OOPUnitCore {
             return;
         
         /* null check, if both are null previous condition would applied */
-        if (expected == null)
+        if (expected == null || actual == null)
             throw new OOPAssertionFailure();
 
         /* check type equality */
@@ -74,51 +166,59 @@ public class OOPUnitCore {
 
     public static OOPTestSummary runClass(Class<?> testClass)
             throws InstantiationException, IllegalAccessException,
-                              InvocationTargetException, IllegalArgumentException {
+                              InvocationTargetException, IllegalArgumentException,
+                              NoSuchMethodException {
 
         return runClass(testClass, "");
     }
 
     public static OOPTestSummary runClass(Class<?> testClass, String tag)
             throws InstantiationException, IllegalAccessException,
-                              InvocationTargetException, IllegalArgumentException {
+                   InvocationTargetException, IllegalArgumentException,
+                   NoSuchMethodException {
 
         /* check that the class isn't null */
         if (testClass == null)
             throw new IllegalArgumentException();
 
         /* check if OOPTestClass annotation is present */
-        if (testClass.isAnnotationPresent(OOPTestClass.class))
+        if (!testClass.isAnnotationPresent(OOPTestClass.class))
             throw new IllegalArgumentException();
         
-        //FIXME: the c'tor may be private - should we use:
-        //                  getMethod(OOPTestClass.name) -> activate ?
-        
         /* create an instance of input class.
-         * according to the PDF we can assume a default c'tor exist */
-        Object testClassInst = testClass.newInstance();
+         * according to the PDF we can assume a default c'tor exist.
+         * we will use  Constructor.newInstance() since the c'tor may be privae */
+        Object testClassInst = testClass.getConstructor().newInstance();
 
-        //FIXME: getMethods() get only the pulics, can we assume all the methods
-        //       are public ?
-        //FIXME: can we assume all the test methods receive 0 arguments?
-        
-        /* run all the methods with OOPSetup annotation including inherited */
-        ArrayList<Method> setupMethods = Arrays
-              .stream(testClass.getMethods())
-              .filter(m -> m.isAnnotationPresent(OOPSetup.class))
-              .collect(Collectors.toCollection(ArrayList::new));
-        for (Method m : setupMethods)
-            m.invoke(testClassInst);
+        /* run all the methods annotated with @OOPSetup */
+        runSetupMethods(testClass, testClassInst);
 
-        //FIXME: should it be ran in the @Test order (maybe use forEachOrdered method ?)
-
-        /* run all the test methods */
+        /* get all the @Test annotated methods with relevant tag */
         ArrayList<Method> methods = Arrays
               .stream(testClass.getMethods())
               .filter(m -> m.isAnnotationPresent(OOPTest.class))
               .filter(m -> m.getAnnotation(OOPTest.class).tag() == tag)
               .collect(Collectors.toCollection(ArrayList::new));
-        for (Method m : methods)
-            invokeInternal(testClass, testClassInst, m);
+
+        /* create a Map<String, OOPResult> to store test methods results */
+        Map<String, OOPResult> testMap = new HashMap<String, OOPResult>();
+
+        for (Method m : methods) {
+
+            /* activate all its @OOPBefore methods */
+            runBeforeMethods(testClass, m.getName(), testClassInst);
+
+            /* activate the method itself.
+             * according to the PDF we can assume that all the test methods
+             * receive no arguments and have void return type */
+            OOPResult methodRes = runSingleTestMethod(m, testClass, testClassInst);
+            testMap.put(m.getName(), methodRes);
+
+            /* activate all its @OOPAfter methods */
+            runAfterMethods(testClass, m.getName(), testClassInst);
+        }
+
+        return new OOPTestSummary(testMap);
     }
+
 }
