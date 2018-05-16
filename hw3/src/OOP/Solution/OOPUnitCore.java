@@ -3,6 +3,9 @@ package OOP.Solution;
 import OOP.Provided.OOPAssertionFailure;
 import OOP.Provided.OOPResult;
 import static OOP.Provided.OOPResult.OOPTestResult.*;
+import static OOP.Solution.OOPTestClass.OOPTestClassType.*;
+
+//FIXME: remove some imports?
 import OOP.Solution.OOPResultImpl;
 import OOP.Provided.OOPExpectedException;
 
@@ -193,12 +196,20 @@ public class OOPUnitCore {
         /* run all the methods annotated with @OOPSetup */
         runSetupMethods(testClass, testClassInst);
 
-        /* get all the @Test annotated methods with relevant tag */
+        /* get all the @OOPTest annotated methods with relevant tag */
         ArrayList<Method> methods = Arrays
               .stream(testClass.getMethods())
               .filter(m -> m.isAnnotationPresent(OOPTest.class))
               .filter(m -> m.getAnnotation(OOPTest.class).tag() == tag)
               .collect(Collectors.toCollection(ArrayList::new));
+
+        /* if @OOPTestClass.value=ORDERED then we sort methods by @OOPTest.order */
+        if (testClass.getAnnotation(OOPTestClass.class).value() == ORDERED) {
+            methods.stream()
+                   .sorted((m1, m2) -> (m2.getAnnotation(OOPTest.class)).order()
+                                     - (m1.getAnnotation(OOPTest.class).order()))
+                   .collect(Collectors.toCollection(ArrayList::new));
+        }
 
         /* create a Map<String, OOPResult> to store test methods results */
         Map<String, OOPResult> testMap = new HashMap<String, OOPResult>();
