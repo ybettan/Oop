@@ -102,7 +102,9 @@ public class OOPUnitCore {
                   .get(0)
                   .get(testClassInst);
 
-
+        /* return the result according to the PDF description.
+         * according to the PDF we can assume that all the test methods
+         * receive no arguments and have void return type */
         try {
             method.invoke(testClassInst);
         }
@@ -132,8 +134,14 @@ public class OOPUnitCore {
             return new OOPResultImpl(ERROR, t.getClass().getName());
         }
 
+        /* ERROR - according to FAQ */
+        if (expectedException.getExpectedException() != null)
+            return new OOPResultImpl(ERROR, expectedException
+                    .getExpectedException().getName());
+
         /* SUCCESS */
-        return new OOPResultImpl(SUCCESS, null);
+        else
+            return new OOPResultImpl(SUCCESS, null);
 }
 
 
@@ -219,9 +227,7 @@ public class OOPUnitCore {
             /* activate all its @OOPBefore methods */
             runBeforeMethods(testClass, m.getName(), testClassInst);
 
-            /* activate the method itself.
-             * according to the PDF we can assume that all the test methods
-             * receive no arguments and have void return type */
+            /* activate the method itself */
             OOPResult methodRes = runSingleTestMethod(m, testClass, testClassInst);
             testMap.put(m.getName(), methodRes);
 
@@ -233,3 +239,6 @@ public class OOPUnitCore {
     }
 
 }
+
+
+
