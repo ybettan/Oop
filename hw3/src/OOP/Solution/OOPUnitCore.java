@@ -24,6 +24,29 @@ import java.util.stream.*;
 public class OOPUnitCore {
 
 
+    private static Object backupInst(Object testClassInst)
+            throws NoSuchMethodException, IllegalAccessException,
+                              InvocationTargetException {
+
+        /* the object support clone() method */
+        if (testClassInst instanceof Cloneable) {
+
+            Method cloneMethod = testClassInst.getClass().getMethod("clone");
+            return cloneMethod.invoke(testClassInst);
+        }
+
+        /* the object has a copy c'tor */
+        try {
+            return testClassInst.getClass().getConstructor(testClassInst.getClass());
+        }
+
+        /* the object doesn't have a copy c'tor */
+        catch (Exception e) {/* do nothing */}
+
+        /* the object has neither a clone() method nor a copy c'tor */
+        return testClassInst;
+    }
+
     private static void runSetupMethods(Class<?> testClass, Object testClassInst)
             throws IllegalAccessException, InvocationTargetException {
 
@@ -44,53 +67,83 @@ public class OOPUnitCore {
             m.invoke(testClassInst);
     }
 
-    private static void runBeforeMethods(Class<?> testClass, String methodName,
+    //FIXME: can we make this method and runAfterMethods() generics?
+    private static boolean runBeforeMethods(Class<?> testClass, String methodName,
             Object testClassInst)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
         /* stoping condition - Object.getClass().getSuperClass() return null */
         if (testClass == null)
-            return;
+            return true;
 
         /* activate first the base class methods */
-        runBeforeMethods(testClass.getSuperclass(), methodName, testClassInst);
+        if (!runBeforeMethods(testClass.getSuperclass(), methodName, testClassInst))
+            return false;
 
         /* get all the Class methods annotated with @OOPBefore */
-        ArrayList<Method> setupMethods = Arrays
+        ArrayList<Method> beforeMethods = Arrays
               .stream(testClass.getMethods())
               .filter(m -> m.isAnnotationPresent(OOPBefore.class))
               .collect(Collectors.toCollection(ArrayList::new));
 
-        for (Method m : setupMethods)
-            m.invoke(testClassInst);
+        for (Method m : beforeMethods) {
+
+            /* backup the class instance object in case @OOPBefore method
+             * throws an exception */
+            Object testClassInstBackup = backupInst(testClassInst);
+
+            try {
+                m.invoke(testClassInst);
+            }
+
+            catch (Exception e) {
+                testClassInst = testClassInstBackup;
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    private static void runAfterMethods(Class<?> testClass, String methodName,
+    private static boolean runAfterMethods(Class<?> testClass, String methodName,
             Object testClassInst)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
         /* stoping condition - Object.getClass().getSuperClass() return null */
         if (testClass == null)
-            return;
+            return true;
 
         /* get all the Class methods annotated with @OOPAfter */
-        ArrayList<Method> setupMethods = Arrays
+        ArrayList<Method> afterMethods = Arrays
               .stream(testClass.getMethods())
               .filter(m -> m.isAnnotationPresent(OOPAfter.class))
               .collect(Collectors.toCollection(ArrayList::new));
 
-        for (Method m : setupMethods)
-            m.invoke(testClassInst);
+        for (Method m : afterMethods) {
+
+            /* backup the class instance object in case @OOPBefore method
+             * throws an exception */
+            Object testClassInstBackup = backupInst(testClassInst);
+
+            try {
+                m.invoke(testClassInst);
+            }
+
+            catch (Exception e) {
+                testClassInst = testClassInstBackup;
+                return false;
+            }
+        }
 
         /* secondley, activate the base class methods */
-        runAfterMethods(testClass.getSuperclass(), methodName, testClassInst);
+        if (!runAfterMethods(testClass.getSuperclass(), methodName, testClassInst))
+            return false;
+
+        return true;
     }
 
     private static OOPResult runSingleTestMethod(Method method,
             Class<?> testClass, Object testClassInst) throws IllegalAccessException {
-
-        //FIXME: can we assume there is only a single OOPExpectedException
-        //field in the test class ?
 
         /* get OOPExpectedException field.
          * it may be private so we can't just access it - we need to locate it
@@ -101,6 +154,11 @@ public class OOPUnitCore {
                   .collect(Collectors.toCollection(ArrayList::new))
                   .get(0)
                   .get(testClassInst);
+
+        /* if no field marked with @OOPExceptionRule exist then we don't expect
+         * any exception */
+        if (expectedException == null)
+            expectedException = OOPExpectedException.none();
 
         /* return the result according to the PDF description.
          * according to the PDF we can assume that all the test methods
@@ -224,8 +282,11 @@ public class OOPUnitCore {
 
         for (Method m : methods) {
 
-            /* activate all its @OOPBefore methods */
-            runBeforeMethods(testClass, m.getName(), testClassInst);
+            /* activate all its @OOPBefore methods.
+             * if a @OOPBefore method throws an exception then continue to
+             * the next test */
+            if (!runBeforeMethods(testClass, m.getName(), testClassInst))
+                continue;
 
             /* activate the method itself */
             OOPResult methodRes = runSingleTestMethod(m, testClass, testClassInst);
