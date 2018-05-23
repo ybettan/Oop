@@ -5,12 +5,8 @@ import OOP.Provided.OOPResult;
 import static OOP.Provided.OOPResult.OOPTestResult.*;
 import static OOP.Solution.OOPTestClass.OOPTestClassType.*;
 
-//FIXME: remove some imports?
-import OOP.Solution.OOPResultImpl;
 import OOP.Provided.OOPExpectedException;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,6 +20,8 @@ import java.util.stream.*;
 public class OOPUnitCore {
 
 
+    //FIXME: backup the object fields and not the object itself - will need 
+    //a recover methods also */
     private static Object backupInst(Object testClassInst)
             throws NoSuchMethodException, IllegalAccessException,
                               InvocationTargetException {
@@ -50,7 +48,7 @@ public class OOPUnitCore {
     private static void runSetupMethods(Class<?> testClass, Object testClassInst)
             throws IllegalAccessException, InvocationTargetException {
 
-        /* stoping condition - Object.getClass().getSuperClass() return null */
+        /* stopping condition - Object.getClass().getSuperClass() return null */
         if (testClass == null)
             return;
 
@@ -67,26 +65,35 @@ public class OOPUnitCore {
             m.invoke(testClassInst);
     }
 
-    //FIXME: can we make this method and runAfterMethods() generics?
-    private static boolean runBeforeMethods(Class<?> testClass, String methodName,
-            Object testClassInst)
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    private static boolean runBeforeAfterMethods(Class<?> testClass,
+            String methodName, Object testClassInst, String annotationName)
+            throws IllegalAccessException, InvocationTargetException,
+                              NoSuchMethodException {
 
-        /* stoping condition - Object.getClass().getSuperClass() return null */
+        /* stopping condition - Object.getClass().getSuperClass() return null */
         if (testClass == null)
             return true;
 
         /* activate first the base class methods */
-        if (!runBeforeMethods(testClass.getSuperclass(), methodName, testClassInst))
+        if (!runBeforeAfterMethods(testClass.getSuperclass(), methodName,
+                    testClassInst, annotationName))
             return false;
+        
+        /* get all the Class methods annotated with @OOPBefore and relevant
+         * to our current method */
+        ArrayList<Method> beforeAfterMethods =
+                    Arrays
+                    .stream(testClass.getMethods())
+                    .filter(m -> m.isAnnotationPresent(OOPBefore.class))
+                    .filter(annotationName.equals("OOPBefore") ?
+                               m -> Arrays.asList(m.getAnnotation(OOPBefore.class)
+                                   .value()).contains(methodName) :
+                               m -> Arrays.asList(m.getAnnotation(OOPAfter.class)
+                                   .value()).contains(methodName)
+                            )
+                    .collect(Collectors.toCollection(ArrayList::new));
 
-        /* get all the Class methods annotated with @OOPBefore */
-        ArrayList<Method> beforeMethods = Arrays
-              .stream(testClass.getMethods())
-              .filter(m -> m.isAnnotationPresent(OOPBefore.class))
-              .collect(Collectors.toCollection(ArrayList::new));
-
-        for (Method m : beforeMethods) {
+        for (Method m : beforeAfterMethods) {
 
             /* backup the class instance object in case @OOPBefore method
              * throws an exception */
@@ -101,43 +108,6 @@ public class OOPUnitCore {
                 return false;
             }
         }
-
-        return true;
-    }
-
-    private static boolean runAfterMethods(Class<?> testClass, String methodName,
-            Object testClassInst)
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-
-        /* stoping condition - Object.getClass().getSuperClass() return null */
-        if (testClass == null)
-            return true;
-
-        /* get all the Class methods annotated with @OOPAfter */
-        ArrayList<Method> afterMethods = Arrays
-              .stream(testClass.getMethods())
-              .filter(m -> m.isAnnotationPresent(OOPAfter.class))
-              .collect(Collectors.toCollection(ArrayList::new));
-
-        for (Method m : afterMethods) {
-
-            /* backup the class instance object in case @OOPBefore method
-             * throws an exception */
-            Object testClassInstBackup = backupInst(testClassInst);
-
-            try {
-                m.invoke(testClassInst);
-            }
-
-            catch (Exception e) {
-                testClassInst = testClassInstBackup;
-                return false;
-            }
-        }
-
-        /* secondley, activate the base class methods */
-        if (!runAfterMethods(testClass.getSuperclass(), methodName, testClassInst))
-            return false;
 
         return true;
     }
@@ -266,15 +236,16 @@ public class OOPUnitCore {
         ArrayList<Method> methods = Arrays
               .stream(testClass.getMethods())
               .filter(m -> m.isAnnotationPresent(OOPTest.class))
-              .filter(m -> m.getAnnotation(OOPTest.class).tag() == tag)
+              .filter(m -> m.getAnnotation(OOPTest.class).tag().equals(tag))
               .collect(Collectors.toCollection(ArrayList::new));
 
         /* if @OOPTestClass.value=ORDERED then we sort methods by @OOPTest.order */
         if (testClass.getAnnotation(OOPTestClass.class).value() == ORDERED) {
-            methods.stream()
-                   .sorted((m1, m2) -> (m2.getAnnotation(OOPTest.class)).order()
-                                     - (m1.getAnnotation(OOPTest.class).order()))
-                   .collect(Collectors.toCollection(ArrayList::new));
+            methods = methods
+                     .stream()
+                     .sorted((m1, m2) -> (m2.getAnnotation(OOPTest.class)).order()
+                            -(m1.getAnnotation(OOPTest.class).order()))
+                     .collect(Collectors.toCollection(ArrayList::new));
         }
 
         /* create a Map<String, OOPResult> to store test methods results */
@@ -285,7 +256,7 @@ public class OOPUnitCore {
             /* activate all its @OOPBefore methods.
              * if a @OOPBefore method throws an exception then continue to
              * the next test */
-            if (!runBeforeMethods(testClass, m.getName(), testClassInst))
+            if (!runBeforeAfterMethods(testClass, m.getName(), testClassInst, "OOPBefore"))
                 continue;
 
             /* activate the method itself */
@@ -293,7 +264,7 @@ public class OOPUnitCore {
             testMap.put(m.getName(), methodRes);
 
             /* activate all its @OOPAfter methods */
-            runAfterMethods(testClass, m.getName(), testClassInst);
+            runBeforeAfterMethods(testClass, m.getName(), testClassInst, "OOPAfter");
         }
 
         return new OOPTestSummary(testMap);
