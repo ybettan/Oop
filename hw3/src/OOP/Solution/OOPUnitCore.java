@@ -9,7 +9,6 @@ import OOP.Provided.OOPExpectedException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -21,54 +20,88 @@ import java.util.stream.*;
 public class OOPUnitCore {
 
 
-    private static Object backupInst(Object obj)
-            throws NoSuchMethodException, IllegalAccessException,
-                              InvocationTargetException, InstantiationException,
-                              NoSuchFieldException {
+    private static Object backupInst(Object obj) {
 
         /* create the backup */
-        Object objBackup = obj.getClass().getConstructor().newInstance();
+        Object objBackup = null;
 
-        /* create a backup for each field */
-        for (Field f : obj.getClass().getDeclaredFields()) {
+        try {
+            /* STAFF ASSUMPTION: we can assume a default c'tor exist. */
+            objBackup = obj.getClass().getConstructor().newInstance();
 
-            /* the field support clone() method */
-            if (f.get(obj) instanceof Cloneable) {
+            /* create a backup for each field */
+            for (Field f : obj.getClass().getDeclaredFields()) {
 
-                Method cloneMethod = obj.getClass().getMethod("clone");
-                objBackup.getClass().getDeclaredField(f.getName())
-                    .set(objBackup, cloneMethod.invoke(f.get(obj)));
+                /* make the field accessible in case it isn't
+                 * MY ASSUMPTION: the field must exist since it was instanciated
+                 * from obj itself */
+                f.setAccessible(true);
+
+                /* MY ASSUMPTION: IllegalAccessException won't be thrown because
+                 * we used setAccessible(true) */
+                Object objFieldVal = f.get(obj);
+
+                /* the field support clone() method */
+                if (objFieldVal instanceof Cloneable) {
+
+                    /* MY ASSUMPTION: NoSuchMethodException won't be thrown since
+                     * we used setAccessible(true) */
+                    Method cloneMethod = obj.getClass().getMethod("clone");
+
+                    /* MY ASSUMPTION: IllegalAccessException won't be thrown
+                     * because we used setAccessible(true) */
+                    f.set(objBackup, cloneMethod.invoke(objFieldVal));
+                }
+
+                /* the object has a copy c'tor */
+                try {
+                    Constructor<?> copyCtor = obj.getClass()
+                        .getConstructor(obj.getClass());
+
+                    /* MY ASSUMPTION: InstantiationException won't be thrown
+                     * since obj class isn't abstract */
+                    f.set(objBackup, copyCtor.newInstance(objFieldVal));
+                }
+
+                /* the object doesn't have a copy c'tor */
+                catch (NoSuchMethodException e) {/* do nothing */}
+
+                /* the object has neither a clone() method nor a copy c'tor.
+                 * MY ASSUMPTION: IllegalAccessException won't be thrown because
+                 * we used setAccessible(true) */
+                f.set(objBackup, objFieldVal);
             }
-
-            /* the object has a copy c'tor */
-            try {
-                Constructor<?> copyCtor = obj.getClass()
-                    .getConstructor(obj.getClass());
-                objBackup.getClass().getDeclaredField(f.getName())
-                    .set(objBackup, copyCtor.newInstance(f.get(obj)));
-            }
-
-            /* the object doesn't have a copy c'tor */
-            catch (NoSuchMethodException e) {/* do nothing */}
-
-            /* the object has neither a clone() method nor a copy c'tor */
-            objBackup.getClass().getDeclaredField(f.getName()).set(objBackup,
-                    f.get(obj));
+        }
+        catch (Exception e) {
+            System.err.println("unpossible exception was thrown at line " +
+                    new Exception().getStackTrace()[0].getLineNumber());
         }
 
         return objBackup;
     }
 
-    private static void recoverInst(Object obj, Object objBackup)
-            throws NoSuchFieldException, IllegalAccessException {
+    private static void recoverInst(Object obj, Object objBackup) {
 
         /* recover field by field */
-        for (Field f : objBackup.getClass().getDeclaredFields())
-            obj.getClass().getDeclaredField(f.getName()).set(obj, f.get(objBackup));
+        for (Field f : objBackup.getClass().getDeclaredFields()) {
+
+
+            /* make the fields accessible in case they aren't */
+            f.setAccessible(true);
+
+            /* MY ASSUMPTION: IllegalAccessException won't be thrown because
+             * we used setAccessible(true) */
+            try {
+                f.set(obj, f.get(objBackup));
+            }
+            catch (IllegalAccessException e) {
+                System.err.println("unpossible exception was thrown at line " +
+                        new Exception().getStackTrace()[0].getLineNumber());
+            }
+        }
     }
 
-    private static void runSetupMethods(Class<?> testClass, Object testClassInst)
-            throws IllegalAccessException, InvocationTargetException {
+    private static void runSetupMethods(Class<?> testClass, Object testClassInst) {
 
         /* stopping condition - Object.getClass().getSuperClass() return null */
         if (testClass == null)
@@ -83,15 +116,22 @@ public class OOPUnitCore {
               .filter(m -> m.isAnnotationPresent(OOPSetup.class))
               .collect(Collectors.toCollection(ArrayList::new));
 
-        for (Method m : setupMethods)
-            m.invoke(testClassInst);
+        for (Method m : setupMethods) {
+
+            /* STAFF ASSUMPTION: we can assume @OOPSetup methods won't throw
+             * any exception */
+            try {
+                m.invoke(testClassInst);
+            }
+            catch (Exception e) {
+                System.err.println("unpossible exception was thrown at line " +
+                        new Exception().getStackTrace()[0].getLineNumber());
+            }
+        }
     }
 
     private static boolean runBeforeAfterMethods(Class<?> testClass,
-            String methodName, Object testClassInst, String annotationName)
-            throws IllegalAccessException, InvocationTargetException,
-                              NoSuchMethodException, InstantiationException,
-                              NoSuchFieldException {
+            String methodName, Object testClassInst, String annotationName) {
 
         /* stopping condition - Object.getClass().getSuperClass() return null */
         if (testClass == null)
@@ -101,7 +141,7 @@ public class OOPUnitCore {
         if (!runBeforeAfterMethods(testClass.getSuperclass(), methodName,
                     testClassInst, annotationName))
             return false;
-        
+
         /* get all the Class methods annotated with @OOPBefore and relevant
          * to our current method */
         ArrayList<Method> beforeAfterMethods =
@@ -135,28 +175,39 @@ public class OOPUnitCore {
         return true;
     }
 
-    private static OOPResult runSingleTestMethod(Method method,
-            Class<?> testClass, Object testClassInst)
-            throws IllegalAccessException {
+    private static OOPResult runSingleTestMethod(Method method, Object testClassInst) {
 
         /* get OOPExpectedException field.
          * it may be private so we can't just access it - we need to locate it
-         * according to @OOPExceptionRule annotation */
-        OOPExpectedException expectedException = (OOPExpectedException)
-            Arrays.stream(testClass.getDeclaredFields())
-                  .filter(f -> f.isAnnotationPresent(OOPExceptionRule.class))
-                  .collect(Collectors.toCollection(ArrayList::new))
-                  .get(0)
-                  .get(testClassInst);
-
-        /* if no field marked with @OOPExceptionRule exist then we don't expect
+         * according to @OOPExceptionRule annotation
+         * if no field marked with @OOPExceptionRule exist then we don't expect
          * any exception */
-        if (expectedException == null)
+        OOPExpectedException expectedException = null;
+        ArrayList<Field> expectedExceptionsArr =
+                Arrays.stream(testClassInst.getClass().getDeclaredFields())
+                      .filter(f -> f.isAnnotationPresent(OOPExceptionRule.class))
+                      .collect(Collectors.toCollection(ArrayList::new));
+        if (expectedExceptionsArr.size() == 0)
             expectedException = OOPExpectedException.none();
+        else {
+            Field expectedExceptionField = expectedExceptionsArr.get(0);
+            expectedExceptionField.setAccessible(true);
 
-        /* return the result according to the PDF description.
-         * according to the PDF we can assume that all the test methods
-         * receive no arguments and have void return type */
+            /* MY ASSUMPTION: IllegalAccessException won't be thrown because
+             * we used setAccessible(true) */
+            try {
+                expectedException = (OOPExpectedException)
+                    expectedExceptionField.get(testClassInst);
+            }
+            catch (IllegalAccessException e) {
+                System.err.println("unpossible exception was thrown at line " +
+                        new Exception().getStackTrace()[0].getLineNumber());
+            }
+        }
+
+        /* return the result.
+         * STAFF ASSUMPTION we can assume that all the test methods receive no
+         * arguments and have void return type */
         try {
             method.invoke(testClassInst);
         }
@@ -164,6 +215,8 @@ public class OOPUnitCore {
         /* Exception --> Throwable --> Object */
         catch (Exception e) {
 
+            //FIXME: remove
+            System.out.println(method.getName());
             /* SUCCESS */
             if (expectedException.assertExpected(e))
                 return new OOPResultImpl(SUCCESS, null);
@@ -228,17 +281,13 @@ public class OOPUnitCore {
     }
 
     public static OOPTestSummary runClass(Class<?> testClass)
-            throws InstantiationException, IllegalAccessException,
-                              InvocationTargetException, IllegalArgumentException,
-                              NoSuchMethodException, NoSuchFieldException {
+            throws IllegalArgumentException {
 
         return runClass(testClass, "");
     }
 
     public static OOPTestSummary runClass(Class<?> testClass, String tag)
-            throws InstantiationException, IllegalAccessException,
-                   InvocationTargetException, IllegalArgumentException,
-                   NoSuchMethodException, NoSuchFieldException {
+            throws IllegalArgumentException {
 
         /* check that the class isn't null */
         if (testClass == null)
@@ -249,9 +298,16 @@ public class OOPUnitCore {
             throw new IllegalArgumentException();
         
         /* create an instance of input class.
-         * according to the PDF we can assume a default c'tor exist.
-         * we will use  Constructor.newInstance() since the c'tor may be privae */
-        Object testClassInst = testClass.getConstructor().newInstance();
+         * we will use  Constructor.newInstance() since the c'tor may be privae 
+         * STAFF ASSUMPTION: we can assume a default c'tor exist. */
+        Object testClassInst = null;
+        try {
+            testClassInst = testClass.getConstructor().newInstance();
+        }
+        catch (Exception e) {
+            System.err.println("unpossible exception was thrown at line " +
+                    new Exception().getStackTrace()[0].getLineNumber());
+        }
 
         /* run all the methods annotated with @OOPSetup */
         runSetupMethods(testClass, testClassInst);
@@ -284,7 +340,7 @@ public class OOPUnitCore {
                 continue;
 
             /* activate the method itself */
-            OOPResult methodRes = runSingleTestMethod(m, testClass, testClassInst);
+            OOPResult methodRes = runSingleTestMethod(m, testClassInst);
             testMap.put(m.getName(), methodRes);
 
             /* activate all its @OOPAfter methods */
@@ -293,7 +349,6 @@ public class OOPUnitCore {
 
         return new OOPTestSummary(testMap);
     }
-
 }
 
 
