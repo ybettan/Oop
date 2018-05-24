@@ -7,6 +7,7 @@ import static OOP.Solution.OOPTestClass.OOPTestClassType.*;
 
 import OOP.Provided.OOPExpectedException;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,29 +21,50 @@ import java.util.stream.*;
 public class OOPUnitCore {
 
 
-    //FIXME: backup the object fields and not the object itself - will need 
-    //a recover methods also */
-    private static Object backupInst(Object testClassInst)
+    private static Object backupInst(Object obj)
             throws NoSuchMethodException, IllegalAccessException,
-                              InvocationTargetException {
+                              InvocationTargetException, InstantiationException,
+                              NoSuchFieldException {
 
-        /* the object support clone() method */
-        if (testClassInst instanceof Cloneable) {
+        /* create the backup */
+        Object objBackup = obj.getClass().getConstructor().newInstance();
 
-            Method cloneMethod = testClassInst.getClass().getMethod("clone");
-            return cloneMethod.invoke(testClassInst);
+        /* create a backup for each field */
+        for (Field f : obj.getClass().getDeclaredFields()) {
+
+            /* the field support clone() method */
+            if (f.get(obj) instanceof Cloneable) {
+
+                Method cloneMethod = obj.getClass().getMethod("clone");
+                objBackup.getClass().getDeclaredField(f.getName())
+                    .set(objBackup, cloneMethod.invoke(f.get(obj)));
+            }
+
+            /* the object has a copy c'tor */
+            try {
+                Constructor<?> copyCtor = obj.getClass()
+                    .getConstructor(obj.getClass());
+                objBackup.getClass().getDeclaredField(f.getName())
+                    .set(objBackup, copyCtor.newInstance(f.get(obj)));
+            }
+
+            /* the object doesn't have a copy c'tor */
+            catch (NoSuchMethodException e) {/* do nothing */}
+
+            /* the object has neither a clone() method nor a copy c'tor */
+            objBackup.getClass().getDeclaredField(f.getName()).set(objBackup,
+                    f.get(obj));
         }
 
-        /* the object has a copy c'tor */
-        try {
-            return testClassInst.getClass().getConstructor(testClassInst.getClass());
-        }
+        return objBackup;
+    }
 
-        /* the object doesn't have a copy c'tor */
-        catch (Exception e) {/* do nothing */}
+    private static void recoverInst(Object obj, Object objBackup)
+            throws NoSuchFieldException, IllegalAccessException {
 
-        /* the object has neither a clone() method nor a copy c'tor */
-        return testClassInst;
+        /* recover field by field */
+        for (Field f : objBackup.getClass().getDeclaredFields())
+            obj.getClass().getDeclaredField(f.getName()).set(obj, f.get(objBackup));
     }
 
     private static void runSetupMethods(Class<?> testClass, Object testClassInst)
@@ -68,7 +90,8 @@ public class OOPUnitCore {
     private static boolean runBeforeAfterMethods(Class<?> testClass,
             String methodName, Object testClassInst, String annotationName)
             throws IllegalAccessException, InvocationTargetException,
-                              NoSuchMethodException {
+                              NoSuchMethodException, InstantiationException,
+                              NoSuchFieldException {
 
         /* stopping condition - Object.getClass().getSuperClass() return null */
         if (testClass == null)
@@ -104,7 +127,7 @@ public class OOPUnitCore {
             }
 
             catch (Exception e) {
-                testClassInst = testClassInstBackup;
+                recoverInst(testClassInst, testClassInstBackup);
                 return false;
             }
         }
@@ -113,7 +136,8 @@ public class OOPUnitCore {
     }
 
     private static OOPResult runSingleTestMethod(Method method,
-            Class<?> testClass, Object testClassInst) throws IllegalAccessException {
+            Class<?> testClass, Object testClassInst)
+            throws IllegalAccessException {
 
         /* get OOPExpectedException field.
          * it may be private so we can't just access it - we need to locate it
@@ -206,7 +230,7 @@ public class OOPUnitCore {
     public static OOPTestSummary runClass(Class<?> testClass)
             throws InstantiationException, IllegalAccessException,
                               InvocationTargetException, IllegalArgumentException,
-                              NoSuchMethodException {
+                              NoSuchMethodException, NoSuchFieldException {
 
         return runClass(testClass, "");
     }
@@ -214,7 +238,7 @@ public class OOPUnitCore {
     public static OOPTestSummary runClass(Class<?> testClass, String tag)
             throws InstantiationException, IllegalAccessException,
                    InvocationTargetException, IllegalArgumentException,
-                   NoSuchMethodException {
+                   NoSuchMethodException, NoSuchFieldException {
 
         /* check that the class isn't null */
         if (testClass == null)
