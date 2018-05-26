@@ -9,6 +9,7 @@ import OOP.Provided.OOPExpectedException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -212,11 +213,14 @@ public class OOPUnitCore {
             method.invoke(testClassInst);
         }
 
-        /* Exception --> Throwable --> Object */
-        catch (Exception e) {
+        /* InvocationTargetException --> ReflectiveOperationException -->
+         * Exception --> Throwable --> Object.
+         * this exception mean the target method has thrown an exception */
+        catch (InvocationTargetException ie) {
 
-            //FIXME: remove
-            System.out.println(method.getName());
+            /* get the original exception thrown by the target method */
+            Exception e = (Exception) ie.getTargetException();
+
             /* SUCCESS */
             if (expectedException.assertExpected(e))
                 return new OOPResultImpl(SUCCESS, null);
@@ -247,33 +251,83 @@ public class OOPUnitCore {
         /* SUCCESS */
         else
             return new OOPResultImpl(SUCCESS, null);
-}
+    }
 
+    private static boolean overridedsMethod(Object o, Method m) {
 
+        if (m.getDeclaringClass() == o.getClass())
+            return true;
 
+        return false;
+    }
 
-
-    public static void assertEquals(Object expected, Object actual)
+    private static void assertEqualsAux(Object o1, Object o2, Class<?> c)
             throws OOPAssertionFailure {
 
-        /* self check */
-        if (expected == actual)
+        /* if we reached Object superClass then return */
+        if (c == null)
             return;
-        
-        /* null check, if both are null previous condition would applied */
-        if (expected == null || actual == null)
+
+        /* if both object are null then they are equal */
+        if (o1 == null && o2 == null)
+            return;
+
+        /* else if only one of the is null they are different */
+        if (o1 == null || o2 == null)
             throw new OOPAssertionFailure();
 
-        /* check type equality */
-        if (expected.getClass() != actual.getClass())
-            throw new OOPAssertionFailure();
-
-        /* they have the same structure, recursively check all the fields */
-        Field[] expectedFields = expected.getClass().getFields();
-        Field[] actualFields = actual.getClass().getFields();
-        for (int i=0 ; i<expectedFields.length ; i++) {
-            OOPUnitCore.assertEquals(expectedFields[i], actualFields[i]);
+        /* get the equal method.
+         * MY ASSUMPTION: NoSuchMethodException can't be thrown since
+         * Object implements it */
+        Method equalsMethod = null;
+        try {
+            equalsMethod = o1.getClass().getMethod("equals", Object.class);
         }
+        catch (Exception e) {}
+
+        /* if the objects override equals() then use it */
+        if (overridedsMethod(o1, equalsMethod)) {
+            if (!o1.equals(o2))
+                throw new OOPAssertionFailure();
+            return;
+        }
+
+        /* check field by field */
+        for (Field f : c.getDeclaredFields()) {
+
+            f.setAccessible(true);
+
+            /* get the fields values */
+            Object fieldValObj1 = null;
+            Object fieldValObj2 = null;
+            try {
+
+                /* MY ASSUMPTION: IllegalAccessException can't be thrown since we
+                 * used setAccessible(true) */
+                fieldValObj1 = f.get(o1);
+                fieldValObj2 = f.get(o2);
+            }
+            catch (Exception e) {}
+
+            /* check fields recursivelly */
+            assertEqualsAux(fieldValObj1, fieldValObj2, fieldValObj1.getClass());
+        }
+
+        assertEqualsAux(o1, o2, c.getSuperclass());
+    }
+
+
+
+
+
+
+
+
+
+
+    public static void assertEquals(Object o1, Object o2) throws OOPAssertionFailure {
+
+        assertEqualsAux(o1, o2, o1.getClass());
     }
 
     public static void fail() throws OOPAssertionFailure {
