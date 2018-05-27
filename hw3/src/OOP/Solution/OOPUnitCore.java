@@ -40,7 +40,7 @@ public class OOPUnitCore {
                  * we used setAccessible(true) */
                 Object objFieldVal = f.get(obj);
 
-                /* the field support clone() method */
+                /* the field object support clone() method */
                 if (objFieldVal instanceof Cloneable) {
 
                     /* MY ASSUMPTION: NoSuchMethodException won't be thrown since
@@ -50,19 +50,25 @@ public class OOPUnitCore {
                     /* MY ASSUMPTION: IllegalAccessException won't be thrown
                      * because we used setAccessible(true) */
                     f.set(objBackup, cloneMethod.invoke(objFieldVal));
+
+                    /* continue to next field */
+                    continue;
                 }
 
-                /* the object has a copy c'tor */
+                /* the field object has a copy c'tor */
                 try {
-                    Constructor<?> copyCtor = obj.getClass()
-                        .getConstructor(obj.getClass());
+                    Constructor<?> copyCtor = objFieldVal.getClass()
+                        .getConstructor(objFieldVal.getClass());
 
                     /* MY ASSUMPTION: InstantiationException won't be thrown
                      * since obj class isn't abstract */
                     f.set(objBackup, copyCtor.newInstance(objFieldVal));
+
+                    /* continue to next field */
+                    continue;
                 }
 
-                /* the object doesn't have a copy c'tor */
+                /* the field object doesn't have a copy c'tor */
                 catch (NoSuchMethodException e) {/* do nothing */}
 
                 /* the object has neither a clone() method nor a copy c'tor.
@@ -266,16 +272,31 @@ public class OOPUnitCore {
 
     /* by order of @OOPTest(order=n) */
     public static Vector<Method> getOrderedTestMethods(Class<?> c,
-            String tagName) {
+            String tagName, boolean useTag) {
 
-        Vector<Method> orderedMethods =
-               getAllMethods(c)
-              .stream()
-              .filter(m -> m.isAnnotationPresent(OOPTest.class))
-              .filter(m -> m.getAnnotation(OOPTest.class).tag().equals(tagName))
-              .sorted((m1, m2) -> m1.getAnnotation(OOPTest.class).order()
-                                - m2.getAnnotation(OOPTest.class).order())
-              .collect(Collectors.toCollection(Vector::new));
+        Vector<Method> orderedMethods = null;
+
+        if (useTag) {
+
+            orderedMethods =
+                   getAllMethods(c)
+                  .stream()
+                  .filter(m -> m.isAnnotationPresent(OOPTest.class))
+                  .filter(m -> m.getAnnotation(OOPTest.class).tag().equals(tagName))
+                  .sorted((m1, m2) -> m1.getAnnotation(OOPTest.class).order()
+                                    - m2.getAnnotation(OOPTest.class).order())
+                  .collect(Collectors.toCollection(Vector::new));
+        }
+        else {
+
+            orderedMethods =
+                   getAllMethods(c)
+                  .stream()
+                  .filter(m -> m.isAnnotationPresent(OOPTest.class))
+                  .sorted((m1, m2) -> m1.getAnnotation(OOPTest.class).order()
+                                    - m2.getAnnotation(OOPTest.class).order())
+                  .collect(Collectors.toCollection(Vector::new));
+        }
 
         return orderedMethods;
     }
@@ -304,7 +325,7 @@ public class OOPUnitCore {
     }
 
     public static boolean runBeforeAfterMethods(Object testClassInst,
-            String methodName, String afterOrBefore) {
+            String methodName, String afterOrBefore, String thrownClassName) {
 
         Vector<Method> orderedMethods;
         
@@ -321,12 +342,31 @@ public class OOPUnitCore {
              * throws an exception */
             Object testClassInstBackup = backupInst(testClassInst);
 
+            /* make m accessible in case it is private */
+            m.setAccessible(true);
+
             try {
                 m.invoke(testClassInst);
             }
 
-            catch (Exception e) {
+            /* MY ASSUMPTION: IllegalAccessException can't be thrown since we used
+             * setAccessibel(true) */
+            catch (IllegalAccessException iae) {
+                System.err.println("unpossible exception was thrown at line " +
+                        new Exception().getStackTrace()[0].getLineNumber());
+            }
+
+            catch (InvocationTargetException ie) {
+
+                /* get the original exception thrown by the target method */
+                Throwable t = ie.getTargetException();
+
+                /* recover the object */
                 recoverInst(testClassInst, testClassInstBackup);
+
+                /* get the trowable's class name */
+                thrownClassName = thrownClassName.concat(t.getClass().getName());
+
                 return false;
             }
         }
@@ -335,15 +375,17 @@ public class OOPUnitCore {
     }
 
     public static boolean runBeforeMethods(Object testClassInst,
-            String methodName) {
+            String methodName, String thrownClassName) {
         
-        return runBeforeAfterMethods(testClassInst, methodName, "before");
+        return runBeforeAfterMethods(testClassInst, methodName, "before",
+                thrownClassName);
     }
 
     public static boolean runAfterMethods(Object testClassInst,
-            String methodName) {
+            String methodName, String thrownClassName) {
         
-        return runBeforeAfterMethods(testClassInst, methodName, "after");
+        return runBeforeAfterMethods(testClassInst, methodName, "after",
+                thrownClassName);
     }
 
     public static OOPResult runSingleTestMethod(Method method,
@@ -403,7 +445,8 @@ public class OOPUnitCore {
         expectedException = getExpectedException(testClassInst);
 
         /* ERROR - according to FAQ */
-        if (expectedException.getExpectedException() != null)
+        if (expectedException != null &&
+                expectedException.getExpectedException() != null)
             return new OOPResultImpl(ERROR, expectedException
                     .getExpectedException().getName());
 
@@ -480,37 +523,12 @@ public class OOPUnitCore {
         assertEqualsAux(o1, o2, c.getSuperclass());
     }
 
-
-
-
-
-
-
-
-
 //-----------------------------------------------------------------------------
-//                                 PUBLIC
+//                          PRIVATE - runClassAux 
 //-----------------------------------------------------------------------------
 
-    public static void assertEquals(Object o1, Object o2)
-            throws OOPAssertionFailure {
-
-        assertEqualsAux(o1, o2, o1.getClass());
-    }
-
-    public static void fail() throws OOPAssertionFailure {
-        throw new OOPAssertionFailure();
-    }
-
-    public static OOPTestSummary runClass(Class<?> testClass)
-            throws IllegalArgumentException {
-
-        return runClass(testClass, "");
-    }
-
-    //FIXME: remove all the catch printing errors
-    public static OOPTestSummary runClass(Class<?> testClass, String tag)
-            throws IllegalArgumentException {
+    public static OOPTestSummary runClassAux(Class<?> testClass, String tag,
+            boolean useTag) throws IllegalArgumentException {
 
         /* check that the class isn't null */
         if (testClass == null)
@@ -537,28 +555,78 @@ public class OOPUnitCore {
         runSetupMethods(testClassInst);
 
         /* we will always run it in ORDER since we chose the order for UNORDERED */
-        Vector<Method> testMethods = getOrderedTestMethods(testClass, tag);
+        Vector<Method> testMethods = getOrderedTestMethods(testClass, tag, useTag);
 
         /* create a Map<String, OOPResult> to store test methods results */
         Map<String, OOPResult> testMap = new HashMap<String, OOPResult>();
 
         for (Method m : testMethods) {
 
+            String throwableName = new String();
+            OOPResult methodRes = null;
+
             /* activate all its @OOPBefore methods.
              * if a @OOPBefore method throws an exception then continue to
              * the next test */
-            if (!runBeforeMethods(testClassInst, m.getName()))
+            if (!runBeforeMethods(testClassInst, m.getName(), throwableName)) {
+
+                /* in this case the result is ERROR with the throwable class name */
+                methodRes = new OOPResultImpl(ERROR, throwableName);
+                testMap.put(m.getName(), methodRes);
+
+                /* continue to next test method */
                 continue;
+            }
 
             /* activate the method itself */
-            OOPResult methodRes = runSingleTestMethod(m, testClassInst);
+            methodRes = runSingleTestMethod(m, testClassInst);
             testMap.put(m.getName(), methodRes);
 
             /* activate all its @OOPAfter methods */
-            runAfterMethods(testClassInst, m.getName());
+            if (!runAfterMethods(testClassInst, m.getName(), throwableName)) {
+
+                /* in this case the result is ERROR with the throwable class name */
+                methodRes = new OOPResultImpl(ERROR, throwableName);
+                testMap.put(m.getName(), methodRes);
+            }
         }
 
         return new OOPTestSummary(testMap);
+    }
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------
+//                                 PUBLIC
+//-----------------------------------------------------------------------------
+
+    public static void assertEquals(Object o1, Object o2)
+            throws OOPAssertionFailure {
+
+        assertEqualsAux(o1, o2, o1.getClass());
+    }
+
+    public static void fail() throws OOPAssertionFailure {
+        throw new OOPAssertionFailure();
+    }
+
+    public static OOPTestSummary runClass(Class<?> testClass)
+            throws IllegalArgumentException {
+
+        return runClassAux(testClass, null, false);
+    }
+
+    //FIXME: remove all the catch printing errors
+    public static OOPTestSummary runClass(Class<?> testClass, String tag)
+            throws IllegalArgumentException {
+
+        return runClassAux(testClass, tag, true);
     }
 }
 

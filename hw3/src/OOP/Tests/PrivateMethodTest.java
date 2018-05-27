@@ -109,7 +109,7 @@ public class PrivateMethodTest {
         
         //testBackupRecoverInst();
         testGetExcpectedException();
-        testGetOrderedMethods();
+        //testGetOrderedMethods();
     }
 
     private static void testGetExcpectedException() throws Exception {
@@ -126,23 +126,23 @@ public class PrivateMethodTest {
         Checker.check(OOPUnitCore.getExpectedException(testClassInst1) != null);
     }
 
-    private static void testGetOrderedMethods() throws Exception {
+    //private static void testGetOrderedMethods() throws Exception {
 
-        Checker.check(OOPUnitCore.getOrderedSetupMethods(ExampleClass1.class).size() == 0);
+    //    Checker.check(OOPUnitCore.getOrderedSetupMethods(ExampleClass1.class).size() == 0);
 
-        Vector<Method> orderedBeforeMethods =
-            OOPUnitCore.getOrderedBeforeMethods(ExampleClass1.class, "stam");
-        Checker.check(orderedBeforeMethods.size() == 0);
+    //    Vector<Method> orderedBeforeMethods =
+    //        OOPUnitCore.getOrderedBeforeMethods(ExampleClass1.class, "stam");
+    //    Checker.check(orderedBeforeMethods.size() == 0);
 
-        orderedBeforeMethods =
-            OOPUnitCore.getOrderedBeforeMethods(ExampleClass1.class, "test1");
-        Checker.check(orderedBeforeMethods.size() == 1);
-        Checker.check(orderedBeforeMethods.get(0).getName() == "beforeFirstTest");
+    //    orderedBeforeMethods =
+    //        OOPUnitCore.getOrderedBeforeMethods(ExampleClass1.class, "test1");
+    //    Checker.check(orderedBeforeMethods.size() == 1);
+    //    Checker.check(orderedBeforeMethods.get(0).getName() == "beforeFirstTest");
 
-        orderedBeforeMethods =
-            OOPUnitCore.getOrderedTestMethods(ExampleClass1.class, "");
-        Checker.check(orderedBeforeMethods.size() == 3);
-    }
+    //    orderedBeforeMethods =
+    //        OOPUnitCore.getOrderedTestMethods(ExampleClass1.class, "");
+    //    Checker.check(orderedBeforeMethods.size() == 3);
+    //}
 
 }
 

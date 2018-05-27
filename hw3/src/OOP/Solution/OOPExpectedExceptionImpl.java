@@ -1,16 +1,17 @@
 package OOP.Solution;
 
 import OOP.Provided.OOPExpectedException;
+import java.util.Vector;
 
 public class OOPExpectedExceptionImpl implements OOPExpectedException {
 
     private Class<? extends Exception> eClass;
-    private String eMessage;
+    private Vector<String> eMessages;
 
 
     private OOPExpectedExceptionImpl() {
         eClass = null;
-        eMessage = new String();
+        eMessages = new Vector<String>();
     }
 
     public Class<? extends Exception> getExpectedException() {
@@ -27,7 +28,7 @@ public class OOPExpectedExceptionImpl implements OOPExpectedException {
     public OOPExpectedException expectMessage(String msg) {
 
         /* concate the message */
-        eMessage += msg;
+        eMessages.add(msg);
         return this;
     }
 
@@ -41,8 +42,12 @@ public class OOPExpectedExceptionImpl implements OOPExpectedException {
         if (!eClass.isAssignableFrom(e.getClass()))
             return false;
 
-        /* check the message */
-        return e.getMessage().contains(eMessage);
+        /* check the messages */
+        for (String s : eMessages)
+            if (!e.getMessage().contains(s))
+                return false;
+
+        return true;
     }
 
     public static OOPExpectedException none() {
