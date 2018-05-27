@@ -5,6 +5,7 @@ import OOP.Provided.OOPResult;
 import OOP.Solution.OOPResultImpl;
 import OOP.Solution.OOPUnitCore;
 import OOP.Provided.OOPAssertionFailure;
+import OOP.Solution.OOPTestClass;
 import static OOP.Provided.OOPResult.OOPTestResult.*;
 
 import javax.naming.NamingException;
@@ -172,7 +173,24 @@ public class OOPUnitCoreTest {
     }
 
     private static void testRunClass() throws Exception {
+        
+        class NormalClass {}
 
+        @OOPTestClass
+        class TestClass {}
+
+        /* check exception are thrown */
+        int counter = 0;
+        try {OOPUnitCore.runClass(null);} catch (IllegalArgumentException e) {counter++;}
+        try {OOPUnitCore.runClass(null, "str");} catch (IllegalArgumentException e) {counter++;}
+        try {OOPUnitCore.runClass(NormalClass.class);} catch (IllegalArgumentException e) {counter++;}
+        try {OOPUnitCore.runClass(NormalClass.class, "str");} catch (IllegalArgumentException e) {counter++;}
+        Checker.check(counter == 4);
+
+        /* test logic */
+
+        /* test order */
+        
     }
 }
 

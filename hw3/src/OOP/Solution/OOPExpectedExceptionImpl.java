@@ -33,6 +33,10 @@ public class OOPExpectedExceptionImpl implements OOPExpectedException {
 
     public boolean assertExpected(Exception e) {
 
+        /* if we don't expect an exception the assertion fails */
+        if (eClass == null)
+            return false;
+
         /* check if e.getClass() is equal to eClass OR inherits from it */
         if (!eClass.isAssignableFrom(e.getClass()))
             return false;

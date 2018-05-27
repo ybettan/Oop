@@ -61,6 +61,10 @@ public class OOPExpectedExceptionTest {
         Checker.check(!ee.assertExpected(new Exception("")));
         Checker.check(ee.assertExpected(new Exception("hello")));
 
+        ee = OOPExpectedExceptionImpl.none(); 
+        ee.expect(Exception.class).expectMessage("rror messag");
+        Checker.check(ee.assertExpected(new Exception("error message")));
+
         /* check un ExpectedException with message and inheritence */
         ee = OOPExpectedExceptionImpl.none(); 
         ee.expect(Exception.class);

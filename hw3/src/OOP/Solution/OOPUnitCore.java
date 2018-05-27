@@ -7,21 +7,19 @@ import static OOP.Solution.OOPTestClass.OOPTestClassType.*;
 
 import OOP.Provided.OOPExpectedException;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.*;
+import java.util.*;
 import java.util.stream.*;
 
 
 public class OOPUnitCore {
 
+//-----------------------------------------------------------------------------
+//                          PRIVATE - Object Backup
+//-----------------------------------------------------------------------------
 
-    private static Object backupInst(Object obj) {
+    public static Object backupInst(Object obj) {
 
         /* create the backup */
         Object objBackup = null;
@@ -81,7 +79,7 @@ public class OOPUnitCore {
         return objBackup;
     }
 
-    private static void recoverInst(Object obj, Object objBackup) {
+    public static void recoverInst(Object obj, Object objBackup) {
 
         /* recover field by field */
         for (Field f : objBackup.getClass().getDeclaredFields()) {
@@ -102,22 +100,196 @@ public class OOPUnitCore {
         }
     }
 
-    private static void runSetupMethods(Class<?> testClass, Object testClassInst) {
+//-----------------------------------------------------------------------------
+//                   PRIVATE - Get OOPExpecteException
+//-----------------------------------------------------------------------------
 
-        /* stopping condition - Object.getClass().getSuperClass() return null */
-        if (testClass == null)
+    //FIXME: make all private methods private again
+    /* first class need to be done with an empty Set */
+    public static void getAllFields(Class<?> c, Set<Field> res) {
+
+        if (c == null)
             return;
 
-        /* activate first the base class methods */
-        runSetupMethods(testClass.getSuperclass(), testClassInst);
+        res.addAll(Arrays.asList(c.getDeclaredFields()));
+        getAllFields(c.getSuperclass(), res);
+    }
 
-        /* get all the Class methods annotated with @OOPSetup */
-        ArrayList<Method> setupMethods = Arrays
-              .stream(testClass.getMethods())
+    /* return null if the field doesn't exist */
+    public static OOPExpectedException getExpectedException(Object testClassInst) {
+
+        Set<Field> allFields = new HashSet<Field>();
+        getAllFields(testClassInst.getClass(), allFields);
+
+        Vector<Field> tmp =
+               allFields
+              .stream()
+              .filter(m -> m.isAnnotationPresent(OOPExceptionRule.class))
+              .collect(Collectors.toCollection(Vector::new));
+
+        OOPExpectedException res = null;
+
+        if (tmp.size() != 0) {
+            Field resField = tmp.get(0); 
+            resField.setAccessible(true);
+
+            /* MY ASSUMPTION: IllegalAccessException won't be thrown because
+             * we used setAccessible(true) */
+            try {
+                res = (OOPExpectedException) resField.get(testClassInst);
+            }
+            catch (IllegalAccessException e) {
+                System.err.println("unpossible exception was thrown at line " +
+                        new Exception().getStackTrace()[0].getLineNumber());
+            }
+        }
+
+        return res;
+    }
+
+//-----------------------------------------------------------------------------
+//                      PRIVATE - Get Ordered Methods
+//-----------------------------------------------------------------------------
+
+    /* used by getAllMethods() */
+    public static Object methodKey(Method m) {
+
+        return Arrays.asList(m.getName(),
+            MethodType.methodType(m.getReturnType(), m.getParameterTypes()));
+    }
+
+    public static Set<Method> getAllMethods(Class<?> c) {
+
+        Set<Method> methods = new LinkedHashSet<>();
+
+        /* get all the public methods including inherited */
+        Collections.addAll(methods, c.getMethods());
+
+        Map<Object,Set<Package>> types = new HashMap<>();
+        final Set<Package> pkgIndependent = Collections.emptySet();
+        for(Method m: methods)
+            types.put(methodKey(m), pkgIndependent);
+
+        for(Class<?> current=c; current!=null; current=current.getSuperclass()) {
+            for(Method m: current.getDeclaredMethods()) {
+                final int mod = m.getModifiers(),
+                    access= Modifier.PUBLIC|Modifier.PROTECTED|Modifier.PRIVATE;
+                if(!Modifier.isStatic(mod))
+                    switch(mod&access) {
+                    case Modifier.PUBLIC: continue;
+                    default:
+                        Set<Package> pkg = types.computeIfAbsent(methodKey(m),
+                                key -> new HashSet<>());
+                        if(pkg!=pkgIndependent && pkg.add(current.getPackage()))
+                            break;
+                        else
+                            continue;
+                    case Modifier.PROTECTED:
+                        if(types.putIfAbsent(methodKey(m), pkgIndependent)!=null)
+                            continue;
+                        /* otherwise fall-through */
+                    case Modifier.PRIVATE:
+                }
+                methods.add(m);
+            }
+        }
+        return methods;
+    }
+
+    /* by order: ... -> derived2 -> derived1 -> base
+     * first iteration shult get an empty Vector */
+    public static void getInheritanceCahin(Class<?> c, Vector<Class<?>> res) {
+
+        if (c == null)
+            return;
+
+        res.add(c);
+        getInheritanceCahin(c.getSuperclass(), res);
+    }
+
+    /* by order: base -> derived1 -> derived2 -> ... */
+    public static Vector<Method> getOrderedSetupMethods(Class<?> c) {
+
+        Vector<Class<?>> inheritanceChain = new Vector<Class<?>>();
+        getInheritanceCahin(c, inheritanceChain);
+
+        Vector<Method> orderedMethods =
+               getAllMethods(c)
+              .stream()
               .filter(m -> m.isAnnotationPresent(OOPSetup.class))
-              .collect(Collectors.toCollection(ArrayList::new));
+              .sorted((m1, m2) -> inheritanceChain.indexOf(m2.getDeclaringClass())
+                                - inheritanceChain.indexOf(m1.getDeclaringClass()))
+              .collect(Collectors.toCollection(Vector::new));
 
-        for (Method m : setupMethods) {
+        return orderedMethods;
+    }
+
+    /* by order: base -> derived1 -> derived2 -> ... */
+    public static Vector<Method> getOrderedBeforeMethods(Class<?> c,
+            String methodName) {
+
+        Vector<Class<?>> inheritanceChain = new Vector<Class<?>>();
+        getInheritanceCahin(c, inheritanceChain);
+
+        Vector<Method> orderedMethods =
+               getAllMethods(c)
+              .stream()
+              .filter(m -> m.isAnnotationPresent(OOPBefore.class))
+              .filter(m -> Arrays.asList(m.getAnnotation(OOPBefore.class)
+                          .value()).contains(methodName))
+              .sorted((m1, m2) -> inheritanceChain.indexOf(m2.getDeclaringClass())
+                                - inheritanceChain.indexOf(m1.getDeclaringClass()))
+              .collect(Collectors.toCollection(Vector::new));
+
+        return orderedMethods;
+    }
+
+    /* by order: ... -> derived2 -> derived1 -> base */
+    public static Vector<Method> getOrderedAfterMethods(Class<?> c,
+            String methodName) {
+
+        Vector<Class<?>> inheritanceChain = new Vector<Class<?>>();
+        getInheritanceCahin(c, inheritanceChain);
+
+        Vector<Method> orderedMethods =
+               getAllMethods(c)
+              .stream()
+              .filter(m -> m.isAnnotationPresent(OOPAfter.class))
+              .filter(m -> Arrays.asList(m.getAnnotation(OOPAfter.class)
+                          .value()).contains(methodName))
+              .sorted((m1, m2) -> inheritanceChain.indexOf(m1.getDeclaringClass())
+                                - inheritanceChain.indexOf(m2.getDeclaringClass()))
+              .collect(Collectors.toCollection(Vector::new));
+
+        return orderedMethods;
+    }
+
+    /* by order of @OOPTest(order=n) */
+    public static Vector<Method> getOrderedTestMethods(Class<?> c,
+            String tagName) {
+
+        Vector<Method> orderedMethods =
+               getAllMethods(c)
+              .stream()
+              .filter(m -> m.isAnnotationPresent(OOPTest.class))
+              .filter(m -> m.getAnnotation(OOPTest.class).tag().equals(tagName))
+              .sorted((m1, m2) -> m1.getAnnotation(OOPTest.class).order()
+                                - m2.getAnnotation(OOPTest.class).order())
+              .collect(Collectors.toCollection(Vector::new));
+
+        return orderedMethods;
+    }
+
+//-----------------------------------------------------------------------------
+//                   PRIVATE - Activate Ordered Methods
+//-----------------------------------------------------------------------------
+
+    public static void runSetupMethods(Object testClassInst) {
+
+        Vector<Method> orderedSetupMethods =
+            getOrderedSetupMethods(testClassInst.getClass());
+
+        for (Method m : orderedSetupMethods) {
 
             /* STAFF ASSUMPTION: we can assume @OOPSetup methods won't throw
              * any exception */
@@ -131,33 +303,19 @@ public class OOPUnitCore {
         }
     }
 
-    private static boolean runBeforeAfterMethods(Class<?> testClass,
-            String methodName, Object testClassInst, String annotationName) {
+    public static boolean runBeforeAfterMethods(Object testClassInst,
+            String methodName, String afterOrBefore) {
 
-        /* stopping condition - Object.getClass().getSuperClass() return null */
-        if (testClass == null)
-            return true;
+        Vector<Method> orderedMethods;
+        
+        if (afterOrBefore == "before")
+           orderedMethods =
+               getOrderedBeforeMethods(testClassInst.getClass(), methodName);
+        else
+           orderedMethods =
+               getOrderedAfterMethods(testClassInst.getClass(), methodName);
 
-        /* activate first the base class methods */
-        if (!runBeforeAfterMethods(testClass.getSuperclass(), methodName,
-                    testClassInst, annotationName))
-            return false;
-
-        /* get all the Class methods annotated with @OOPBefore and relevant
-         * to our current method */
-        ArrayList<Method> beforeAfterMethods =
-                    Arrays
-                    .stream(testClass.getMethods())
-                    .filter(m -> m.isAnnotationPresent(OOPBefore.class))
-                    .filter(annotationName.equals("OOPBefore") ?
-                               m -> Arrays.asList(m.getAnnotation(OOPBefore.class)
-                                   .value()).contains(methodName) :
-                               m -> Arrays.asList(m.getAnnotation(OOPAfter.class)
-                                   .value()).contains(methodName)
-                            )
-                    .collect(Collectors.toCollection(ArrayList::new));
-
-        for (Method m : beforeAfterMethods) {
+        for (Method m : orderedMethods) {
 
             /* backup the class instance object in case @OOPBefore method
              * throws an exception */
@@ -176,71 +334,77 @@ public class OOPUnitCore {
         return true;
     }
 
-    private static OOPResult runSingleTestMethod(Method method, Object testClassInst) {
+    public static boolean runBeforeMethods(Object testClassInst,
+            String methodName) {
+        
+        return runBeforeAfterMethods(testClassInst, methodName, "before");
+    }
 
-        /* get OOPExpectedException field.
-         * it may be private so we can't just access it - we need to locate it
-         * according to @OOPExceptionRule annotation
-         * if no field marked with @OOPExceptionRule exist then we don't expect
-         * any exception */
-        OOPExpectedException expectedException = null;
-        ArrayList<Field> expectedExceptionsArr =
-                Arrays.stream(testClassInst.getClass().getDeclaredFields())
-                      .filter(f -> f.isAnnotationPresent(OOPExceptionRule.class))
-                      .collect(Collectors.toCollection(ArrayList::new));
-        if (expectedExceptionsArr.size() == 0)
+    public static boolean runAfterMethods(Object testClassInst,
+            String methodName) {
+        
+        return runBeforeAfterMethods(testClassInst, methodName, "after");
+    }
+
+    public static OOPResult runSingleTestMethod(Method method,
+            Object testClassInst) {
+
+        /* if OOPExpectedException field exist - reset it */
+        OOPExpectedException expectedException =
+            getExpectedException(testClassInst);
+        if (expectedException != null)
             expectedException = OOPExpectedException.none();
-        else {
-            Field expectedExceptionField = expectedExceptionsArr.get(0);
-            expectedExceptionField.setAccessible(true);
 
-            /* MY ASSUMPTION: IllegalAccessException won't be thrown because
-             * we used setAccessible(true) */
-            try {
-                expectedException = (OOPExpectedException)
-                    expectedExceptionField.get(testClassInst);
-            }
-            catch (IllegalAccessException e) {
-                System.err.println("unpossible exception was thrown at line " +
-                        new Exception().getStackTrace()[0].getLineNumber());
-            }
-        }
+        /* make it accessibel in case it is private */
+        method.setAccessible(true);
 
         /* return the result.
-         * STAFF ASSUMPTION we can assume that all the test methods receive no
+         * STAFF ASSUMPTION: we can assume that all the test methods receive no
          * arguments and have void return type */
         try {
             method.invoke(testClassInst);
         }
 
-        /* InvocationTargetException --> ReflectiveOperationException -->
-         * Exception --> Throwable --> Object.
-         * this exception mean the target method has thrown an exception */
+        /* MY ASSUMPTION: IllegalAccessException can't be thrown since we used
+         * setAccessibel(true) */
+        catch (IllegalAccessException iae) {
+            System.err.println("unpossible exception was thrown at line " +
+                    new Exception().getStackTrace()[0].getLineNumber());
+        }
+
+        /* this exception mean the target method has thrown an exception */
         catch (InvocationTargetException ie) {
 
             /* get the original exception thrown by the target method */
-            Exception e = (Exception) ie.getTargetException();
+            Throwable t = ie.getTargetException();
+
+            //FIXME: remove
+            if (method.getName().equals("testThrows")) {
+                System.out.println(Exception.class.isAssignableFrom(t.getClass()));
+                System.out.println(expectedException.assertExpected((Exception)t));
+            }
 
             /* SUCCESS */
-            if (expectedException.assertExpected(e))
-                return new OOPResultImpl(SUCCESS, null);
-
-            /* EXPECTED_EXCEPTION_MISMATCH */
-            else
-                return new OOPResultImpl(EXPECTED_EXCEPTION_MISMATCH, e.getMessage());
-        }
-
-        /* OOPAssertionFailure --> AssertionError --> Error --> Throwable --> Object */
-        catch (OOPAssertionFailure oaf) {
+            if (Exception.class.isAssignableFrom(t.getClass())) {
+                if (expectedException.assertExpected((Exception)t)) {
+                    //FIXME: remove printing
+                    System.out.println(method.getName() + ".RES = SUCCESS");
+                    
+                    return new OOPResultImpl(SUCCESS, null);
+                }
+            }
 
             /* FAILURE */
-            return new OOPResultImpl(FAILURE, oaf.getMessage());
-        }
+            if (t.getClass().equals(OOPAssertionFailure.class))
+                return new OOPResultImpl(FAILURE, t.getMessage());
 
-        catch (Throwable t) {
+            /* EXPECTED_EXCEPTION_MISMATCH */
+            if (expectedException.getExpectedException() != null)
+                return new OOPResultImpl(EXPECTED_EXCEPTION_MISMATCH, t.getMessage());
 
             /* ERROR */
-            return new OOPResultImpl(ERROR, t.getClass().getName());
+            else
+                return new OOPResultImpl(ERROR, t.getClass().getName());
         }
 
         /* ERROR - according to FAQ */
@@ -253,7 +417,12 @@ public class OOPUnitCore {
             return new OOPResultImpl(SUCCESS, null);
     }
 
-    private static boolean overridedsMethod(Object o, Method m) {
+
+//-----------------------------------------------------------------------------
+//                      PRIVATE - Objects Equality
+//-----------------------------------------------------------------------------
+
+    public static boolean overridedsMethod(Object o, Method m) {
 
         if (m.getDeclaringClass() == o.getClass())
             return true;
@@ -261,7 +430,7 @@ public class OOPUnitCore {
         return false;
     }
 
-    private static void assertEqualsAux(Object o1, Object o2, Class<?> c)
+    public static void assertEqualsAux(Object o1, Object o2, Class<?> c)
             throws OOPAssertionFailure {
 
         /* if we reached Object superClass then return */
@@ -324,8 +493,12 @@ public class OOPUnitCore {
 
 
 
+//-----------------------------------------------------------------------------
+//                                 PUBLIC
+//-----------------------------------------------------------------------------
 
-    public static void assertEquals(Object o1, Object o2) throws OOPAssertionFailure {
+    public static void assertEquals(Object o1, Object o2)
+            throws OOPAssertionFailure {
 
         assertEqualsAux(o1, o2, o1.getClass());
     }
@@ -340,6 +513,7 @@ public class OOPUnitCore {
         return runClass(testClass, "");
     }
 
+    //FIXME: remove all the catch printing errors
     public static OOPTestSummary runClass(Class<?> testClass, String tag)
             throws IllegalArgumentException {
 
@@ -350,7 +524,7 @@ public class OOPUnitCore {
         /* check if OOPTestClass annotation is present */
         if (!testClass.isAnnotationPresent(OOPTestClass.class))
             throw new IllegalArgumentException();
-        
+
         /* create an instance of input class.
          * we will use  Constructor.newInstance() since the c'tor may be privae 
          * STAFF ASSUMPTION: we can assume a default c'tor exist. */
@@ -363,34 +537,22 @@ public class OOPUnitCore {
                     new Exception().getStackTrace()[0].getLineNumber());
         }
 
+        //FIXME: update according to ophir's answer
         /* run all the methods annotated with @OOPSetup */
-        runSetupMethods(testClass, testClassInst);
+        runSetupMethods(testClassInst);
 
-        /* get all the @OOPTest annotated methods with relevant tag */
-        ArrayList<Method> methods = Arrays
-              .stream(testClass.getMethods())
-              .filter(m -> m.isAnnotationPresent(OOPTest.class))
-              .filter(m -> m.getAnnotation(OOPTest.class).tag().equals(tag))
-              .collect(Collectors.toCollection(ArrayList::new));
-
-        /* if @OOPTestClass.value=ORDERED then we sort methods by @OOPTest.order */
-        if (testClass.getAnnotation(OOPTestClass.class).value() == ORDERED) {
-            methods = methods
-                     .stream()
-                     .sorted((m1, m2) -> (m2.getAnnotation(OOPTest.class)).order()
-                            -(m1.getAnnotation(OOPTest.class).order()))
-                     .collect(Collectors.toCollection(ArrayList::new));
-        }
+        /* we will always run it in ORDER since we chose the order for UNORDERED */
+        Vector<Method> testMethods = getOrderedTestMethods(testClass, tag);
 
         /* create a Map<String, OOPResult> to store test methods results */
         Map<String, OOPResult> testMap = new HashMap<String, OOPResult>();
 
-        for (Method m : methods) {
+        for (Method m : testMethods) {
 
             /* activate all its @OOPBefore methods.
              * if a @OOPBefore method throws an exception then continue to
              * the next test */
-            if (!runBeforeAfterMethods(testClass, m.getName(), testClassInst, "OOPBefore"))
+            if (!runBeforeMethods(testClassInst, m.getName()))
                 continue;
 
             /* activate the method itself */
@@ -398,7 +560,7 @@ public class OOPUnitCore {
             testMap.put(m.getName(), methodRes);
 
             /* activate all its @OOPAfter methods */
-            runBeforeAfterMethods(testClass, m.getName(), testClassInst, "OOPAfter");
+            runAfterMethods(testClassInst, m.getName());
         }
 
         return new OOPTestSummary(testMap);
