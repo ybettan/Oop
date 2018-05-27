@@ -378,21 +378,13 @@ public class OOPUnitCore {
             /* get the original exception thrown by the target method */
             Throwable t = ie.getTargetException();
 
-            //FIXME: remove
-            if (method.getName().equals("testThrows")) {
-                System.out.println(Exception.class.isAssignableFrom(t.getClass()));
-                System.out.println(expectedException.assertExpected((Exception)t));
-            }
+            /* get expectedException after method ran */
+            expectedException = getExpectedException(testClassInst);
 
             /* SUCCESS */
-            if (Exception.class.isAssignableFrom(t.getClass())) {
-                if (expectedException.assertExpected((Exception)t)) {
-                    //FIXME: remove printing
-                    System.out.println(method.getName() + ".RES = SUCCESS");
-                    
+            if (Exception.class.isAssignableFrom(t.getClass()))
+                if (expectedException.assertExpected((Exception)t))
                     return new OOPResultImpl(SUCCESS, null);
-                }
-            }
 
             /* FAILURE */
             if (t.getClass().equals(OOPAssertionFailure.class))
@@ -406,6 +398,9 @@ public class OOPUnitCore {
             else
                 return new OOPResultImpl(ERROR, t.getClass().getName());
         }
+
+        /* get expectedException after method ran */
+        expectedException = getExpectedException(testClassInst);
 
         /* ERROR - according to FAQ */
         if (expectedException.getExpectedException() != null)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="83d8c6b3-4a65-47a4-b2ad-a5f00095494d" name="Default" comment="" />
+    <list default="true" id="d858c47a-40ec-4bff-9812-ae355784aef3" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,60 +15,10 @@
       <file leaf-file-name="ExampleTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/OOP/Tests/ExampleTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="16" column="32" lean-forward="false" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
+            <state relative-caret-position="558">
+              <caret line="57" column="48" lean-forward="false" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OOPUnitCore.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/OOP/Solution/OOPUnitCore.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="377" column="62" lean-forward="true" selection-start-line="377" selection-start-column="62" selection-end-line="377" selection-end-column="62" />
-              <folding>
-                <element signature="e#4433#4440#0" expanded="true" />
-                <element signature="e#7836#7846#0" expanded="true" />
-                <element signature="e#8544#8554#0" expanded="true" />
-                <element signature="e#9384#9394#0" expanded="true" />
-                <marker date="1527429585267" expanded="true" signature="15487:15697" ph="//..." />
-                <marker date="1527429585267" expanded="true" signature="15762:15869" ph="{...}" />
-                <marker date="1527429585267" expanded="true" signature="15983:17597" ph="{...}" />
-                <marker date="1527429585267" expanded="true" signature="17607:17808" ph="//..." />
-                <marker date="1527429585267" expanded="true" signature="17907:17963" ph="{...}" />
-                <marker date="1527429585267" expanded="true" signature="18022:18070" ph="{...}" />
-                <marker date="1527429585267" expanded="true" signature="18178:18226" ph="{...}" />
-                <marker date="1527429585267" expanded="true" signature="18396:20309" ph="{...}" />
-                <marker date="1527429585267" expanded="false" signature="19658:19677" ph="&lt;~&gt;" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OOPExpectedExceptionImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/OOP/Solution/OOPExpectedExceptionImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="40" column="36" lean-forward="false" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
-              <folding>
-                <marker date="1527428935664" expanded="true" signature="1263:1373" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PrivateMethodTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/OOP/Tests/PrivateMethodTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="142" column="53" lean-forward="false" selection-start-line="142" selection-start-column="53" selection-end-line="142" selection-end-column="53" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1748#1749#0" expanded="true" />
-                <element signature="e#1788#1789#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -79,15 +29,6 @@
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
       <projects_view />
-    </option>
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/OOP/Tests/PrivateMethodTest.java" />
-        <option value="$PROJECT_DIR$/src/OOP/Solution/OOPUnitCore.java" />
-        <option value="$PROJECT_DIR$/src/OOP/Solution/OOPExpectedExceptionImpl.java" />
-      </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -111,7 +52,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -135,22 +77,14 @@
               <item name="hw3" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="OOP" type="462c0819:PsiDirectoryNode" />
-              <item name="Solution" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="hw3" type="b2602c69:ProjectViewProjectNode" />
-              <item name="hw3" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="OOP" type="462c0819:PsiDirectoryNode" />
               <item name="Tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -287,49 +221,31 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="83d8c6b3-4a65-47a4-b2ad-a5f00095494d" name="Default" comment="" />
-      <created>1527420624204</created>
+      <changelist id="d858c47a-40ec-4bff-9812-ae355784aef3" name="Default" comment="" />
+      <created>1527430087303</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1527420624204</updated>
-      <workItem from="1527420627212" duration="6630000" />
+      <updated>1527430087303</updated>
+      <workItem from="1527430090231" duration="711000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 40m 01s.xml">
+    <history-entry file="ExampleTest - 2018.05.27 at 17h 09m 19s.xml">
       <configuration name="ExampleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 41m 09s.xml">
+    <history-entry file="ExampleTest - 2018.05.27 at 17h 14m 12s.xml">
       <configuration name="ExampleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 41m 19s.xml">
+    <history-entry file="ExampleTest - 2018.05.27 at 17h 18m 43s.xml">
       <configuration name="ExampleTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 44m 00s.xml">
-      <configuration name="ExampleTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 44m 49s.xml">
-      <configuration name="ExampleTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 46m 23s.xml">
-      <configuration name="ExampleTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 48m 07s.xml">
-      <configuration name="ExampleTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 48m 36s.xml">
-      <configuration name="ExampleTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 56m 30s.xml">
-      <configuration name="ExampleTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ExampleTest - 2018.05.27 at 16h 57m 14s.xml">
+    <history-entry file="ExampleTest - 2018.05.27 at 17h 19m 56s.xml">
       <configuration name="ExampleTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6630000" />
+    <option name="totallyTimeSpent" value="711000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1173" extended-state="6" />
@@ -337,13 +253,13 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32986766" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32986766" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32986766" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32986766" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -354,7 +270,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39981097" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -375,54 +291,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/OOP/Tests/PrivateMethodTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="142" column="53" lean-forward="false" selection-start-line="142" selection-start-column="53" selection-end-line="142" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1748#1749#0" expanded="true" />
-            <element signature="e#1788#1789#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/OOP/Solution/OOPUnitCore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="377" column="62" lean-forward="true" selection-start-line="377" selection-start-column="62" selection-end-line="377" selection-end-column="62" />
-          <folding>
-            <element signature="e#4433#4440#0" expanded="true" />
-            <element signature="e#7836#7846#0" expanded="true" />
-            <element signature="e#8544#8554#0" expanded="true" />
-            <element signature="e#9384#9394#0" expanded="true" />
-            <marker date="1527429585267" expanded="true" signature="15487:15697" ph="//..." />
-            <marker date="1527429585267" expanded="true" signature="15762:15869" ph="{...}" />
-            <marker date="1527429585267" expanded="true" signature="15983:17597" ph="{...}" />
-            <marker date="1527429585267" expanded="true" signature="17607:17808" ph="//..." />
-            <marker date="1527429585267" expanded="true" signature="17907:17963" ph="{...}" />
-            <marker date="1527429585267" expanded="true" signature="18022:18070" ph="{...}" />
-            <marker date="1527429585267" expanded="true" signature="18178:18226" ph="{...}" />
-            <marker date="1527429585267" expanded="true" signature="18396:20309" ph="{...}" />
-            <marker date="1527429585267" expanded="false" signature="19658:19677" ph="&lt;~&gt;" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/OOP/Solution/OOPExpectedExceptionImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="40" column="36" lean-forward="false" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
-          <folding>
-            <marker date="1527428935664" expanded="true" signature="1263:1373" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/OOP/Tests/ExampleTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="32" lean-forward="false" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
+        <state relative-caret-position="558">
+          <caret line="57" column="48" lean-forward="false" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
