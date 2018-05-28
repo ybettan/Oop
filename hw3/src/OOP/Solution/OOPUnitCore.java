@@ -90,11 +90,7 @@ public class OOPUnitCore {
                 f.set(objBackup, objFieldVal);
             }
         }
-        catch (Exception e) {
-            System.err.println("unpossible exception was thrown at line " +
-                    new Exception().getStackTrace()[0].getLineNumber());
-            System.err.println("Exception.class = " + e.getClass().getName());
-        }
+        catch (Exception e) {/* impossible */}
 
         return objBackup;
     }
@@ -113,10 +109,7 @@ public class OOPUnitCore {
             try {
                 f.set(obj, f.get(objBackup));
             }
-            catch (IllegalAccessException e) {
-                System.err.println("unpossible exception was thrown at line " +
-                        new Exception().getStackTrace()[0].getLineNumber());
-            }
+            catch (IllegalAccessException e) {/* impossible */}
         }
     }
 
@@ -157,10 +150,7 @@ public class OOPUnitCore {
             try {
                 res = (OOPExpectedException) resField.get(testClassInst);
             }
-            catch (IllegalAccessException e) {
-                System.err.println("unpossible exception was thrown at line " +
-                        new Exception().getStackTrace()[0].getLineNumber());
-            }
+            catch (IllegalAccessException e) {/* impossible */}
         }
 
         return res;
@@ -186,10 +176,7 @@ public class OOPUnitCore {
         try {
             resField.set(testClassInst, val);
         }
-        catch (IllegalAccessException e) {
-            System.err.println("unpossible exception was thrown at line " +
-                    new Exception().getStackTrace()[0].getLineNumber());
-        }
+        catch (IllegalAccessException e) {/* impossible */}
     }
 
 //-----------------------------------------------------------------------------
@@ -361,11 +348,7 @@ public class OOPUnitCore {
             try {
                 m.invoke(testClassInst);
             }
-            catch (Exception e) {
-                System.err.println("unpossible exception was thrown at line " +
-                        new Exception().getStackTrace()[0].getLineNumber());
-                System.out.println("Exception.class = " + e.getClass());
-            }
+            catch (Exception e) {/* impossible */}
         }
     }
 
@@ -396,10 +379,7 @@ public class OOPUnitCore {
 
             /* MY ASSUMPTION: IllegalAccessException can't be thrown since we used
              * setAccessibel(true) */
-            catch (IllegalAccessException iae) {
-                System.err.println("unpossible exception was thrown at line " +
-                        new Exception().getStackTrace()[0].getLineNumber());
-            }
+            catch (IllegalAccessException iae) {/* impossible */}
 
             catch (InvocationTargetException ie) {
 
@@ -450,10 +430,7 @@ public class OOPUnitCore {
 
         /* MY ASSUMPTION: IllegalAccessException can't be thrown since we used
          * setAccessibel(true) */
-        catch (IllegalAccessException iae) {
-            System.err.println("unpossible exception was thrown at line " +
-                    new Exception().getStackTrace()[0].getLineNumber());
-        }
+        catch (IllegalAccessException iae) {/* impossible */}
 
         /* this exception mean the target method has thrown an exception */
         catch (InvocationTargetException ie) {
@@ -582,10 +559,7 @@ public class OOPUnitCore {
         try {
             testClassInst = testClass.getConstructor().newInstance();
         }
-        catch (Exception e) {
-            System.err.println("unpossible exception was thrown at line " +
-                    new Exception().getStackTrace()[0].getLineNumber());
-        }
+        catch (Exception e) {/* impossible */}
 
         /* run all the methods annotated with @OOPSetup */
         runSetupMethods(testClassInst);
