@@ -25,6 +25,7 @@ public class OOPUnitCore {
         Object objBackup = null;
 
         try {
+
             /* STAFF ASSUMPTION: we can assume a default c'tor exist. */
             objBackup = obj.getClass().getConstructor().newInstance();
 
@@ -43,12 +44,16 @@ public class OOPUnitCore {
                 /* the field object support clone() method */
                 if (objFieldVal instanceof Cloneable) {
 
-                    /* MY ASSUMPTION: NoSuchMethodException won't be thrown since
-                     * we used setAccessible(true) */
-                    Method cloneMethod = obj.getClass().getMethod("clone");
+                    /* find clone method */
+                    Set<Method> fMethods = getAllMethods(objFieldVal.getClass());
+                    Method cloneMethod = null;
+                    for (Method m : fMethods)
+                        if (m.getName().equals("clone"))
+                            cloneMethod = m;
 
                     /* MY ASSUMPTION: IllegalAccessException won't be thrown
                      * because we used setAccessible(true) */
+                    cloneMethod.setAccessible(true);
                     f.set(objBackup, cloneMethod.invoke(objFieldVal));
 
                     /* continue to next field */
@@ -57,15 +62,23 @@ public class OOPUnitCore {
 
                 /* the field object has a copy c'tor */
                 try {
-                    Constructor<?> copyCtor = objFieldVal.getClass()
-                        .getConstructor(objFieldVal.getClass());
 
-                    /* MY ASSUMPTION: InstantiationException won't be thrown
-                     * since obj class isn't abstract */
-                    f.set(objBackup, copyCtor.newInstance(objFieldVal));
+                    /* a null object cennot have a copy c'tor */
+                    if (objFieldVal != null) {
 
-                    /* continue to next field */
-                    continue;
+                        Constructor<?> copyCtor = objFieldVal.getClass()
+                                .getDeclaredConstructor(objFieldVal.getClass());
+
+                        /* make constructor accessible in case it is private */
+                        copyCtor.setAccessible(true);
+
+                        /* MY ASSUMPTION: InstantiationException won't be thrown
+                         * since obj class isn't abstract */
+                        f.set(objBackup, copyCtor.newInstance(objFieldVal));
+
+                        /* continue to next field */
+                        continue;
+                    }
                 }
 
                 /* the field object doesn't have a copy c'tor */
@@ -80,6 +93,7 @@ public class OOPUnitCore {
         catch (Exception e) {
             System.err.println("unpossible exception was thrown at line " +
                     new Exception().getStackTrace()[0].getLineNumber());
+            System.err.println("Exception.class = " + e.getClass().getName());
         }
 
         return objBackup;
@@ -151,6 +165,36 @@ public class OOPUnitCore {
         }
 
         return res;
+    }
+
+    public static void setExpectedException(Object testClassInst,
+            OOPExpectedException val) {
+
+        Set<Field> allFields = new HashSet<Field>();
+        getAllFields(testClassInst.getClass(), allFields);
+
+        Vector<Field> tmp =
+               allFields
+              .stream()
+              .filter(m -> m.isAnnotationPresent(OOPExceptionRule.class))
+              .collect(Collectors.toCollection(Vector::new));
+
+        //FIXME: remove
+        if (tmp.size() == 0)
+                System.err.println("ERROR - no suppose to happen");
+
+        Field resField = tmp.get(0); 
+        resField.setAccessible(true);
+
+        /* MY ASSUMPTION: IllegalAccessException won't be thrown because
+         * we used setAccessible(true) */
+        try {
+            resField.set(testClassInst, val);
+        }
+        catch (IllegalAccessException e) {
+            System.err.println("unpossible exception was thrown at line " +
+                    new Exception().getStackTrace()[0].getLineNumber());
+        }
     }
 
 //-----------------------------------------------------------------------------
@@ -312,14 +356,20 @@ public class OOPUnitCore {
 
         for (Method m : orderedSetupMethods) {
 
+            /* make it accessible in case it is private */
+            m.setAccessible(true);
+
             /* STAFF ASSUMPTION: we can assume @OOPSetup methods won't throw
-             * any exception */
+             * any exception.
+             * MY ASSUMPTION: IllegalAccessException won't be thrown since we
+             * used setAccessible(true) */
             try {
                 m.invoke(testClassInst);
             }
             catch (Exception e) {
                 System.err.println("unpossible exception was thrown at line " +
                         new Exception().getStackTrace()[0].getLineNumber());
+                System.out.println("Exception.class = " + e.getClass());
             }
         }
     }
@@ -373,7 +423,7 @@ public class OOPUnitCore {
 
         return true;
     }
-
+    
     public static boolean runBeforeMethods(Object testClassInst,
             String methodName, String thrownClassName) {
         
@@ -391,11 +441,7 @@ public class OOPUnitCore {
     public static OOPResult runSingleTestMethod(Method method,
             Object testClassInst) {
 
-        /* if OOPExpectedException field exist - reset it */
-        OOPExpectedException expectedException =
-            getExpectedException(testClassInst);
-        if (expectedException != null)
-            expectedException = OOPExpectedException.none();
+        OOPExpectedException expectedException = null;
 
         /* make it accessibel in case it is private */
         method.setAccessible(true);
@@ -462,6 +508,10 @@ public class OOPUnitCore {
 
     public static boolean overridedsMethod(Object o, Method m) {
 
+        /* a null object cannot have any method */
+        if (o == null)
+            return false;
+
         if (m.getDeclaringClass() == o.getClass())
             return true;
 
@@ -474,14 +524,6 @@ public class OOPUnitCore {
         /* if we reached Object superClass then return */
         if (c == null)
             return;
-
-        /* if both object are null then they are equal */
-        if (o1 == null && o2 == null)
-            return;
-
-        /* else if only one of the is null they are different */
-        if (o1 == null || o2 == null)
-            throw new OOPAssertionFailure();
 
         /* get the equal method.
          * MY ASSUMPTION: NoSuchMethodException can't be thrown since
@@ -517,7 +559,7 @@ public class OOPUnitCore {
             catch (Exception e) {}
 
             /* check fields recursivelly */
-            assertEqualsAux(fieldValObj1, fieldValObj2, fieldValObj1.getClass());
+            assertEquals(fieldValObj1, fieldValObj2);
         }
 
         assertEqualsAux(o1, o2, c.getSuperclass());
@@ -562,6 +604,12 @@ public class OOPUnitCore {
 
         for (Method m : testMethods) {
 
+            /* if OOPExpectedException field exist - reset it */
+            OOPExpectedException expectedException =
+                getExpectedException(testClassInst);
+            if (expectedException != null)
+                setExpectedException(testClassInst, OOPExpectedException.none());
+        
             String throwableName = new String();
             OOPResult methodRes = null;
 
@@ -608,6 +656,14 @@ public class OOPUnitCore {
 
     public static void assertEquals(Object o1, Object o2)
             throws OOPAssertionFailure {
+
+        /* if both object are null then they are equal */
+        if (o1 == null && o2 == null)
+            return;
+
+        /* else if only one of the is null they are different */
+        if (o1 == null || o2 == null)
+            throw new OOPAssertionFailure();
 
         assertEqualsAux(o1, o2, o1.getClass());
     }
