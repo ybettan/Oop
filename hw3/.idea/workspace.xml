@@ -18,7 +18,7 @@
             <state relative-caret-position="324">
               <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding>
-                <marker date="1527519502074" expanded="true" signature="277:368" ph="//..." />
+                <marker date="1527519898439" expanded="true" signature="277:368" ph="//..." />
               </folding>
             </state>
           </provider>
@@ -36,7 +36,7 @@
                 <element signature="e#2259#2260#0" expanded="true" />
                 <element signature="e#2315#2316#0" expanded="true" />
                 <element signature="e#2337#2338#0" expanded="true" />
-                <marker date="1527519355963" expanded="true" signature="2428:6800" ph="//..." />
+                <marker date="1527519898439" expanded="true" signature="2428:6800" ph="//..." />
               </folding>
             </state>
           </provider>
@@ -54,18 +54,38 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="PrivateMethodTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/OOP/Tests/PrivateMethodTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="486">
+              <caret line="137" column="38" lean-forward="false" selection-start-line="137" selection-start-column="38" selection-end-line="137" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SetupOrderTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/OOP/Tests/SetupOrderTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="576">
+              <caret line="38" column="4" lean-forward="false" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="OOPUnitCore.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/OOP/Solution/OOPUnitCore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
-              <caret line="613" column="38" lean-forward="false" selection-start-line="613" selection-start-column="38" selection-end-line="613" selection-end-column="38" />
+            <state relative-caret-position="558">
+              <caret line="221" column="33" lean-forward="false" selection-start-line="221" selection-start-column="33" selection-end-line="221" selection-end-column="33" />
               <folding>
-                <element signature="e#22157#22176#0" expanded="true" />
-                <marker date="1527518925148" expanded="false" signature="5181:5188" ph="&lt;~&gt;" />
-                <marker date="1527518925148" expanded="false" signature="6258:6265" ph="&lt;~&gt;" />
-                <marker date="1527518925148" expanded="false" signature="9611:9621" ph="&lt;~&gt;" />
-                <marker date="1527518925148" expanded="false" signature="10319:10329" ph="&lt;~&gt;" />
-                <marker date="1527518925148" expanded="false" signature="11159:11169" ph="&lt;~&gt;" />
+                <element signature="e#5133#5140#0" expanded="true" />
+                <element signature="e#6211#6218#0" expanded="true" />
+                <element signature="e#9446#9456#0" expanded="true" />
+                <element signature="e#10155#10165#0" expanded="true" />
+                <element signature="e#10996#11006#0" expanded="true" />
+                <element signature="e#21951#21970#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -84,6 +104,8 @@
         <option value="$PROJECT_DIR$/src/OOP/Tests/TestOrdered.java" />
         <option value="$PROJECT_DIR$/src/OOP/Tests/TestRunAll.java" />
         <option value="$PROJECT_DIR$/src/OOP/Solution/OOPUnitCore.java" />
+        <option value="$PROJECT_DIR$/src/OOP/Tests/PrivateMethodTest.java" />
+        <option value="$PROJECT_DIR$/src/OOP/Tests/SetupOrderTest.java" />
       </list>
     </option>
   </component>
@@ -171,7 +193,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.Cases">
+  <component name="RunManager" selected="JUnit.SetupOrderTest">
     <configuration name="Cases" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -184,6 +206,31 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="OOP.Tests" />
       <option name="MAIN_CLASS_NAME" value="OOP.Tests.Cases" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+    </configuration>
+    <configuration name="SetupOrderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="OOP.Tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="hw3" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="OOP.Tests" />
+      <option name="MAIN_CLASS_NAME" value="OOP.Tests.SetupOrderTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -303,14 +350,16 @@
       <properties />
       <listeners />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="JUnit.TestRunAll" />
       <item index="1" class="java.lang.String" itemvalue="JUnit.Cases" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.SetupOrderTest" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.Cases" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="JUnit.SetupOrderTest" />
         <item index="1" class="java.lang.String" itemvalue="JUnit.TestRunAll" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.Cases" />
       </list>
     </recent_temporary>
   </component>
@@ -324,7 +373,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1527500105449</updated>
-      <workItem from="1527500108111" duration="14880000" />
+      <workItem from="1527500108111" duration="16695000" />
     </task>
     <servers />
   </component>
@@ -332,20 +381,17 @@
     <history-entry file="Cases - 2018.05.28 at 17h 58m 38s.xml">
       <configuration name="Cases" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestRunAll - 2018.05.28 at 17h 52m 58s.xml">
-      <configuration name="TestRunAll" configurationId="JUnit" />
+    <history-entry file="Cases - 2018.05.28 at 18h 09m 21s.xml">
+      <configuration name="Cases" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestRunAll - 2018.05.28 at 17h 54m 10s.xml">
-      <configuration name="TestRunAll" configurationId="JUnit" />
+    <history-entry file="SetupOrderTest - 2018.05.28 at 18h 19m 55s.xml">
+      <configuration name="SetupOrderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestRunAll - 2018.05.28 at 17h 54m 41s.xml">
-      <configuration name="TestRunAll" configurationId="JUnit" />
+    <history-entry file="SetupOrderTest - 2018.05.28 at 18h 21m 36s.xml">
+      <configuration name="SetupOrderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestRunAll - 2018.05.28 at 17h 55m 36s.xml">
-      <configuration name="TestRunAll" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestRunAll - 2018.05.28 at 17h 56m 32s.xml">
-      <configuration name="TestRunAll" configurationId="JUnit" />
+    <history-entry file="SetupOrderTest - 2018.05.28 at 18h 22m 11s.xml">
+      <configuration name="SetupOrderTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="TestRunAll - 2018.05.28 at 17h 57m 04s.xml">
       <configuration name="TestRunAll" configurationId="JUnit" />
@@ -359,13 +405,15 @@
     <history-entry file="TestRunAll - 2018.05.28 at 17h 57m 59s.xml">
       <configuration name="TestRunAll" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="TestRunAll - 2018.05.28 at 18h 09m 26s.xml">
+      <configuration name="TestRunAll" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14880000" />
+    <option name="totallyTimeSpent" value="16695000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -375,7 +423,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.282516" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18443497" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -436,7 +484,7 @@
             <element signature="e#2259#2260#0" expanded="true" />
             <element signature="e#2315#2316#0" expanded="true" />
             <element signature="e#2337#2338#0" expanded="true" />
-            <marker date="1527519355963" expanded="true" signature="2428:6800" ph="//..." />
+            <marker date="1527519898439" expanded="true" signature="2428:6800" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -446,22 +494,38 @@
         <state relative-caret-position="324">
           <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding>
-            <marker date="1527519502074" expanded="true" signature="277:368" ph="//..." />
+            <marker date="1527519898439" expanded="true" signature="277:368" ph="//..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OOP/Tests/PrivateMethodTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="137" column="38" lean-forward="false" selection-start-line="137" selection-start-column="38" selection-end-line="137" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OOP/Tests/SetupOrderTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="38" column="4" lean-forward="false" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/OOP/Solution/OOPUnitCore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="613" column="38" lean-forward="false" selection-start-line="613" selection-start-column="38" selection-end-line="613" selection-end-column="38" />
+        <state relative-caret-position="558">
+          <caret line="221" column="33" lean-forward="false" selection-start-line="221" selection-start-column="33" selection-end-line="221" selection-end-column="33" />
           <folding>
-            <element signature="e#22157#22176#0" expanded="true" />
-            <marker date="1527518925148" expanded="false" signature="5181:5188" ph="&lt;~&gt;" />
-            <marker date="1527518925148" expanded="false" signature="6258:6265" ph="&lt;~&gt;" />
-            <marker date="1527518925148" expanded="false" signature="9611:9621" ph="&lt;~&gt;" />
-            <marker date="1527518925148" expanded="false" signature="10319:10329" ph="&lt;~&gt;" />
-            <marker date="1527518925148" expanded="false" signature="11159:11169" ph="&lt;~&gt;" />
+            <element signature="e#5133#5140#0" expanded="true" />
+            <element signature="e#6211#6218#0" expanded="true" />
+            <element signature="e#9446#9456#0" expanded="true" />
+            <element signature="e#10155#10165#0" expanded="true" />
+            <element signature="e#10996#11006#0" expanded="true" />
+            <element signature="e#21951#21970#0" expanded="true" />
           </folding>
         </state>
       </provider>

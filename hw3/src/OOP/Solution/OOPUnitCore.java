@@ -19,7 +19,7 @@ public class OOPUnitCore {
 //                          PRIVATE - Object Backup
 //-----------------------------------------------------------------------------
 
-    public static Object backupInst(Object obj) {
+    private static Object backupInst(Object obj) {
 
         /* create the backup */
         Object objBackup = null;
@@ -99,7 +99,7 @@ public class OOPUnitCore {
         return objBackup;
     }
 
-    public static void recoverInst(Object obj, Object objBackup) {
+    private static void recoverInst(Object obj, Object objBackup) {
 
         /* recover field by field */
         for (Field f : objBackup.getClass().getDeclaredFields()) {
@@ -124,9 +124,8 @@ public class OOPUnitCore {
 //                   PRIVATE - Get OOPExpecteException
 //-----------------------------------------------------------------------------
 
-    //FIXME: make all private methods private again
     /* first class need to be done with an empty Set */
-    public static void getAllFields(Class<?> c, Set<Field> res) {
+    private static void getAllFields(Class<?> c, Set<Field> res) {
 
         if (c == null)
             return;
@@ -136,7 +135,7 @@ public class OOPUnitCore {
     }
 
     /* return null if the field doesn't exist */
-    public static OOPExpectedException getExpectedException(Object testClassInst) {
+    private static OOPExpectedException getExpectedException(Object testClassInst) {
 
         Set<Field> allFields = new HashSet<Field>();
         getAllFields(testClassInst.getClass(), allFields);
@@ -167,7 +166,7 @@ public class OOPUnitCore {
         return res;
     }
 
-    public static void setExpectedException(Object testClassInst,
+    private static void setExpectedException(Object testClassInst,
             OOPExpectedException val) {
 
         Set<Field> allFields = new HashSet<Field>();
@@ -178,10 +177,6 @@ public class OOPUnitCore {
               .stream()
               .filter(m -> m.isAnnotationPresent(OOPExceptionRule.class))
               .collect(Collectors.toCollection(Vector::new));
-
-        //FIXME: remove
-        if (tmp.size() == 0)
-                System.err.println("ERROR - no suppose to happen");
 
         Field resField = tmp.get(0); 
         resField.setAccessible(true);
@@ -202,13 +197,13 @@ public class OOPUnitCore {
 //-----------------------------------------------------------------------------
 
     /* used by getAllMethods() */
-    public static Object methodKey(Method m) {
+    private static Object methodKey(Method m) {
 
         return Arrays.asList(m.getName(),
             MethodType.methodType(m.getReturnType(), m.getParameterTypes()));
     }
 
-    public static Set<Method> getAllMethods(Class<?> c) {
+    private static Set<Method> getAllMethods(Class<?> c) {
 
         Set<Method> methods = new LinkedHashSet<>();
 
@@ -248,7 +243,7 @@ public class OOPUnitCore {
 
     /* by order: ... -> derived2 -> derived1 -> base
      * first iteration shult get an empty Vector */
-    public static void getInheritanceCahin(Class<?> c, Vector<Class<?>> res) {
+    private static void getInheritanceCahin(Class<?> c, Vector<Class<?>> res) {
 
         if (c == null)
             return;
@@ -258,7 +253,7 @@ public class OOPUnitCore {
     }
 
     /* by order: base -> derived1 -> derived2 -> ... */
-    public static Vector<Method> getOrderedSetupMethods(Class<?> c) {
+    private static Vector<Method> getOrderedSetupMethods(Class<?> c) {
 
         Vector<Class<?>> inheritanceChain = new Vector<Class<?>>();
         getInheritanceCahin(c, inheritanceChain);
@@ -275,7 +270,7 @@ public class OOPUnitCore {
     }
 
     /* by order: base -> derived1 -> derived2 -> ... */
-    public static Vector<Method> getOrderedBeforeMethods(Class<?> c,
+    private static Vector<Method> getOrderedBeforeMethods(Class<?> c,
             String methodName) {
 
         Vector<Class<?>> inheritanceChain = new Vector<Class<?>>();
@@ -295,7 +290,7 @@ public class OOPUnitCore {
     }
 
     /* by order: ... -> derived2 -> derived1 -> base */
-    public static Vector<Method> getOrderedAfterMethods(Class<?> c,
+    private static Vector<Method> getOrderedAfterMethods(Class<?> c,
             String methodName) {
 
         Vector<Class<?>> inheritanceChain = new Vector<Class<?>>();
@@ -315,7 +310,7 @@ public class OOPUnitCore {
     }
 
     /* by order of @OOPTest(order=n) */
-    public static Vector<Method> getOrderedTestMethods(Class<?> c,
+    private static Vector<Method> getOrderedTestMethods(Class<?> c,
             String tagName, boolean useTag) {
 
         Vector<Method> orderedMethods = null;
@@ -349,7 +344,7 @@ public class OOPUnitCore {
 //                   PRIVATE - Activate Ordered Methods
 //-----------------------------------------------------------------------------
 
-    public static void runSetupMethods(Object testClassInst) {
+    private static void runSetupMethods(Object testClassInst) {
 
         Vector<Method> orderedSetupMethods =
             getOrderedSetupMethods(testClassInst.getClass());
@@ -374,7 +369,7 @@ public class OOPUnitCore {
         }
     }
 
-    public static boolean runBeforeAfterMethods(Object testClassInst,
+    private static boolean runBeforeAfterMethods(Object testClassInst,
             String methodName, String afterOrBefore, String thrownClassName) {
 
         Vector<Method> orderedMethods;
@@ -424,21 +419,21 @@ public class OOPUnitCore {
         return true;
     }
     
-    public static boolean runBeforeMethods(Object testClassInst,
+    private static boolean runBeforeMethods(Object testClassInst,
             String methodName, String thrownClassName) {
         
         return runBeforeAfterMethods(testClassInst, methodName, "before",
                 thrownClassName);
     }
 
-    public static boolean runAfterMethods(Object testClassInst,
+    private static boolean runAfterMethods(Object testClassInst,
             String methodName, String thrownClassName) {
         
         return runBeforeAfterMethods(testClassInst, methodName, "after",
                 thrownClassName);
     }
 
-    public static OOPResult runSingleTestMethod(Method method,
+    private static OOPResult runSingleTestMethod(Method method,
             Object testClassInst) {
 
         OOPExpectedException expectedException = null;
@@ -506,7 +501,7 @@ public class OOPUnitCore {
 //                      PRIVATE - Objects Equality
 //-----------------------------------------------------------------------------
 
-    public static boolean overridedsMethod(Object o, Method m) {
+    private static boolean overridedsMethod(Object o, Method m) {
 
         /* a null object cannot have any method */
         if (o == null)
@@ -518,7 +513,7 @@ public class OOPUnitCore {
         return false;
     }
 
-    public static void assertEqualsAux(Object o1, Object o2, Class<?> c)
+    private static void assertEqualsAux(Object o1, Object o2, Class<?> c)
             throws OOPAssertionFailure {
 
         /* if we reached Object superClass then return */
@@ -569,7 +564,7 @@ public class OOPUnitCore {
 //                          PRIVATE - runClassAux 
 //-----------------------------------------------------------------------------
 
-    public static OOPTestSummary runClassAux(Class<?> testClass, String tag,
+    private static OOPTestSummary runClassAux(Class<?> testClass, String tag,
             boolean useTag) throws IllegalArgumentException {
 
         /* check that the class isn't null */
@@ -592,7 +587,6 @@ public class OOPUnitCore {
                     new Exception().getStackTrace()[0].getLineNumber());
         }
 
-        //FIXME: update according to ophir's answer
         /* run all the methods annotated with @OOPSetup */
         runSetupMethods(testClassInst);
 
@@ -678,7 +672,6 @@ public class OOPUnitCore {
         return runClassAux(testClass, null, false);
     }
 
-    //FIXME: remove all the catch printing errors
     public static OOPTestSummary runClass(Class<?> testClass, String tag)
             throws IllegalArgumentException {
 

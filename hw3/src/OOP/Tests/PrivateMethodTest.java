@@ -108,23 +108,23 @@ public class PrivateMethodTest {
     public static void main(String[] args) throws Exception {
         
         //testBackupRecoverInst();
-        testGetExcpectedException();
+        //testGetExcpectedException();
         //testGetOrderedMethods();
     }
 
-    private static void testGetExcpectedException() throws Exception {
+    //private static void testGetExcpectedException() throws Exception {
 
-        Object testClassInst1 = null;
-        Object testClassInst2 = null;
-        try {
-            testClassInst1 = ExampleClass1.class.getConstructor().newInstance();
-            testClassInst2 = ExampleClass2.class.getConstructor().newInstance();
-        }
-        catch (Exception e) {}
+    //    Object testClassInst1 = null;
+    //    Object testClassInst2 = null;
+    //    try {
+    //        testClassInst1 = ExampleClass1.class.getConstructor().newInstance();
+    //        testClassInst2 = ExampleClass2.class.getConstructor().newInstance();
+    //    }
+    //    catch (Exception e) {}
 
-        Checker.check(OOPUnitCore.getExpectedException(testClassInst2) == null);
-        Checker.check(OOPUnitCore.getExpectedException(testClassInst1) != null);
-    }
+    //    Checker.check(OOPUnitCore.getExpectedException(testClassInst2) == null);
+    //    Checker.check(OOPUnitCore.getExpectedException(testClassInst1) != null);
+    //}
 
     //private static void testGetOrderedMethods() throws Exception {
 
