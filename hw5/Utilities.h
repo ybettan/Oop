@@ -16,7 +16,7 @@ struct Int {
 //                                 List
 //-----------------------------------------------------------------------------
 
-/* an empty list support only size, FIXME: realy */
+/* an empty list support only size */
 template <typename ...TT>
 struct List {
     constexpr static int size = sizeof...(TT);
@@ -43,7 +43,32 @@ struct PrependList<T, List<TT...>> {
 };
 
 
+//-----------------------------------------------------------------------------
+//                                ListGet
+//-----------------------------------------------------------------------------
 
+//FIXME: can we assume an empty list won't be an argument? 
+template <int, typename ...>
+struct ListGet;
+
+template <int N, typename T, typename ...TT>
+struct ListGet<N, List<T, TT...>> {
+    typedef typename ListGet<N-1, List<TT...>>::value value;
+};
+
+/* stoppping condition.
+ * in addition, if the list is of size=1 then the only valid index is 0 */
+template <typename T, typename ...TT>
+struct ListGet<0, List<T, TT...>> {
+    typedef T value;
+};
 
 
 #endif //UTILITIES_H
+
+
+
+
+
+
+

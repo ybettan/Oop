@@ -76,7 +76,7 @@ int main() {
     DOUBLE d = 3.14;
 
 //-----------------------------------------------------------------------------
-//                             test List<>
+//                         test PrependList<>
 //-----------------------------------------------------------------------------
 
     typedef PrependList<Int<7>, List<Int<8>, Int<9>, Int<10>>> prependedList1;
@@ -96,6 +96,30 @@ int main() {
     static_assert(prependedList2::list::size == 1);
     static_assert(prependedList2::list::next::size == 0);
     static_assert(prependedList2::list::head::value == 11);
+
+
+//-----------------------------------------------------------------------------
+//                            test ListGet<>
+//-----------------------------------------------------------------------------
+    
+    typedef List<Int<1>, Int<2>, Int<3>> intList;
+
+    static_assert(ListGet<0, intList>::value::value == 1);
+    static_assert(ListGet<1, intList>::value::value == 2);
+    static_assert(ListGet<2, intList>::value::value == 3);
+
+    typedef List<int, char> typeList;
+
+    typedef ListGet<0, typeList>::value INT2;
+    typedef ListGet<1, typeList>::value CHAR2;
+
+    INT2 i2 = 4;
+    CHAR2 c2 = 'p';
+
+    //FIXME: do we need to check this?
+    typedef List<> emptyList;
+
+
 
 
 
