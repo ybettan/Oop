@@ -120,9 +120,52 @@ int main() {
     typedef List<> emptyList;
 
 
+//-----------------------------------------------------------------------------
+//                            test ListGet<>
+//-----------------------------------------------------------------------------
 
+    //intList =  List<Int<1>, Int<2>, Int<3>>
+    typedef typename ListSet<0, Int<8>, intList>::list replacedList1;
 
+    static_assert(replacedList1::size == 3);
+    static_assert(ListGet<0, replacedList1>::value::value == 8);
+    static_assert(ListGet<1, replacedList1>::value::value == 2);
+    static_assert(ListGet<2, replacedList1>::value::value == 3);
 
+    //intList =  List<Int<1>, Int<2>, Int<3>>
+    typedef typename ListSet<1, Int<9>, intList>::list replacedList2;
+
+    static_assert(replacedList2::size == 3);
+    static_assert(ListGet<0, replacedList2>::value::value == 1);
+    static_assert(ListGet<1, replacedList2>::value::value == 9);
+    static_assert(ListGet<2, replacedList2>::value::value == 3);
+
+    //intList =  List<Int<1>, Int<2>, Int<3>>
+    typedef typename ListSet<2, Int<10>, intList>::list replacedList3;
+
+    static_assert(replacedList3::size == 3);
+    static_assert(ListGet<0, replacedList3>::value::value == 1);
+    static_assert(ListGet<1, replacedList3>::value::value == 2);
+    static_assert(ListGet<2, replacedList3>::value::value == 10);
+
+    //typeList = List<int, char>
+    typedef typename ListSet<0, bool, typeList>::list replacedList4;
+
+    static_assert(replacedList4::size == 2);
+    typedef ListGet<0, replacedList4>::value BOOL3 ;
+    typedef ListGet<1, replacedList4>::value CHAR3 ;
+
+    BOOL3 b3 = false;
+    CHAR3 c3 = 'k';
+
+    typedef typename ListSet<1, double, typeList>::list replacedList5;
+
+    static_assert(replacedList5::size == 2);
+    typedef ListGet<0, replacedList5>::value INT4 ;
+    typedef ListGet<1, replacedList5>::value DOUBLE4 ;
+
+    INT4 i4 = 8;
+    DOUBLE4 d4 = 5.99;
 }
 
 

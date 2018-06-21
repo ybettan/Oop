@@ -64,6 +64,33 @@ struct ListGet<0, List<T, TT...>> {
 };
 
 
+//-----------------------------------------------------------------------------
+//                                ListSet
+//-----------------------------------------------------------------------------
+
+//FIXME: can we assume an empty list won't be an argument? 
+template <int, typename, typename...>
+struct ListSet;
+
+template <int N, typename T, typename ListHead, typename ...ListTail>
+struct ListSet<N, T, List<ListHead, ListTail...>> {
+    typedef typename PrependList<
+        ListHead, typename ListSet<N-1, T, List<ListTail...>>::list
+        >::list list;
+};
+
+/* stoppping condition.
+ * in addition, if the list is of size=1 then the only valid index is 0 */
+template <typename T, typename ListHead, typename ...ListTail>
+struct ListSet<0, T, List<ListHead, ListTail...>> {
+    typedef typename PrependList<T, List<ListTail...>>::list list;
+};
+
+
+
+
+
+
 #endif //UTILITIES_H
 
 
