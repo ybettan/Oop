@@ -47,7 +47,6 @@ struct PrependList<T, List<TT...>> {
 //                                ListGet
 //-----------------------------------------------------------------------------
 
-//FIXME: can we assume an empty list won't be an argument? 
 template <int, typename ...>
 struct ListGet;
 
@@ -68,7 +67,6 @@ struct ListGet<0, List<T, TT...>> {
 //                                ListSet
 //-----------------------------------------------------------------------------
 
-//FIXME: can we assume an empty list won't be an argument? 
 template <int, typename, typename...>
 struct ListSet;
 

@@ -116,12 +116,9 @@ int main() {
     INT2 i2 = 4;
     CHAR2 c2 = 'p';
 
-    //FIXME: do we need to check this?
-    typedef List<> emptyList;
-
 
 //-----------------------------------------------------------------------------
-//                            test ListGet<>
+//                            test ListSet<>
 //-----------------------------------------------------------------------------
 
     //intList =  List<Int<1>, Int<2>, Int<3>>
