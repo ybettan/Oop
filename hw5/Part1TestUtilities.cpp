@@ -129,6 +129,10 @@ int main() {
     static_assert(ListGet<1, replacedList1>::value::value == 2);
     static_assert(ListGet<2, replacedList1>::value::value == 3);
 
+    static_assert(ListGet<0, intList>::value::value == 1);
+    static_assert(ListGet<1, intList>::value::value == 2);
+    static_assert(ListGet<2, intList>::value::value == 3);
+
     //intList =  List<Int<1>, Int<2>, Int<3>>
     typedef typename ListSet<1, Int<9>, intList>::list replacedList2;
 
@@ -165,61 +169,31 @@ int main() {
     DOUBLE4 d4 = 5.99;
 
 //-----------------------------------------------------------------------------
-//                            test AddInt
+//                            test MatrixGet<>
 //-----------------------------------------------------------------------------
 
-    static_assert(AddInt<Int<3>, Int<5>>::result::value == 8);
-    static_assert(AddInt<Int<0>, Int<0>>::result::value == 0);
-    static_assert(AddInt<Int<-3>, Int<3>>::result::value == 0);
-    static_assert(AddInt<Int<0>, Int<5>>::result::value == 5);
-    static_assert(AddInt<Int<-5>, Int<-3>>::result::value == -8);
-    static_assert(AddInt<Int<15>, Int<5>>::result::value == 20);
+    typedef List<List<Int<1>, Int<2>, Int<3>>,
+                 List<Int<4>, Int<5>, Int<6>>> m23;
+
+    static_assert(MatrixGet<0, 0, m23>::value::value == 1);
+    static_assert(MatrixGet<0, 1, m23>::value::value == 2);
+    static_assert(MatrixGet<0, 2, m23>::value::value == 3);
+    static_assert(MatrixGet<1, 0, m23>::value::value == 4);
+    static_assert(MatrixGet<1, 1, m23>::value::value == 5);
+    static_assert(MatrixGet<1, 2, m23>::value::value == 6);
 
 //-----------------------------------------------------------------------------
-//                            test AddList
+//                            test MatrixSet<>
 //-----------------------------------------------------------------------------
 
-    typedef typename AddList<List<Int<0>, Int<1>, Int<2>>,
-                             List<Int<1>, Int<1>, Int<1>>>::result sumList;
+    typedef typename MatrixSet<1, 1, Int<8>, m23>::matrix newMat;
 
-    static_assert(sumList::size == 3);
-    static_assert(ListGet<0, sumList>::value::value == 1);
-    static_assert(ListGet<1, sumList>::value::value == 2);
-    static_assert(ListGet<2, sumList>::value::value == 3);
-
-    typedef typename AddList<List<Int<8>>, List<Int<1>>>::result sumList2;
-
-    static_assert(sumList2::size == 1);
-    static_assert(ListGet<0, sumList2>::value::value == 9);
-
-
-//-----------------------------------------------------------------------------
-//                            test Add
-//-----------------------------------------------------------------------------
-
-    typedef List<
-                    List<Int<1>, Int<2>, Int<3>>,
-                    List<Int<4>, Int<5>, Int<6>>,
-                    List<Int<7>, Int<8>, Int<9>>
-                > m1;
-
-    typedef List<
-                    List<Int<1>, Int<1>, Int<1>>,
-                    List<Int<1>, Int<1>, Int<1>>,
-                    List<Int<1>, Int<1>, Int<1>>
-                > m2;
-
-    typedef typename Add<m1, m2>::result sumMatrix;
-
-    static_assert(ListGet<0, typename ListGet<0, sumMatrix>::value>::value::value == 2);
-    static_assert(ListGet<1, typename ListGet<0, sumMatrix>::value>::value::value == 3);
-    static_assert(ListGet<2, typename ListGet<0, sumMatrix>::value>::value::value == 4);
-    static_assert(ListGet<0, typename ListGet<1, sumMatrix>::value>::value::value == 5);
-    static_assert(ListGet<1, typename ListGet<1, sumMatrix>::value>::value::value == 6);
-    static_assert(ListGet<2, typename ListGet<1, sumMatrix>::value>::value::value == 7);
-    static_assert(ListGet<0, typename ListGet<2, sumMatrix>::value>::value::value == 8);
-    static_assert(ListGet<1, typename ListGet<2, sumMatrix>::value>::value::value == 9);
-    static_assert(ListGet<2, typename ListGet<2, sumMatrix>::value>::value::value == 10);
+    static_assert(MatrixGet<0, 0, newMat>::value::value == 1);
+    static_assert(MatrixGet<0, 1, newMat>::value::value == 2);
+    static_assert(MatrixGet<0, 2, newMat>::value::value == 3);
+    static_assert(MatrixGet<1, 0, newMat>::value::value == 4);
+    static_assert(MatrixGet<1, 1, newMat>::value::value == 8);
+    static_assert(MatrixGet<1, 2, newMat>::value::value == 6);
 
 }
 
