@@ -163,6 +163,64 @@ int main() {
 
     INT4 i4 = 8;
     DOUBLE4 d4 = 5.99;
+
+//-----------------------------------------------------------------------------
+//                            test AddInt
+//-----------------------------------------------------------------------------
+
+    static_assert(AddInt<Int<3>, Int<5>>::result::value == 8);
+    static_assert(AddInt<Int<0>, Int<0>>::result::value == 0);
+    static_assert(AddInt<Int<-3>, Int<3>>::result::value == 0);
+    static_assert(AddInt<Int<0>, Int<5>>::result::value == 5);
+    static_assert(AddInt<Int<-5>, Int<-3>>::result::value == -8);
+    static_assert(AddInt<Int<15>, Int<5>>::result::value == 20);
+
+//-----------------------------------------------------------------------------
+//                            test AddList
+//-----------------------------------------------------------------------------
+
+    typedef typename AddList<List<Int<0>, Int<1>, Int<2>>,
+                             List<Int<1>, Int<1>, Int<1>>>::result sumList;
+
+    static_assert(sumList::size == 3);
+    static_assert(ListGet<0, sumList>::value::value == 1);
+    static_assert(ListGet<1, sumList>::value::value == 2);
+    static_assert(ListGet<2, sumList>::value::value == 3);
+
+    typedef typename AddList<List<Int<8>>, List<Int<1>>>::result sumList2;
+
+    static_assert(sumList2::size == 1);
+    static_assert(ListGet<0, sumList2>::value::value == 9);
+
+
+//-----------------------------------------------------------------------------
+//                            test Add
+//-----------------------------------------------------------------------------
+
+    typedef List<
+                    List<Int<1>, Int<2>, Int<3>>,
+                    List<Int<4>, Int<5>, Int<6>>,
+                    List<Int<7>, Int<8>, Int<9>>
+                > m1;
+
+    typedef List<
+                    List<Int<1>, Int<1>, Int<1>>,
+                    List<Int<1>, Int<1>, Int<1>>,
+                    List<Int<1>, Int<1>, Int<1>>
+                > m2;
+
+    typedef typename Add<m1, m2>::result sumMatrix;
+
+    static_assert(ListGet<0, typename ListGet<0, sumMatrix>::value>::value::value == 2);
+    static_assert(ListGet<1, typename ListGet<0, sumMatrix>::value>::value::value == 3);
+    static_assert(ListGet<2, typename ListGet<0, sumMatrix>::value>::value::value == 4);
+    static_assert(ListGet<0, typename ListGet<1, sumMatrix>::value>::value::value == 5);
+    static_assert(ListGet<1, typename ListGet<1, sumMatrix>::value>::value::value == 6);
+    static_assert(ListGet<2, typename ListGet<1, sumMatrix>::value>::value::value == 7);
+    static_assert(ListGet<0, typename ListGet<2, sumMatrix>::value>::value::value == 8);
+    static_assert(ListGet<1, typename ListGet<2, sumMatrix>::value>::value::value == 9);
+    static_assert(ListGet<2, typename ListGet<2, sumMatrix>::value>::value::value == 10);
+
 }
 
 

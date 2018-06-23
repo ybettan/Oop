@@ -2,15 +2,6 @@
 #define UTILITIES_H
 
 
-//-----------------------------------------------------------------------------
-//                                   Int
-//-----------------------------------------------------------------------------
-
-template <int N>
-struct Int {
-    constexpr static int value = N;
-};
-
 
 //-----------------------------------------------------------------------------
 //                                 List
@@ -85,8 +76,55 @@ struct ListSet<0, T, List<ListHead, ListTail...>> {
 };
 
 
+//-----------------------------------------------------------------------------
+//                                   Int
+//-----------------------------------------------------------------------------
+
+template <int N>
+struct Int {
+    constexpr static int value = N;
+};
 
 
+//-----------------------------------------------------------------------------
+//                                   Add
+//-----------------------------------------------------------------------------
+
+/* AddInt */
+template <typename T1, typename T2>
+struct AddInt {
+    typedef Int<T1::value + T2::value> result;
+};
+
+/* AddList */
+template <typename L1, typename L2>
+struct AddList {
+    static_assert(L1::size == L2::size);
+    typedef typename PrependList<
+        typename AddInt<typename L1::head, typename L2::head>::result,
+        typename AddList<typename L1::next, typename L2::next>::result
+        >::list result;
+};
+
+template <typename T1, typename T2>
+struct AddList<List<T1>, List<T2>> {
+    typedef List<typename AddInt<T1, T2>::result> result;
+};
+
+/* Add */
+template <typename M1, typename M2>
+struct Add {
+    static_assert(M1::size == M2::size);
+    typedef typename PrependList<
+        typename AddList<typename M1::head, typename M2::head>::result,
+        typename Add<typename M1::next, typename M2::next>::result
+        >::list result;
+};
+
+template <typename L1, typename L2>
+struct Add<List<L1>, List<L2>> {
+    typedef List<typename AddList<L1, L2>::result> result;
+};
 
 
 #endif //UTILITIES_H
