@@ -52,8 +52,8 @@ struct AddAux<M1, M2, 0, 0> {
 /* Add */
 template <typename M1, typename M2>
 struct Add {
-    static_assert(M1::size == M2::size);
-    static_assert(M1::head::size == M2::head::size);
+    static_assert(M1::size == M2::size, "Matrix sizes doesn't match");
+    static_assert(M1::head::size == M2::head::size, "Matrix sizes doesn't match");
   private:
     constexpr static int numRow = M1::size;
     constexpr static int numCol = M1::head::size;
@@ -156,7 +156,7 @@ struct MultiplyAux<M1, M2T, 0, 0> {
 /* Multiply */
 template <typename M1, typename M2>
 struct Multiply {
-    static_assert(M1::head::size == M2::size);
+    static_assert(M1::head::size == M2::size, "Matrix sizes doesn't match");
   private:
     constexpr static int numRow = M1::size;
     constexpr static int numCol = M2::head::size;

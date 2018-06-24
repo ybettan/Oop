@@ -52,9 +52,9 @@ int main() {
 	//			List< Int<16>, Int<7> >,
 	//			List< Int<8>, Int<0> >
 	//		  >
-	//typedef typename Multiply<matrix12, matrix22>::result matrix32; 
-	//															 
-	//static_assert(matrix32::head::head::value == 16, "Failed");														 
+	typedef typename Multiply<matrix12, matrix22>::result matrix32; 
+																 
+	static_assert(matrix32::head::head::value == 16, "Failed");														 
 
 	std::cout << "Passed" << std::endl;
 }
