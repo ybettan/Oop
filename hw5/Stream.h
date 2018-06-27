@@ -25,6 +25,11 @@ template <typename T>
 class Stream {
 
   private:
+
+    typedef void (*ForEachFunc)(const T*);
+    typedef T* (*ReduceFunc)(const T*, const T*);
+    typedef bool (*Predicate)(const T*);
+
     vector<T*> elements;
     function<vector<T*>()> activationFunctions;
 
@@ -33,6 +38,15 @@ class Stream {
     Stream(vector<T*> v) :
         elements(v),
         activationFunctions([this]() {return elements;}) {}
+    
+
+    T* reduceAux(T *initial, ReduceFunc func, vector<T*>& vec, int vecSize) {
+
+        if (vecSize == 1)
+            return func(initial, vec[0]);
+
+        return func(vec[vecSize-1], reduceAux(initial, func, vec, vecSize-1));
+    }
 
 
   public:
@@ -46,6 +60,7 @@ class Stream {
 
         return Stream<T>(ePtrVec);
     }
+
 
     /* overload the method for map containers */
     template <typename K, typename V>
@@ -67,6 +82,75 @@ class Stream {
         TContainer resContainer(resVec.begin(), resVec.end());
 
         return resContainer;
+    }
+
+
+    void forEach(ForEachFunc func) {
+
+        vector<T*> resVec = activationFunctions();
+        for_each(resVec.begin(), resVec.end(), func);
+    }
+
+
+    T* reduce(T *initial, ReduceFunc func) {
+
+        vector<T*> resVec = activationFunctions();
+        return reduceAux(initial, func, resVec, resVec.size());
+    }
+
+
+    T* min() {
+
+        vector<T*> resVec = activationFunctions();
+        T *res = resVec[0];
+        for (int i=1 ; i<resVec.size() ; i++) {
+            if (*resVec[i] < *res)
+                res = resVec[i];
+        }
+
+        return res;
+    }
+
+
+    T* max() {
+
+        vector<T*> resVec = activationFunctions();
+        T *res = resVec[0];
+        for (int i=1 ; i<resVec.size() ; i++) {
+            if (*resVec[i] > *res)
+                res = resVec[i];
+        }
+
+        return res;
+    }
+
+    
+    int count() {
+
+        vector<T*> resVec = activationFunctions();
+        return resVec.size();
+    }
+
+
+    bool anyMatch(Predicate pred) {
+
+        vector<T*> resVec = activationFunctions();
+        return std::any_of(resVec.begin(), resVec.end(), pred);
+    }
+
+
+    bool allMatch(Predicate pred) {
+
+        vector<T*> resVec = activationFunctions();
+        return std::all_of(resVec.begin(), resVec.end(), pred);
+    }
+
+
+    T* findFirst(Predicate pred) {
+
+        vector<T*> resVec = activationFunctions();
+        auto findRes = std::find_if(resVec.begin(), resVec.end(), pred);
+        return (findRes == resVec.end()) ? nullptr : *findRes;
     }
 
 
