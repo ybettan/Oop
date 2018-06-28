@@ -27,8 +27,11 @@ class Stream {
   private:
 
     typedef void (*ForEachFunc)(const T*);
-    typedef T* (*ReduceFunc)(const T*, const T*);
     typedef bool (*Predicate)(const T*);
+    typedef bool (*CompareFunc)(const T*, const T*);
+    typedef bool (*IsFirstSmallerFunc)(const T*, const T*);
+    typedef T* (*ReduceFunc)(const T*, const T*);
+    typedef R* (*MappingFunc)(const T*);
 
     vector<T*> elements;
     function<vector<T*>()> activationFunctions;
@@ -72,6 +75,94 @@ class Stream {
             ePtrVec.push_back(iter->second);
 
         return Stream<T>(ePtrVec);
+    }
+
+
+    Stream<T> filter(Predicate pred) {
+
+        /* keep the old activation function */
+        function<vector<T*>()> oldActivationFunctions = activationFunctions;
+
+        /* save the new activation function */
+        activationFunctions = [this, oldActivationFunctions, pred]() {
+
+            /* when activated the function first activate all previous actions */
+            oldActivationFunctions();
+
+            /* filter the vector */
+            vector<T*> tmp(elements.size());
+            auto lastIter = std::copy_if(elements.begin(), elements.end(), tmp.begin(), pred);
+            tmp.erase(lastIter, tmp.end());
+            elements = tmp;
+            return elements;
+        };
+
+        return *this;
+    }
+
+
+    template <typename R>
+    Stream<T> map(MappingFunc mappingFunc) {
+
+    }
+
+
+    Stream<T> distinct(CompareFunc comp) {
+
+        /* keep the old activation function */
+        function<vector<T*>()> oldActivationFunctions = activationFunctions;
+
+        /* save the new activation function */
+        activationFunctions = [this, oldActivationFunctions, comp]() {
+
+            /* when activated the function first activate all previous actions */
+            oldActivationFunctions();
+
+            /* distinct the vector */
+            std::sort(elements.begin(), elements.end(),
+                    [](const T *t1, const T *t2) {return *t1 < *t2;});
+            auto lastIter = std::unique(elements.begin(), elements.end(), comp);
+            elements.erase(lastIter, elements.end());
+
+            return elements;
+        };
+
+        return *this;
+    }
+
+
+    /* distinct with the default operator== of T (not T*) */
+    Stream<T> distinct() {
+
+        return distinct([](const T *t1, const T *t2) {return *t1 == *t2;});
+    }
+    
+
+    Stream<T> sorted(IsFirstSmallerFunc isFirstSmaller) {
+
+        /* keep the old activation function */
+        function<vector<T*>()> oldActivationFunctions = activationFunctions;
+
+        /* save the new activation function */
+        activationFunctions = [this, oldActivationFunctions, isFirstSmaller]() {
+
+            /* when activated the function first activate all previous actions */
+            oldActivationFunctions();
+
+            /* sort the vector */
+            std::sort(elements.begin(), elements.end(), isFirstSmaller);
+
+            return elements;
+        };
+
+        return *this;
+    }
+
+
+    /* sorted with the default operator< of T (not T*) */
+    Stream<T> sorted() {
+
+        return sorted([](const T *t1, const T *t2) {return *t1 < *t2;});
     }
 
 

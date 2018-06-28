@@ -5,7 +5,7 @@
 #include <set>
 #include <list>
 #include <stack>
-#include <queue>
+#include <deque>
 
 using namespace std;
 
@@ -38,6 +38,8 @@ void testCollect() {
     assert(resSet.find(&b) != resSet.end());
     assert(resSet.find(&c) != resSet.end());
     assert(resSet.find(&d) == resSet.end());
+
+    cout << "collect test: [PASSED]" << endl;
 }
 
 template <typename T>
@@ -53,6 +55,7 @@ void testForEach() {
         intPtrVec.push_back(intArr + i);
     }
 
+    vector<int> resIntVec;
     Stream<int>::of(intPtrVec).forEach(printT);
 
     char charArr[2] = {'a', 'b'};
@@ -131,6 +134,8 @@ void testReduce() {
     initialDouble = 50;
     resDouble = Stream<double>::of(myMap).reduce(&initialDouble, max);
     assert(*resDouble == 50);
+
+    cout << "reduce test: [PASSED]" << endl;
 }
 
 void testMinMax() {
@@ -168,6 +173,7 @@ void testMinMax() {
     assert(*minDouble == 10.2);
     assert(*maxDouble == 30.2);
 
+    cout << "min and max tests: [PASSED]" << endl;
 }
 
 void testCount() {
@@ -199,6 +205,7 @@ void testCount() {
     res = Stream<double>::of(myMap).count();
     assert(res == 3);
 
+    cout << "count test: [PASSED]" << endl;
 }
 
 void testAnyAllMatch() {
@@ -234,6 +241,7 @@ void testAnyAllMatch() {
     res = Stream<double>::of(myMap).anyMatch([](const double *a) {return *a < 2;});
     assert(res == false);
 
+    cout << "allMatch and anyMatch tests: [PASSED]" << endl;
 }
 
 void testFindFirst() {
@@ -272,18 +280,159 @@ void testFindFirst() {
         Stream<double>::of(myMap).findFirst([](const double *e) {return *e == 10.2;});
     assert(resDouble == myMap['a']);
 
+    cout << "findFirst test: [PASSED]" << endl;
+}
 
+void testFilter() {
+
+    int intArr[7] = {7, 2, 4, 3, 2, 5, 1};
+    vector<int*> intPtrVec;
+    for (int i=0 ; i<7 ; i++) {
+        intPtrVec.push_back(intArr + i);
+    }
+
+    vector<int*> resIntPtrVec = Stream<int>::of(intPtrVec)
+                    .filter([](const int *x) {return *x % 2 == 0;})
+                    .collect<vector<int*>>();
+    assert(resIntPtrVec.size() == 3);
+    assert(*resIntPtrVec[0] == 2);
+    assert(*resIntPtrVec[1] == 4);
+    assert(*resIntPtrVec[2] == 2);
+
+    char charArr[4] = {'a', 'c' , 'd', 'b'};
+    vector<char*> charPtrVec;
+    for (int i=0 ; i<4 ; i++) {
+        charPtrVec.push_back(charArr + i);
+    }
+
+    set<char*> resCharPtrSet = Stream<char>::of(charPtrVec)
+                    .filter([](const char *c) {return *c == 'd';})
+                    .collect<set<char*>>();
+    assert(resCharPtrSet.size() == 1);
+    assert(resCharPtrSet.find(charPtrVec[2]) != resCharPtrSet.end());
+    assert(resCharPtrSet.find(charPtrVec[1]) == resCharPtrSet.end());
+
+    map<char,double*> myMap;
+    double a = 10.2, b = 20.2, c = 30.2, d = 40.2;
+    myMap['a'] = &a;
+    myMap['b'] = &b;
+    myMap['c'] = &c;
+
+    deque<double*> resIntPtrDeque = Stream<double>::of(myMap)
+                    .filter([](const double *d) {return *d > 15;})
+                    .collect<deque<double*>>();
+    assert(resIntPtrDeque.size() == 2);
+    assert(*resIntPtrDeque.front() == 20.2); resIntPtrDeque.pop_front();
+    assert(*resIntPtrDeque.front() == 30.2); resIntPtrDeque.pop_front();
+    assert(resIntPtrDeque.size() == 0);
+
+    cout << "filter test: [PASSED]" << endl;
+}
+
+void testDistinct() {
+
+    int intArr[7] = {7, 2, 4, 3, 2, 5, 1};
+    vector<int*> intPtrVec;
+    for (int i=0 ; i<7 ; i++) {
+        intPtrVec.push_back(intArr + i);
+    }
+
+    vector<int*> resIntPtrVec = Stream<int>::of(intPtrVec)
+                    .distinct()
+                    .collect<vector<int*>>();
+    assert(resIntPtrVec.size() == 6);
+    std::sort(resIntPtrVec.begin(), resIntPtrVec.end(),
+            [](const int *x1, const int *x2) {return *x1 < *x2;});
+    assert(*resIntPtrVec[0] == 1);
+    assert(*resIntPtrVec[1] == 2);
+    assert(*resIntPtrVec[2] == 3);
+    assert(*resIntPtrVec[3] == 4);
+    assert(*resIntPtrVec[4] == 5);
+    assert(*resIntPtrVec[5] == 7);
+
+    char charArr[4] = {'a', 'c' , 'd', 'b'};
+    vector<char*> charPtrVec;
+    for (int i=0 ; i<4 ; i++) {
+        charPtrVec.push_back(charArr + i);
+    }
+
+    set<char*> resCharPtrSet = Stream<char>::of(charPtrVec)
+                    .distinct([](const char *c1, const char *c2) {return std::abs(*c1-*c2) <= 1;})
+                    .collect<set<char*>>();
+    assert(resCharPtrSet.size() == 2);
+    assert(resCharPtrSet.find(charPtrVec[0]) != resCharPtrSet.end());
+    assert(resCharPtrSet.find(charPtrVec[1]) != resCharPtrSet.end());
+    assert(resCharPtrSet.find(charPtrVec[2]) == resCharPtrSet.end());
+    assert(resCharPtrSet.find(charPtrVec[3]) == resCharPtrSet.end());
+
+    map<char,double*> myMap;
+    double a = 10.2, b = 20.2, c = 30.2, d = 40.2;
+    myMap['a'] = &a;
+    myMap['b'] = &b;
+    myMap['c'] = &c;
+
+    deque<double*> resIntPtrDeque = Stream<double>::of(myMap)
+                    .distinct()
+                    .collect<deque<double*>>();
+    assert(resIntPtrDeque.size() == 3);
+    assert(*resIntPtrDeque.front() == 10.2); resIntPtrDeque.pop_front();
+    assert(*resIntPtrDeque.front() == 20.2); resIntPtrDeque.pop_front();
+    assert(*resIntPtrDeque.front() == 30.2); resIntPtrDeque.pop_front();
+    assert(resIntPtrDeque.size() == 0);
+
+    cout << "distinct test: [PASSED]" << endl;
+}
+
+void testSorted() {
+
+    int intArr[7] = {7, 2, 4, 3, 2, 5, 1};
+    vector<int*> intPtrVec;
+    for (int i=0 ; i<7 ; i++) {
+        intPtrVec.push_back(intArr + i);
+    }
+
+    vector<int*> resIntPtrVec = Stream<int>::of(intPtrVec)
+                    .sorted()
+                    .collect<vector<int*>>();
+    assert(resIntPtrVec.size() == 7);
+    assert(*resIntPtrVec[0] == 1);
+    assert(*resIntPtrVec[1] == 2);
+    assert(*resIntPtrVec[2] == 2);
+    assert(*resIntPtrVec[3] == 3);
+    assert(*resIntPtrVec[4] == 4);
+    assert(*resIntPtrVec[5] == 5);
+    assert(*resIntPtrVec[6] == 7);
+
+    char charArr[4] = {'a', 'c' , 'd', 'b'};
+    vector<char*> charPtrVec;
+    for (int i=0 ; i<4 ; i++) {
+        charPtrVec.push_back(charArr + i);
+    }
+
+    vector<char*> resCharPtrVec = Stream<char>::of(charPtrVec)
+                    .sorted([](const char *c1, const char *c2) {return *c2 < *c1;})
+                    .collect<vector<char*>>();
+    assert(resCharPtrVec.size() == 4);
+    assert(*resCharPtrVec[0] == 'd');
+    assert(*resCharPtrVec[1] == 'c');
+    assert(*resCharPtrVec[2] == 'b');
+    assert(*resCharPtrVec[3] == 'a');
+
+    cout << "sorted test: [PASSED]" << endl;
 }
 
 int main() {
 
     testCollect();
-    testForEach();
+    //testForEach();
     testReduce();
     testMinMax();
     testCount();
     testAnyAllMatch();
     testFindFirst();
+    testFilter();
+    testDistinct();
+    testSorted();
 }
 
 
