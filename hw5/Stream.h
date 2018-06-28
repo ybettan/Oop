@@ -31,7 +31,6 @@ class Stream {
     typedef bool (*CompareFunc)(const T*, const T*);
     typedef bool (*IsFirstSmallerFunc)(const T*, const T*);
     typedef T* (*ReduceFunc)(const T*, const T*);
-    typedef R* (*MappingFunc)(const T*);
 
     vector<T*> elements;
     function<vector<T*>()> activationFunctions;
@@ -78,7 +77,7 @@ class Stream {
     }
 
 
-    Stream<T> filter(Predicate pred) {
+    Stream<T>& filter(Predicate pred) {
 
         /* keep the old activation function */
         function<vector<T*>()> oldActivationFunctions = activationFunctions;
@@ -101,13 +100,7 @@ class Stream {
     }
 
 
-    template <typename R>
-    Stream<T> map(MappingFunc mappingFunc) {
-
-    }
-
-
-    Stream<T> distinct(CompareFunc comp) {
+    Stream<T>& distinct(CompareFunc comp) {
 
         /* keep the old activation function */
         function<vector<T*>()> oldActivationFunctions = activationFunctions;
@@ -132,13 +125,13 @@ class Stream {
 
 
     /* distinct with the default operator== of T (not T*) */
-    Stream<T> distinct() {
+    Stream<T>& distinct() {
 
         return distinct([](const T *t1, const T *t2) {return *t1 == *t2;});
     }
     
 
-    Stream<T> sorted(IsFirstSmallerFunc isFirstSmaller) {
+    Stream<T>& sorted(IsFirstSmallerFunc isFirstSmaller) {
 
         /* keep the old activation function */
         function<vector<T*>()> oldActivationFunctions = activationFunctions;
@@ -160,7 +153,7 @@ class Stream {
 
 
     /* sorted with the default operator< of T (not T*) */
-    Stream<T> sorted() {
+    Stream<T>& sorted() {
 
         return sorted([](const T *t1, const T *t2) {return *t1 < *t2;});
     }

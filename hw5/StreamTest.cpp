@@ -421,6 +421,28 @@ void testSorted() {
     cout << "sorted test: [PASSED]" << endl;
 }
 
+void testComplexStream() {
+
+    int intArr[7] = {4, 3, 4, 2, 2, 4, 4};
+    vector<int*> intPtrVec;
+    for (int i=0 ; i<7 ; i++) {
+        intPtrVec.push_back(intArr + i);
+    }
+
+    vector<int*> resIntPtrVec = Stream<int>::of(intPtrVec)
+                    .filter([](const int *x) {return (*x == 2) || (*x == 4);})
+                    .distinct()
+                    .sorted()
+                    .collect<vector<int*>>();
+    assert(resIntPtrVec.size() == 2);
+    std::sort(resIntPtrVec.begin(), resIntPtrVec.end(),
+            [](const int *x1, const int *x2) {return *x1 < *x2;});
+    assert(*resIntPtrVec[0] == 2);
+    assert(*resIntPtrVec[1] == 4);
+
+    cout << "complexStream test: [PASSED]" << endl;
+}
+
 int main() {
 
     testCollect();
@@ -433,6 +455,7 @@ int main() {
     testFilter();
     testDistinct();
     testSorted();
+    testComplexStream();
 }
 
 
