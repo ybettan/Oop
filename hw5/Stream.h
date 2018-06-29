@@ -6,11 +6,6 @@
 #include <vector>
 #include <map>
 
-//FIXME: remove when done
-#include <iostream>
-using std::cout;
-using std::endl;
-
 using std::function;
 using std::vector;
 using std::map;
