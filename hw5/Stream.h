@@ -24,10 +24,7 @@ using std::map;
 template <typename T>
 class Stream {
 
-  public:
-
-    /* private C'tor */
-    Stream() = default;
+  private:
 
     /* private C'tor */
     Stream(vector<T*> v) :
@@ -49,12 +46,24 @@ class Stream {
         return func(vec[vecSize-1], reduceAux(initial, func, vec, vecSize-1));
     }
 
+    bool contain(vector<T*>& vec, T *t, function<bool(const T*, const T*)> comp) {
+
+        for (T *e : vec) {
+            if (comp(e, t))
+                return true;
+        }
+        return false;
+    }
+
 
   public:
 
     /* public fields */
     vector<T*> elements;
     function<vector<T*>()> activationFunctions;
+
+    /* public default C'tor */
+    Stream() = default;
 
 
     /* TContainer is a Collection<T*> */
@@ -150,10 +159,12 @@ class Stream {
             oldActivationFunctions();
 
             /* distinct the vector */
-            std::sort(elements.begin(), elements.end(),
-                    [](const T *t1, const T *t2) {return *t1 < *t2;});
-            auto lastIter = std::unique(elements.begin(), elements.end(), comp);
-            elements.erase(lastIter, elements.end());
+            vector<T*> distinctVec;
+            for (T *e : elements) {
+                if(!contain(distinctVec, e, comp))
+                    distinctVec.push_back(e);
+            }
+            elements = distinctVec;
 
             return elements;
         };
@@ -207,7 +218,7 @@ class Stream {
     }
 
 
-    void forEach(function<void(const T*)> func) {
+    void forEach(function<void(T*)> func) {
 
         vector<T*> resVec = activationFunctions();
         for_each(resVec.begin(), resVec.end(), func);
@@ -239,7 +250,7 @@ class Stream {
         vector<T*> resVec = activationFunctions();
         T *res = resVec[0];
         for (int i=1 ; i<resVec.size() ; i++) {
-            if (*resVec[i] > *res)
+            if (!(*resVec[i] < *res) && !(*resVec[i] == *res))
                 res = resVec[i];
         }
 

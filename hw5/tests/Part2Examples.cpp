@@ -39,10 +39,12 @@ int main() {
     std::vector<int> other = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     assert(compareValues(Stream<int>::of(vector).distinct().sorted().collect<std::vector<int*>>(), other));
 
-    assert(Stream<int>::of(vector).map<Cell<int>>([](const int* a) { return new Cell<int>(*a); }).distinct().count() == 9);
+    assert(Stream<int>::of(vector).map<Cell<int>>([](const int* a)
+                { return new Cell<int>(*a); }).distinct().count() == 9);
 
     int initial = 0;
-    assert(*Stream<int>::of(vector).reduce(&initial, [](const int* a, const int* b) { auto * c = new int; *c = *a + *b; return c; }) == 47);
+    assert(*Stream<int>::of(vector).reduce(&initial, [](const int* a, const int* b)
+                { auto * c = new int; *c = *a + *b; return c; }) == 47);
 
     return 0;
 }
