@@ -49,6 +49,15 @@ echo ---------------------------------------------------------
 g++ -std=c++11 EranTest.cpp
 ./a.out
 
+echo ---------------------------------------------------------
+echo "                    Hadas Tests"
+echo ---------------------------------------------------------
+cd OOP5_Tests
+cd part1
+./OOP5_Part1_RunTest.sh
+cd ../part2
+./OOP5_Part2_RunTest.sh
+cd ../../
 
 
 rm a.out
