@@ -560,31 +560,31 @@ void testMap() {
     cout << "map test: [PASSED]" << endl;
 }
 
-void testLazyness() {
-
-    int intArr[7] = {4, 3, 4, 2, 2, 4, 4};
-    vector<int*> intPtrVec;
-    for (int i=0 ; i<7 ; i++) {
-        intPtrVec.push_back(intArr + i);
-    }
-
-    Stream<int> resIntStream = Stream<int>::of(intPtrVec)
-                    .filter([](const int *x) {return (*x == 2) || (*x == 4);})
-                    .distinct()
-                    .sorted();
-    assert(resIntStream.elements.size() == 7);
-    std::sort(resIntStream.elements.begin(), resIntStream.elements.end(),
-            [](const int *x1, const int *x2) {return *x1 < *x2;});
-    assert(*resIntStream.elements[0] == 2);
-    assert(*resIntStream.elements[1] == 2);
-    assert(*resIntStream.elements[2] == 3);
-    assert(*resIntStream.elements[3] == 4);
-    assert(*resIntStream.elements[4] == 4);
-    assert(*resIntStream.elements[5] == 4);
-    assert(*resIntStream.elements[6] == 4);
-
-    cout << "lazyness test: [PASSED]" << endl;
-}
+//void testLazyness() {
+//
+//    int intArr[7] = {4, 3, 4, 2, 2, 4, 4};
+//    vector<int*> intPtrVec;
+//    for (int i=0 ; i<7 ; i++) {
+//        intPtrVec.push_back(intArr + i);
+//    }
+//
+//    Stream<int> resIntStream = Stream<int>::of(intPtrVec)
+//                    .filter([](const int *x) {return (*x == 2) || (*x == 4);})
+//                    .distinct()
+//                    .sorted();
+//    assert(resIntStream.elements.size() == 7);
+//    std::sort(resIntStream.elements.begin(), resIntStream.elements.end(),
+//            [](const int *x1, const int *x2) {return *x1 < *x2;});
+//    assert(*resIntStream.elements[0] == 2);
+//    assert(*resIntStream.elements[1] == 2);
+//    assert(*resIntStream.elements[2] == 3);
+//    assert(*resIntStream.elements[3] == 4);
+//    assert(*resIntStream.elements[4] == 4);
+//    assert(*resIntStream.elements[5] == 4);
+//    assert(*resIntStream.elements[6] == 4);
+//
+//    cout << "lazyness test: [PASSED]" << endl;
+//}
 
 int main() {
 
@@ -600,7 +600,7 @@ int main() {
     testDistinct();
     testSorted();
     testComplexStream();
-    testLazyness();
+    //testLazyness();
 }
 
 

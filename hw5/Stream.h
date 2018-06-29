@@ -26,16 +26,8 @@ class Stream {
 
   private:
 
-    /* private C'tor */
-    Stream(vector<T*> v) :
-        elements(v),
-        activationFunctions([this]() {return elements;}) {}
+    function<vector<T*>()> activationFunc;
 
-    /* private C'tor */
-    Stream(vector<T*> v, vector<T*> (*firstActivationFunc)()) :
-        elements(v),
-        activationFunctions(firstActivationFunc) {}
-    
 
     T* reduceAux(T *initial, function<T*(const T*, const T*)> func,
             vector<T*>& vec, int vecSize) {
@@ -58,12 +50,8 @@ class Stream {
 
   public:
 
-    /* public fields */
-    vector<T*> elements;
-    function<vector<T*>()> activationFunctions;
-
-    /* public default C'tor */
-    Stream() = default;
+    /* public C'tor */
+    Stream(function<vector<T*>()> activationFunc) : activationFunc(activationFunc) {}
 
 
     /* TContainer is a Collection<T*> */
@@ -73,7 +61,10 @@ class Stream {
         /* copy the container into a vector */
         vector<T*> ePtrVec(container.begin(), container.end());
 
-        return Stream<T>(ePtrVec);
+        /* create the first function that simply reutrns the initial vector */
+        function<vector<T*>()> initialActivationFunc = [ePtrVec]() {return ePtrVec;};
+
+        return Stream<T>(initialActivationFunc);
     }
 
 
@@ -86,28 +77,31 @@ class Stream {
         for (auto iter=mapContainer.begin() ; iter!=mapContainer.end() ; iter++)
             ePtrVec.push_back(iter->second);
 
-        return Stream<T>(ePtrVec);
+        /* create the first function that simply reutrns the initial vector */
+        function<vector<T*>()> initialActivationFunc = [ePtrVec]() {return ePtrVec;};
+
+        return Stream<T>(initialActivationFunc);
     }
 
 
     Stream<T>& filter(function<bool(const T*)> pred) {
 
         /* keep the old activation function */
-        function<vector<T*>()> oldActivationFunctions = activationFunctions;
+        function<vector<T*>()> oldActivationFunc = activationFunc;
 
         /* save the new activation function */
-        activationFunctions = [this, oldActivationFunctions, pred]() {
+        activationFunc = [oldActivationFunc, pred]() {
 
-            /* when activated the function first activate all previous actions.
-             * each operation is changing elements field */
-            oldActivationFunctions();
+            /* when activated the function first activate all previous actions */
+            vector<T*> updatedElements = oldActivationFunc();
 
             /* filter the vector */
-            vector<T*> tmp(elements.size());
-            auto lastIter = std::copy_if(elements.begin(), elements.end(), tmp.begin(), pred);
+            vector<T*> tmp(updatedElements.size());
+            auto lastIter = std::copy_if(updatedElements.begin(),
+                    updatedElements.end(), tmp.begin(), pred);
             tmp.erase(lastIter, tmp.end());
-            elements = tmp;
-            return elements;
+            updatedElements = tmp;
+            return updatedElements;
         };
 
         return *this;
@@ -118,55 +112,48 @@ class Stream {
     Stream<R> map(function<R*(const T*)> mapFunc) {
 
         /* keep the old activation function */
-        function<vector<T*>()> oldActivationFunctions = activationFunctions;
-
-        /* this will be the stream result */
-        Stream<R> newStream;
+        function<vector<T*>()> oldActivationFunc = activationFunc;
 
         /* create the new activation function */
-        newStream.activationFunctions =
-            [this, oldActivationFunctions, &newStream, mapFunc]() {
+        function<vector<R*>()> newActivationFunc =
+            [oldActivationFunc, mapFunc]() {
 
                 /* when activated the function first activate all previous actions */
-                oldActivationFunctions();
+                vector<T*> updatedElements = oldActivationFunc();
 
-                /* allocate memory now in case previous actions has modified
-                 * elements len (for example if filter was activate) */
-                newStream.elements = vector<R*>(elements.size());
+                /* create a new vector to hold mapping result */
+                vector<R*> newUpdatedElements = vector<R*>(updatedElements.size());
+                std::transform(updatedElements.begin(), updatedElements.end(),
+                        newUpdatedElements.begin(), mapFunc);
 
-                /* map the vector and save the result at newStream.elements.
-                 * the implementation of map cannot change this->elements because
-                 * there may be from a different type after mapping */
-                std::transform(elements.begin(), elements.end(),
-                        newStream.elements.begin(), mapFunc);
-
-                return newStream.elements;
+                return newUpdatedElements;
             };
 
-        return newStream;
+        return Stream<R>(newActivationFunc);
     }
 
 
     Stream<T>& distinct(function<bool(const T*, const T*)> comp) {
 
         /* keep the old activation function */
-        function<vector<T*>()> oldActivationFunctions = activationFunctions;
+        function<vector<T*>()> oldActivationFunc = activationFunc;
 
-        /* save the new activation function */
-        activationFunctions = [this, oldActivationFunctions, comp]() {
+        /* save the new activation function.
+         * this is captured for contain method */
+        activationFunc = [this, oldActivationFunc, comp]() {
 
             /* when activated the function first activate all previous actions */
-            oldActivationFunctions();
+            vector<T*> updatedElements = oldActivationFunc();
 
             /* distinct the vector */
             vector<T*> distinctVec;
-            for (T *e : elements) {
+            for (T *e : updatedElements) {
                 if(!contain(distinctVec, e, comp))
                     distinctVec.push_back(e);
             }
-            elements = distinctVec;
+            updatedElements = distinctVec;
 
-            return elements;
+            return updatedElements;
         };
 
         return *this;
@@ -183,18 +170,18 @@ class Stream {
     Stream<T>& sorted(function<bool(const T*, const T*)> isFirstSmaller) {
 
         /* keep the old activation function */
-        function<vector<T*>()> oldActivationFunctions = activationFunctions;
+        function<vector<T*>()> oldActivationFunc = activationFunc;
 
         /* save the new activation function */
-        activationFunctions = [this, oldActivationFunctions, isFirstSmaller]() {
+        activationFunc = [oldActivationFunc, isFirstSmaller]() {
 
             /* when activated the function first activate all previous actions */
-            oldActivationFunctions();
+            vector<T*> updatedElements = oldActivationFunc();
 
             /* sort the vector */
-            std::sort(elements.begin(), elements.end(), isFirstSmaller);
+            std::sort(updatedElements.begin(), updatedElements.end(), isFirstSmaller);
 
-            return elements;
+            return updatedElements;
         };
 
         return *this;
@@ -211,7 +198,7 @@ class Stream {
     template <typename TContainer>
     TContainer collect() {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         TContainer resContainer(resVec.begin(), resVec.end());
 
         return resContainer;
@@ -220,21 +207,21 @@ class Stream {
 
     void forEach(function<void(T*)> func) {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         for_each(resVec.begin(), resVec.end(), func);
     }
 
 
     T* reduce(T *initial, function<T*(const T*, const T*)> func) {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         return reduceAux(initial, func, resVec, resVec.size());
     }
 
 
     T* min() {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         T *res = resVec[0];
         for (int i=1 ; i<resVec.size() ; i++) {
             if (*resVec[i] < *res)
@@ -247,7 +234,7 @@ class Stream {
 
     T* max() {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         T *res = resVec[0];
         for (int i=1 ; i<resVec.size() ; i++) {
             if (!(*resVec[i] < *res) && !(*resVec[i] == *res))
@@ -260,43 +247,32 @@ class Stream {
     
     int count() {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         return resVec.size();
     }
 
 
     bool anyMatch(function<bool(const T*)> pred) {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         return std::any_of(resVec.begin(), resVec.end(), pred);
     }
 
 
     bool allMatch(function<bool(const T*)> pred) {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         return std::all_of(resVec.begin(), resVec.end(), pred);
     }
 
 
     T* findFirst(function<bool(const T*)> pred) {
 
-        vector<T*> resVec = activationFunctions();
+        vector<T*> resVec = activationFunc();
         auto findRes = std::find_if(resVec.begin(), resVec.end(), pred);
         return (findRes == resVec.end()) ? nullptr : *findRes;
     }
 
-
-    //FIXME: remove when done
-    void printElements() {
-        cout << "{";
-        for (int i=0 ; i<elements.size() ; i++) {
-            if (i != elements.size() - 1)
-                cout << *elements[i] << ", ";
-            else
-                cout << *elements[i] << "}" << endl;
-        } 
-    }
 };
 
 

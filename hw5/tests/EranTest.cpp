@@ -3,6 +3,7 @@
 #include <cassert>
 #include <string>
 #include <list>
+#include <set>
 #include "Stream.h"
 
 using namespace std;
@@ -227,22 +228,18 @@ class TestClass{
                         { return new Pair<char,char>(t->getX().at(0),t->getY().at(0));})
                 .filter([](const Pair<char, char>* t){ return t->getY()==t->getX();}).distinct();
 
-            cout << "Stream.elements = {";
-            for (auto *x : result.elements)
-                cout << "(" << x->getX() << ", " << x->getY() << ")" << ", ";
-            cout << "}" << endl;
-
             assert(result.count()==2);
-            //assert(result.max()->getX()=='c');
-            //assert(result.min()->getY()=='a');
-            //assert(result.allMatch([](const Pair<char,char>* t){return t->getY()==t->getX();}));
+            assert(result.max()->getX()=='c');
+            assert(result.min()->getY()=='a');
+            assert(result.allMatch([](const Pair<char,char>* t){return t->getY()==t->getX();}));
 
-            //auto container=result.map<char>([](const Pair<char,char>* t)
-            //        { return new char(t->getX());}).collect<std::vector<char*>>();
+            auto container=result.map<char>([](const Pair<char,char>* t)
+                    { return new char(t->getX());}).collect<std::vector<char*>>();
 
-            //assert(container.size()==2 && *container.at(0)=='a' && *container.at(1)=='c');
+            assert(container.size()==2 && *container.at(0)=='a' && *container.at(1)=='c');
 
 
+            std::cout<<"testMixed-successful\n";
         };
 
 
@@ -255,18 +252,18 @@ int main(){
 
     TestClass test;
 
-    //test.testCreation();
-    //test.testFilter();
-    //test.testMap();
-    //test.testDistinct();
-    //test.testSorted();
-    //test.testForEach();
-    //test.testReduce();
-    //test.testMin();
-    //test.testMax();
-    //test.testAllMatch();
-    //test.testAnyMatch();
-    //test.testFindFirst();
+    test.testCreation();
+    test.testFilter();
+    test.testMap();
+    test.testDistinct();
+    test.testSorted();
+    test.testForEach();
+    test.testReduce();
+    test.testMin();
+    test.testMax();
+    test.testAllMatch();
+    test.testAnyMatch();
+    test.testFindFirst();
     test.testMixed();
 
 
