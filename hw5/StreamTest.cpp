@@ -42,9 +42,16 @@ void testCollect() {
     cout << "collect test: [PASSED]" << endl;
 }
 
-template <typename T>
-void printT(T *t) {
-    cout << *t << endl;
+void printInt(const int *x) {
+    cout << *x << endl;
+}
+
+void printChar(const char *c) {
+    cout << *c << endl;
+}
+
+void printDouble(const double *d) {
+    cout << *d << endl;
 }
 
 void testForEach() {
@@ -56,7 +63,7 @@ void testForEach() {
     }
 
     vector<int> resIntVec;
-    Stream<int>::of(intPtrVec).forEach(printT);
+    Stream<int>::of(intPtrVec).forEach(printInt);
 
     char charArr[2] = {'a', 'b'};
     vector<char*> charPtrVec;
@@ -64,7 +71,7 @@ void testForEach() {
         charPtrVec.push_back(charArr + i);
     }
 
-    Stream<char>::of(charPtrVec).forEach(&printT);
+    Stream<char>::of(charPtrVec).forEach(&printChar);
 
     map<char,double*> myMap;
     double a = 10.2, b = 20.2, c = 30.2, d = 40.2;
@@ -72,7 +79,7 @@ void testForEach() {
     myMap['b'] = &b;
     myMap['c'] = &c;
 
-    Stream<double>::of(myMap).forEach(printT);
+    Stream<double>::of(myMap).forEach(printDouble);
 }
 
 template <typename T>
@@ -82,9 +89,17 @@ T* sum(const T *t1, const T *t2) {
     return res;
 }
 
-template <typename T>
-T* max(const T *t1, const T *t2) {
-    T *res = new T;
+char* maxChar(const char *t1, const char *t2) {
+    char *res = new char;
+    if (*t1 >= *t2)
+        *res = *t1;
+    else
+        *res = *t2;
+    return res;
+}
+
+double* maxDouble(const double *t1, const double *t2) {
+    double *res = new double;
     if (*t1 >= *t2)
         *res = *t1;
     else
@@ -101,7 +116,7 @@ void testReduce() {
     }
 
     int initialInt = 0;
-    int *resInt = Stream<int>::of(intPtrVec).reduce(&initialInt, sum);
+    int *resInt = Stream<int>::of(intPtrVec).reduce(&initialInt, sum<int>);
     assert(*resInt == 6);
 
     initialInt = 2;
@@ -118,7 +133,7 @@ void testReduce() {
     }
 
     char initialChar = '0';
-    char *resChar = Stream<char>::of(charPtrVec).reduce(&initialChar, max);
+    char *resChar = Stream<char>::of(charPtrVec).reduce(&initialChar, maxChar);
     assert(*resChar == 'b');
 
     map<char,double*> myMap;
@@ -128,11 +143,11 @@ void testReduce() {
     myMap['c'] = &c;
 
     double initialDouble = 0;
-    double *resDouble = Stream<double>::of(myMap).reduce(&initialDouble, max);
+    double *resDouble = Stream<double>::of(myMap).reduce(&initialDouble, maxDouble);
     assert(*resDouble == 30.2);
 
     initialDouble = 50;
-    resDouble = Stream<double>::of(myMap).reduce(&initialDouble, max);
+    resDouble = Stream<double>::of(myMap).reduce(&initialDouble, maxDouble);
     assert(*resDouble == 50);
 
     cout << "reduce test: [PASSED]" << endl;

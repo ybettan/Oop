@@ -26,12 +26,6 @@ class Stream {
 
   private:
 
-    typedef void (*ForEachFunc)(const T*);
-    typedef bool (*Predicate)(const T*);
-    typedef bool (*CompareFunc)(const T*, const T*);
-    typedef bool (*IsFirstSmallerFunc)(const T*, const T*);
-    typedef T* (*ReduceFunc)(const T*, const T*);
-
     vector<T*> elements;
     function<vector<T*>()> activationFunctions;
 
@@ -40,9 +34,15 @@ class Stream {
     Stream(vector<T*> v) :
         elements(v),
         activationFunctions([this]() {return elements;}) {}
+
+    /* private C'tor */
+    Stream(vector<T*> v, vector<T*> (*firstActivationFunc)()) :
+        elements(v),
+        activationFunctions(firstActivationFunc) {}
     
 
-    T* reduceAux(T *initial, ReduceFunc func, vector<T*>& vec, int vecSize) {
+    T* reduceAux(T *initial, function<T*(const T*, const T*)> func,
+            vector<T*>& vec, int vecSize) {
 
         if (vecSize == 1)
             return func(initial, vec[0]);
@@ -77,7 +77,7 @@ class Stream {
     }
 
 
-    Stream<T>& filter(Predicate pred) {
+    Stream<T>& filter(function<bool(const T*)> pred) {
 
         /* keep the old activation function */
         function<vector<T*>()> oldActivationFunctions = activationFunctions;
@@ -100,7 +100,41 @@ class Stream {
     }
 
 
-    Stream<T>& distinct(CompareFunc comp) {
+    ////FIXME: difference between funPtr and function<() and what to use>
+    //template <typename R>
+    //Stream<R>& map(R* (*mapFunc)(const T*)) {
+
+    //    /* keep the old activation function */
+    //    function<vector<T*>()> oldActivationFunctions = activationFunctions;
+
+    //    /* this will be the stream result */
+    //    Stream<R> newStream();
+
+    //    /* create the new activation function */
+    //    function <vector<R*>()> newActivationFunctions =
+    //        [this, oldActivationFunctions, newStream&, mapFunc]() {
+
+    //        /* when activated the function first activate all previous actions */
+    //        vector<T*> updatedOldTypeVec = oldActivationFunctions();
+
+    //        /* map the vector and save the result at newStream.elements */
+    //        vector<R*> tmp(elements.size());
+    //        auto lastIter = std::copy_if(elements.begin(), elements.end(), tmp.begin(), pred);
+    //        tmp.erase(lastIter, tmp.end());
+
+    //        /* update the newStream.elements to be accessible from terminal ops */
+    //        newStream.elements = tmp;
+    //        return newStream.elements;
+    //    };
+
+    //    /* set newStream.activationFunctions */
+    //    newStream.activationFunctions = newActivationFunctions;
+
+    //    return *this;
+    //}
+
+
+    Stream<T>& distinct(function<bool(const T*, const T*)> comp) {
 
         /* keep the old activation function */
         function<vector<T*>()> oldActivationFunctions = activationFunctions;
@@ -131,7 +165,7 @@ class Stream {
     }
     
 
-    Stream<T>& sorted(IsFirstSmallerFunc isFirstSmaller) {
+    Stream<T>& sorted(function<bool(const T*, const T*)> isFirstSmaller) {
 
         /* keep the old activation function */
         function<vector<T*>()> oldActivationFunctions = activationFunctions;
@@ -169,14 +203,14 @@ class Stream {
     }
 
 
-    void forEach(ForEachFunc func) {
+    void forEach(function<void(const T*)> func) {
 
         vector<T*> resVec = activationFunctions();
         for_each(resVec.begin(), resVec.end(), func);
     }
 
 
-    T* reduce(T *initial, ReduceFunc func) {
+    T* reduce(T *initial, function<T*(const T*, const T*)> func) {
 
         vector<T*> resVec = activationFunctions();
         return reduceAux(initial, func, resVec, resVec.size());
@@ -216,21 +250,21 @@ class Stream {
     }
 
 
-    bool anyMatch(Predicate pred) {
+    bool anyMatch(function<bool(const T*)> pred) {
 
         vector<T*> resVec = activationFunctions();
         return std::any_of(resVec.begin(), resVec.end(), pred);
     }
 
 
-    bool allMatch(Predicate pred) {
+    bool allMatch(function<bool(const T*)> pred) {
 
         vector<T*> resVec = activationFunctions();
         return std::all_of(resVec.begin(), resVec.end(), pred);
     }
 
 
-    T* findFirst(Predicate pred) {
+    T* findFirst(function<bool(const T*)> pred) {
 
         vector<T*> resVec = activationFunctions();
         auto findRes = std::find_if(resVec.begin(), resVec.end(), pred);
