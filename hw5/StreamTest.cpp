@@ -63,7 +63,10 @@ void testForEach() {
     }
 
     vector<int> resIntVec;
-    Stream<int>::of(intPtrVec).forEach(printInt);
+    Stream<int>::of(intPtrVec).forEach([&resIntVec](const int *x) {resIntVec.push_back(*x + 10);});
+    assert(resIntVec[0] == 11);
+    assert(resIntVec[1] == 12);
+    assert(resIntVec[2] == 13);
 
     char charArr[2] = {'a', 'b'};
     vector<char*> charPtrVec;
@@ -71,7 +74,12 @@ void testForEach() {
         charPtrVec.push_back(charArr + i);
     }
 
-    Stream<char>::of(charPtrVec).forEach(&printChar);
+    vector<char> resCharVec;
+    Stream<char>::of(charPtrVec).forEach([&resCharVec](const char *x)
+            {resCharVec.push_back(*x);});
+    assert(resCharVec.size() == 2);
+    assert(resCharVec[0] == 'a');
+    assert(resCharVec[1] == 'b');
 
     map<char,double*> myMap;
     double a = 10.2, b = 20.2, c = 30.2, d = 40.2;
@@ -79,7 +87,14 @@ void testForEach() {
     myMap['b'] = &b;
     myMap['c'] = &c;
 
-    Stream<double>::of(myMap).forEach(printDouble);
+    vector<double> resDoubleVec;
+    Stream<double>::of(myMap).forEach([&resDoubleVec](const double *x)
+            {resDoubleVec.push_back(*x - 10);});
+    assert(resDoubleVec.size() == 3);
+    assert(resDoubleVec[1] == 10.2);
+    assert(resDoubleVec[2] == 20.2);
+
+    cout << "forEach test: [PASSED]" << endl;
 }
 
 template <typename T>
@@ -455,22 +470,137 @@ void testComplexStream() {
     assert(*resIntPtrVec[0] == 2);
     assert(*resIntPtrVec[1] == 4);
 
+    int intArr2[7] = {4, 3, 4, 2, 2, 4, 8};
+    vector<int*> intPtrVec2;
+    for (int i=0 ; i<7 ; i++) {
+        intPtrVec2.push_back(intArr2 + i);
+    }
+
+    vector<double*> resDoublePtrVec = Stream<int>::of(intPtrVec2)
+                    .filter([](const int *x) {return (*x == 2) || (*x == 4);})
+                    .map<int>([](const int *x) {return new int(*x+2);})
+                    .map<double>([](const int *x) {return new double(*x+0.5);})
+                    .filter([](const double *x) {return *x > 5;})
+                    .sorted()
+                    .collect<vector<double*>>();
+
+    assert(resDoublePtrVec.size() == 3);
+    assert(*resDoublePtrVec[0] == 6.5);
+    assert(*resDoublePtrVec[1] == 6.5);
+    assert(*resDoublePtrVec[2] == 6.5);
+
     cout << "complexStream test: [PASSED]" << endl;
+}
+
+void testMap() {
+
+    int intArr[7] = {7, 2, 4, 3, 2, 5, 1};
+    vector<int*> intPtrVec;
+    for (int i=0 ; i<7 ; i++) {
+        intPtrVec.push_back(intArr + i);
+    }
+
+    vector<double*> resToDoubleVec = Stream<int>::of(intPtrVec)
+                    .map<double>([](const int *x) {return new double(*x + 0.5);})
+                    .collect<vector<double*>>();
+    assert(resToDoubleVec.size() == 7);
+    std::sort(resToDoubleVec.begin(), resToDoubleVec.end(),
+            [](const double *x1, const double *x2) {return *x1 < *x2;});
+    assert(*resToDoubleVec[0] == 1.5);
+    assert(*resToDoubleVec[1] == 2.5);
+    assert(*resToDoubleVec[2] == 2.5);
+    assert(*resToDoubleVec[3] == 3.5);
+    assert(*resToDoubleVec[4] == 4.5);
+    assert(*resToDoubleVec[5] == 5.5);
+    assert(*resToDoubleVec[6] == 7.5);
+
+    char charArr[4] = {'a', 'c' , 'd', 'b'};
+    vector<char*> charPtrVec;
+    for (int i=0 ; i<4 ; i++) {
+        charPtrVec.push_back(charArr + i);
+    }
+
+    vector<char*> resCharPtrVec = Stream<char>::of(charPtrVec)
+                    .map<char>([](const char *c) {return new char(*c);})
+                    .collect<vector<char*>>();
+    std::sort(resCharPtrVec.begin(), resCharPtrVec.end(),
+            [](const char *x1, const char *x2) {return *x1 < *x2;});
+    assert(resCharPtrVec.size() == 4);
+    assert(*resCharPtrVec[0] == 'a');
+    assert(*resCharPtrVec[1] == 'b');
+    assert(*resCharPtrVec[2] == 'c');
+    assert(*resCharPtrVec[3] == 'd');
+
+    resCharPtrVec = Stream<char>::of(charPtrVec)
+                    .map<char>([](const char *c) {return new char(*c + 2);})
+                    .collect<vector<char*>>();
+    std::sort(resCharPtrVec.begin(), resCharPtrVec.end(),
+            [](const char *x1, const char *x2) {return *x1 < *x2;});
+    assert(resCharPtrVec.size() == 4);
+    assert(*resCharPtrVec[0] == 'c');
+    assert(*resCharPtrVec[1] == 'd');
+    assert(*resCharPtrVec[2] == 'e');
+    assert(*resCharPtrVec[3] == 'f');
+
+    map<char,double*> myMap;
+    double a = 10.2, b = 20.2, c = 30.2, d = 40.2;
+    myMap['a'] = &a;
+    myMap['b'] = &b;
+    myMap['c'] = &c;
+
+    deque<int*> resIntPtrDeque = Stream<double>::of(myMap)
+                    .map<int>([](const double *x) {return new int(*x);})
+                    .collect<deque<int*>>();
+    assert(resIntPtrDeque.size() == 3);
+    assert(*resIntPtrDeque.front() == 10); resIntPtrDeque.pop_front();
+    assert(*resIntPtrDeque.front() == 20); resIntPtrDeque.pop_front();
+    assert(*resIntPtrDeque.front() == 30); resIntPtrDeque.pop_front();
+    assert(resIntPtrDeque.size() == 0);
+
+    cout << "map test: [PASSED]" << endl;
+}
+
+void testLazyness() {
+
+    int intArr[7] = {4, 3, 4, 2, 2, 4, 4};
+    vector<int*> intPtrVec;
+    for (int i=0 ; i<7 ; i++) {
+        intPtrVec.push_back(intArr + i);
+    }
+
+    Stream<int> resIntStream = Stream<int>::of(intPtrVec)
+                    .filter([](const int *x) {return (*x == 2) || (*x == 4);})
+                    .distinct()
+                    .sorted();
+    assert(resIntStream.elements.size() == 7);
+    std::sort(resIntStream.elements.begin(), resIntStream.elements.end(),
+            [](const int *x1, const int *x2) {return *x1 < *x2;});
+    assert(*resIntStream.elements[0] == 2);
+    assert(*resIntStream.elements[1] == 2);
+    assert(*resIntStream.elements[2] == 3);
+    assert(*resIntStream.elements[3] == 4);
+    assert(*resIntStream.elements[4] == 4);
+    assert(*resIntStream.elements[5] == 4);
+    assert(*resIntStream.elements[6] == 4);
+
+    cout << "lazyness test: [PASSED]" << endl;
 }
 
 int main() {
 
     testCollect();
-    //testForEach();
+    testForEach();
     testReduce();
     testMinMax();
     testCount();
     testAnyAllMatch();
     testFindFirst();
     testFilter();
+    testMap();
     testDistinct();
     testSorted();
     testComplexStream();
+    testLazyness();
 }
 
 

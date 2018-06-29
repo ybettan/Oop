@@ -24,11 +24,10 @@ using std::map;
 template <typename T>
 class Stream {
 
-  private:
+  public:
 
-    vector<T*> elements;
-    function<vector<T*>()> activationFunctions;
-
+    /* private C'tor */
+    Stream() = default;
 
     /* private C'tor */
     Stream(vector<T*> v) :
@@ -52,6 +51,11 @@ class Stream {
 
 
   public:
+
+    /* public fields */
+    vector<T*> elements;
+    function<vector<T*>()> activationFunctions;
+
 
     /* TContainer is a Collection<T*> */
     template <typename TContainer>
@@ -85,7 +89,8 @@ class Stream {
         /* save the new activation function */
         activationFunctions = [this, oldActivationFunctions, pred]() {
 
-            /* when activated the function first activate all previous actions */
+            /* when activated the function first activate all previous actions.
+             * each operation is changing elements field */
             oldActivationFunctions();
 
             /* filter the vector */
@@ -100,38 +105,37 @@ class Stream {
     }
 
 
-    ////FIXME: difference between funPtr and function<() and what to use>
-    //template <typename R>
-    //Stream<R>& map(R* (*mapFunc)(const T*)) {
+    template <typename R>
+    Stream<R> map(function<R*(const T*)> mapFunc) {
 
-    //    /* keep the old activation function */
-    //    function<vector<T*>()> oldActivationFunctions = activationFunctions;
+        /* keep the old activation function */
+        function<vector<T*>()> oldActivationFunctions = activationFunctions;
 
-    //    /* this will be the stream result */
-    //    Stream<R> newStream();
+        /* this will be the stream result */
+        Stream<R> newStream;
 
-    //    /* create the new activation function */
-    //    function <vector<R*>()> newActivationFunctions =
-    //        [this, oldActivationFunctions, newStream&, mapFunc]() {
+        /* create the new activation function */
+        newStream.activationFunctions =
+            [this, oldActivationFunctions, &newStream, mapFunc]() {
 
-    //        /* when activated the function first activate all previous actions */
-    //        vector<T*> updatedOldTypeVec = oldActivationFunctions();
+                /* when activated the function first activate all previous actions */
+                oldActivationFunctions();
 
-    //        /* map the vector and save the result at newStream.elements */
-    //        vector<R*> tmp(elements.size());
-    //        auto lastIter = std::copy_if(elements.begin(), elements.end(), tmp.begin(), pred);
-    //        tmp.erase(lastIter, tmp.end());
+                /* allocate memory now in case previous actions has modified
+                 * elements len (for example if filter was activate) */
+                newStream.elements = vector<R*>(elements.size());
 
-    //        /* update the newStream.elements to be accessible from terminal ops */
-    //        newStream.elements = tmp;
-    //        return newStream.elements;
-    //    };
+                /* map the vector and save the result at newStream.elements.
+                 * the implementation of map cannot change this->elements because
+                 * there may be from a different type after mapping */
+                std::transform(elements.begin(), elements.end(),
+                        newStream.elements.begin(), mapFunc);
 
-    //    /* set newStream.activationFunctions */
-    //    newStream.activationFunctions = newActivationFunctions;
+                return newStream.elements;
+            };
 
-    //    return *this;
-    //}
+        return newStream;
+    }
 
 
     Stream<T>& distinct(function<bool(const T*, const T*)> comp) {
