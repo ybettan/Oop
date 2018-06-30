@@ -155,7 +155,8 @@ class Stream {
     }
 
 
-    /* distinct with the default operator== of T (not T*) */
+    /* distinct with the default operator== of T (not T*).
+     * ASSUMPTION: T implements operator== */
     Stream<T>& distinct() {
 
         return distinct([](const T *t1, const T *t2) {return *t1 == *t2;});
@@ -183,7 +184,8 @@ class Stream {
     }
 
 
-    /* sorted with the default operator< of T (not T*) */
+    /* sorted with the default operator< of T (not T*).
+     * ASSUMPTION: T implements operator< */
     Stream<T>& sorted() {
 
         return sorted([](const T *t1, const T *t2) {return *t1 < *t2;});

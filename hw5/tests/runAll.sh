@@ -59,6 +59,15 @@ cd ../part2
 ./OOP5_Part2_RunTest.sh
 cd ../../
 
+echo ---------------------------------------------------------
+echo "                    StreamComplexTest"
+echo ---------------------------------------------------------
+g++ -std=c++11 StreamComplexTest.cpp
+./a.out
 
 rm a.out
+
+
+
+
 
