@@ -143,7 +143,7 @@ class Stream {
             /* distinct the vector */
             vector<T*> distinctVec;
             for (T *e : updatedElements) {
-                if(!contain(distinctVec, e, comp))
+                if(!this->contain(distinctVec, e, comp))
                     distinctVec.push_back(e);
             }
             updatedElements = distinctVec;
